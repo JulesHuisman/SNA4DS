@@ -1,0 +1,21 @@
+---
+title: "Lab 02 - Measures I"
+output: 
+  learnr::tutorial:
+    fig_caption: no
+    progressive: true
+    allow_skip: no
+    # toc: true
+    # toc_depth: 2
+    theme: readable
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+# library(magrittr)
+tutorial_options(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
