@@ -112,7 +112,7 @@ sqrt(log(2))
 ```
 
 ```{r grade_code1-check}
-grade_code(correct = "Excellent work.")
+gradethis::grade_code(correct = "Excellent work.")
 ```
 
 
@@ -435,7 +435,8 @@ Nice, and if you wanted to see the names of the actors next to their scores, you
 could run:
 
 ```{r library1a, exercise = TRUE}
-data.frame(betweenness = betweenness(friendship), names = network::get.vertex.attribute(friendship, "name"))
+data.frame(betweenness = betweenness(friendship), 
+           names = network::get.vertex.attribute(friendship, "name"))
 ```
 
 ###
@@ -619,7 +620,7 @@ Guide](http://jef.works/R-style-guide/).
 
 OK, that is enough R stuff. Let's now do some network stuff. 
 
-This happens in the next tutorial: `lab01-networkIntro`.
+This happens in the next tutorial: `lab01a-networksInR`.
 You can start it by running
 
 ```{r, eval = FALSE}

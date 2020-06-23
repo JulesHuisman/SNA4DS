@@ -5,8 +5,8 @@ output:
     fig_caption: no
     progressive: true
     allow_skip: no
-    # toc: true
-    # toc_depth: 2
+    toc: true
+    toc_depth: 3
     theme: readable
 runtime: shiny_prerendered
 ---
@@ -71,7 +71,7 @@ plot(g)
 
 
 
-
+### Book, section 1.2
 The code below generates an undirected graph with three edges. The numbers are
 interpreted as vertex IDs, so the edges are 1–>2, 2–>3, 3–>1.
 
@@ -157,6 +157,7 @@ you now have all the R code to do the equivalent to section 1.2 in the book.
 
 Let's move on from here.
 
+### Creating small graphs
 Small graphs can also be generated using symbols in the
 `igraph::graph_from_literal` function:
 
@@ -178,6 +179,74 @@ g3
 This works just fine when you have small networks (or you want to generate some 
 simple artificial networks to test your data), but is not feasible for larger 
 networks. 
+
+### Basic network data types
+Let's continue with network `g3`. 
+
+#### Adjacency matrix
+
+An _adjacency matrix_ is a matrix in which the rows and columns represent
+different nodes. In an unweighted adjacency matrix, the edges (i.e., lines) are
+0 or 1, indicating whether these two nodes are connected. If two nodes are
+connected, they are said to be _adjacent_ (hence the name, _adjacency matrix_).
+In a weighted matrix, however, the cells can have different values, indicating
+different edge qualities (or tie strengths).
+
+For this network, the adjacency matrix looks as follows
+
+```{r}
+igraph::as_adjacency_matrix(g3, sparse = FALSE)
+```
+
+Note the argument `sparse = FALSE` in the code above. This displays the zeroes
+in the adjacency matrix. When  `sparse = TRUE`, in the output 0's are replaced
+with a period, making it easier to see very large matrices.
+
+```{r}
+igraph::as_adjacency_matrix(g3, sparse = TRUE)
+```
+
+When the network is undirected and unweighted, the corresponding adjacency
+matrix is symmetrical and binary.
+
+
+### Edge List
+A very common datastructure is the _edge list_. An edge list is a two-column
+matrix, with the sender in the first column and the reciever in the second (ie.
+the edge goes from the vertex in the first column to the vertex in the second
+column). In an undirected network, the order of the vertices don’t matter. For
+weighted networks, you may have a third column that indicates the edge weight.
+
+
+```{r}
+igraph::as_edgelist(g3)
+```
+
+### Adjacency List
+An _adjacency list_ (or _node list_, is a list that presents the ‘focal’ node
+and then all the other nodes that are connected to it (i.e., that are "adjacent"
+to it). This looks as follows:
+
+```{r}
+igraph::as_adj_list(g3, mode = "total")
+```
+As you can see, this isn't nice for directed graphs, but it does work.
+Sometimes, this is exactly the data that you have: for each node you know whom
+it is connected to. Then, this is the data type to use.
+
+### Going from Data to Networks
+how to construct networks from data frames and edge lists
+
+
+## _network_
+the network package, and sna for some visualization
+do some of the same stuff as above, but now with the network package
+
+
+## _intergraph_
+Moving between the two packages
+
+
 
 
 
