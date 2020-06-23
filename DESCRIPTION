@@ -18,7 +18,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
 	gradethis,
-    igraph (>= 1.2.5),
+    	igraph (>= 1.2.5),
 	influenceR,
 	learnr (>= 0.10.1),
 	magrittr,
