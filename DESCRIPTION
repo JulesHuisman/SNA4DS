@@ -12,7 +12,7 @@ Authors@R: c(person(given = "Roger",
 					email = "Claudia.Zucca@jads.nl"))
 Maintainer: Roger Leenders <r.t.a.j.leenders@jads.nl>
 Description: This package contains the tutorials for the JADS course "Social Network Analysis for Data Science" (2020-2021). Update it frequently, to have access to the most up-to-date tutorials.
-License: LGPL (>= 2.1)
+License: CC-BY-SA-4.0
 Depends: R (>= 4.0.0)
 Encoding: UTF-8
 LazyData: true
