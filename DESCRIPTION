@@ -17,8 +17,9 @@ Depends: R (>= 4.0.0)
 Encoding: UTF-8
 LazyData: true
 Imports:
+	glue,
 	gradethis,
-    	igraph (>= 1.2.5),
+    igraph (>= 1.2.5),
 	influenceR,
 	learnr (>= 0.10.1),
 	magrittr,
@@ -26,8 +27,10 @@ Imports:
 	networkD3,
 	remotes,
 	rstudioapi (>= 0.11),
-	sna
+	sna,
+	utils
 Remotes:
 	github::rstudio-education/gradethis
 URL: https://github.com/SNAnalyst/SNA4DS
 BugReports: https://github.com/SNAnalyst/SNA4DS/issues
+RoxygenNote: 7.1.1

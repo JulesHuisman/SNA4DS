@@ -1,12 +1,13 @@
 ---
-title: "Lab 01 - Introduction"
+title: "Lab 01a - Introduction"
+description: "Week 1: Introductory tutorial about how to use the tutorials in this course and about the conventions in R we will follow in this course"
 output: 
   learnr::tutorial:
     fig_caption: no
     progressive: true
-    allow_skip: no
-    # toc: true
-    # toc_depth: 2
+    allow_skip: true
+    toc: true
+    toc_depth: 3
     theme: readable
 runtime: shiny_prerendered
 ---
@@ -18,6 +19,8 @@ library(gradethis)
 # library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
+
+load("nw_data.RData")
 ```
 
 
@@ -404,11 +407,6 @@ and _package1_ will become second in the path. That is not a problem, until you
 load packages that have functions with the same name.
 
 
-```{r, echo = FALSE, include = FALSE}
-load("nw_data.RData")
-friendship <- g
-```
-
 Here's an example. You have a network in your R session that is called `friendship`. 
 This is what it looks like:
 
@@ -452,7 +450,7 @@ library(influenceR)
 You want to use the `influenceR` package to calculate some measures on the
 relative importance of the actors in the network. But first, what again were the
 betweenness scores for the actors in this network? Let's run our previous code
-again. Set the function name to `betweenness` and run the code.
+again. Below, set the function name to `betweenness` and run the code.
 
 ```{r library_error, exercise = TRUE}
 ...(friendship)
@@ -464,9 +462,10 @@ of the `influenceR` package is now higher in R's search path than the
 `betweenness` function of the `sna` package. In this case, the `influenceR`
 package throws an error, because it expects an object in a different form than
 the object `g`. But if `influenceR` would have been able to directly deal with
-this object `friendship`, it might have given you a very different result than
-you were expecting (because who says that the `betweenness` function does the
-same thing in both the `influenceR` and the `sna` packages).
+this object `friendship`, it would not give an error and might have given you a
+very different result than wanted (because who says that the `betweenness`
+function does the exact same thing in both the `influenceR` and the `sna`
+packages?).
 
 Now, first predict what will happen when you run the follow code, and then
 indeed run it. Does it do what you expected?
@@ -620,11 +619,11 @@ Guide](http://jef.works/R-style-guide/).
 
 OK, that is enough R stuff. Let's now do some network stuff. 
 
-This happens in the next tutorial: `lab01a-networksInR`.
+This happens in the next tutorial: `lab01b-networksInR`.
 You can start it by running
 
-```{r, eval = FALSE}
-learnr::run_tutorial("lab01-networkIntro", package = "SNA4DS")
+```{r nextTutorial, eval = FALSE, exercise = TRUE}
+learnr::run_tutorial("lab01b-networksInR", package = "SNA4DS")
 ```
 
 

@@ -4,7 +4,7 @@ output:
   learnr::tutorial:
     fig_caption: no
     progressive: true
-    allow_skip: no
+    allow_skip: true
     toc: true
     toc_depth: 3
     theme: readable
