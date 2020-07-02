@@ -1,12 +1,12 @@
 ---
-title: "Lab 01 - Introduction"
+title: "Lab 01a - Introduction"
 output: 
   learnr::tutorial:
     fig_caption: no
     progressive: true
-    allow_skip: no
-    # toc: true
-    # toc_depth: 2
+    allow_skip: true
+    toc: true
+    toc_depth: 3
     theme: readable
 runtime: shiny_prerendered
 ---
@@ -620,7 +620,7 @@ Guide](http://jef.works/R-style-guide/).
 
 OK, that is enough R stuff. Let's now do some network stuff. 
 
-This happens in the next tutorial: `lab01a-networksInR`.
+This happens in the next tutorial: `lab01b-networksInR`.
 You can start it by running
 
 ```{r, eval = FALSE}
