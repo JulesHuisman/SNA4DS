@@ -620,10 +620,5 @@ Guide](http://jef.works/R-style-guide/).
 OK, that is enough R stuff. Let's now do some network stuff. 
 
 This happens in the next tutorial: `lab01b-networksInR`.
-You can start it by running
-
-```{r nextTutorial, eval = FALSE, exercise = TRUE}
-learnr::run_tutorial("lab01b-networksInR", package = "SNA4DS")
-```
 
 
