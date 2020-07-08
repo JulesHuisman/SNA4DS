@@ -429,6 +429,10 @@ library(sna)
 betweenness(friendship)
 ```
 
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+try(library(sna), silent = TRUE)
+```
+
 Nice, and if you wanted to see the names of the actors next to their scores, you 
 could run:
 
