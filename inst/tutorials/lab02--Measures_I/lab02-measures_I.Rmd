@@ -18,4 +18,259 @@ library(gradethis)
 # library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
+load("nw_data.RData")
 ```
+
+
+## Introduction
+Welcome to this tutorial of __Social Network Analysis for Data Science__!!
+This week you will learn about network measures!
+
+The purpose of this tutorial is to introduce you to measuring a network in R: 
+
+
+```{r testquiz}
+question("Why do we measure networks?",
+    answer("to learn data science"),
+    answer("because it's fun"),
+    answer("to better understand what kind of relationships they represent 
+and what does this imply for the understanding of the social reality.", correct = TRUE)
+  )
+```
+
+
+## Network structures
+
+### Full Graph
+```{r}
+library(igraph)
+full <- igraph::make_full_graph(10, directed = FALSE, loops = FALSE)
+
+```
+
+### Star
+```{r}
+plot(igraph::make_star(10, mode = "out"))
+plot(igraph::make_star(10, mode = "undirected"))
+
+```
+
+### Ring
+```{r}
+plot(print_all(igraph::make_ring(10)))
+```
+
+### Linear
+```{r}
+# removing edge to make it linear
+ring <- igraph::make_ring(10)
+igraph::V(ring)$name <- letters[1:10]
+igraph::E(ring)$name <- LETTERS[1:10]
+ring <- ring - edge("e|f")
+plot(ring)
+
+# remove path to make it linear
+ring <- ring - edge("A")
+plot(ring)
+
+
+```
+
+
+### Tree
+```{r}
+plot(igraph::make_tree(10, 2))
+plot(igraph::make_tree(10, 3, mode = "undirected"))
+```
+
+
+### Make Lattice
+```{r}
+plot(igraph::make_lattice(c(5, 5, 5)))
+
+# squared lattice
+plot(igraph::make_lattice(length = 5, dim = 2))
+```
+
+
+### Combine Graphs
+```{r}
+net1 <- graph_from_literal(D-A:B:F:G, A-C-F-A, B-E-G-B, A-B, F-G,
+                  H-F:G, H-I-J)
+net2 <- graph_from_literal(D-A:F:Y, B-A-X-F-H-Z, F-Y)
+net <- net1 %u% net2
+
+plot(net)
+
+
+```
+## Media Network
+```{r}
+nodes <- read.csv("Dataset1-Media-Example-NODES.csv", header=T, as.is=T)
+links <- read.csv("Dataset1-Media-Example-EDGES.csv", header=T, as.is=T)
+
+net <- graph_from_data_frame(d=links, vertices=nodes, directed=T) 
+net
+```
+please note: 
+
+* D or U, for a directed or undirected graph
+* N for a named graph (where nodes have a name attribute)
+* vertex names do not provide the name of the media, which is recorded
+as an attribute.
+* W for a weighted graph (where edges have a weight attribute) -- more about this
+in a few weeks
+* B for a bipartite (two-mode) graph (where nodes have a type attribute)-- more 
+about this in a few weeks
+* 17 and 49 is the node and the edge number 
+* (g/c) - graph-level character attribute
+* (v/c) - vertex-level character attribute
+* (e/n) - edge-level numeric attribute
+
+
+### A network of Friends
+```{r}
+library(intergraph)
+friends <- intergraph::asIgraph(friendship)
+plot(friends)
+```
+
+### How many nodes? How many edges? 
+
+## Distances in a Network
+
+### Shortest Path
+The shortest path, or geodesic between two pair of vertices is a path with the minimal number of vertices. 
+```{r}
+igraph::distance_table(friends, directed = TRUE)
+```
+
+### Diameter
+```{r}
+igraph::diameter(friends)
+
+distances(friends)
+shortest_paths(friends, 5)
+all_shortest_paths(friends, 1, 6:8)
+E(friends)
+
+mean_distance(friends)
+
+distance_table(friends)
+```
+
+### Average path length
+```{r}
+mean_distance(friends)
+```
+
+
+### Density and Sparsity
+```{r}
+igraph::edge_density(friends, loops=TRUE)  
+# igraph only undirected graph. No difference with directed.
+```
+
+
+### Degree
+```{r}
+degree(friends, v = V(friends), mode = "all",loops = TRUE, normalized = FALSE)
+
+degree(friends, v = V(friends), mode = "out", loops = TRUE, normalized = FALSE)
+
+degree(friends, v = V(friends), mode = "in", loops = TRUE, normalized = FALSE)
+
+degree(friends, v = V(friends), mode = "total", loops = TRUE, normalized = FALSE)
+
+Ufriends <- as.undirected(friends)
+
+degree <- degree(Ufriends, v = V(Ufriends), mode = "all", loops = TRUE, normalized = FALSE)
+# each output gives the same answer
+
+degree_distribution(graph, cumulative = FALSE, ...)
+
+library(xtable)
+nodes <- igraph::V(friends)$name <- letters[1:10]
+
+(graph <- data.frame(cbind(nodes, degree)))
+
+```
+
+### weighted networks
+
+```{r}
+igraph::ecount(friends)
+
+igraph::E(friends)$weight <-base::floor(stats::runif(igraph::ecount(friends), min=0, max=20))
+
+
+E.list <- as.data.frame(igraph::as_edgelist(friends))
+
+E.list <- cbind(E.list, E(friends)$weight)
+
+colnames(E.list) <- c("ego", "alter", "weight")
+
+
+
+```
+
+### Strenght
+```{r}
+strength(friends) ### inserisco???
+```
+
+
+
+
+
+
+### Subgraphs
+```{r}
+
+u2 <- induced_subgraph(friends, 1:7)
+plot(friends)
+plot(u2)
+u3 <- subgraph.edges(u, 1:5, 1:5)
+
+
+
+```
+
+
+### Cliques
+```{r}
+cliques(friends, min = 2, max = 3) ## all the cliques beween min e max n nodes
+
+largest_cliques(friends)
+
+max_cliques(friends)
+```
+
+### Assortativity degree
+```{r}
+assortativity_degree
+```
+
+
+
+### Bipartite Networks
+
+```{r}
+g <- make_bipartite_graph( rep(0:1,length=10), c(1:10))
+print(g, v=TRUE)
+
+plot(g)
+
+
+g <- make_full_bipartite_graph(6,3)
+proj <- bipartite_projection(g)
+graph.isomorphic(proj[[1]], make_full_graph(10))
+graph.isomorphic(proj[[2]], make_full_graph(5))
+
+plot(g)
+plot(proj[[1]])
+plot(proj[[2]])
+
+
+```
+

@@ -1,0 +1,313 @@
+---
+title: "lab02-visualizations"
+output: 
+  learnr::tutorial:
+    fig_caption: no
+    progressive: true
+    allow_skip: true
+    toc: true
+    toc_depth: 3
+    theme: readable
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+# library(magrittr)
+tutorial_options(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE)
+```
+
+## Why should we visualize networks?
+The visualization of network is a specific field of data visualization. In general
+we visualize data for several reasons, but one of the most important is to make 
+data and results clear and understandable for a larger public. Communicability 
+is a very important skill both in academia and in the private sector. 
+
+You might have very important findings, but if your audience does not understand
+them they are worth nothing. 
+A great visualization makes more than half of the job! 
+Great visualizions are story tellers!
+
+### Goals of network visualization
+
+* to identify key actors and the relationship between them
+* to spot most influential actors
+* to check the strength of relationships
+* to see whether people belong to sub-groups inside large networks 
+* to analyze the structural properties of networks
+* to unfold diffusion patterns
+* to observe network evolution
+* to summaries any sort of relationship among entities in one picture
+* ... and many more reasons!
+
+
+## Basic network plots
+
+Plotting networks is essentially plotting dots and lines. The R environment allow
+us to do it already.
+```{r}
+base::plot(x=1:5, y=rep(5,5), pch=19, cex=12, col=rgb(.25, .5, .3, alpha=.5), xlim=c(0,6)) 
+```
+However, it is very difficult to do it in the base R programming language. Hence 
+there are a few packages that help us on the job. 
+
+### Basic plots
+As much as for the majority of network analysis task, we can use two packages
+
+* igraph
+* networks
+
+
+Let's check a first example with igraph
+```{r}
+library(igraph)
+set.seed(10000)
+igraphNet <- igraph::erdos.renyi.game(10, 2/10)
+plot(igraphNet)
+```
+
+this is the most basic network plot we can have. 
+
+We can do a very similar one using network 
+```{r}
+detach("package:igraph", unload = TRUE)
+library(intergraph)
+networkNet <- intergraph::asNetwork(igraphNet)
+plot(networkNet)
+```
+Different layout set up, same output (fortunately... otherwise it would mean we
+made some mistakes somewhere)
+
+
+However, for more complex networks to plot, we need to make our visualization
+skills more sophisticated
+```{r}
+library(igraph)
+set.seed(10001)
+igraphNetLarge <- igraph::erdos.renyi.game(1000, 1/1000)
+plot(igraphNetLarge)
+
+```
+
+
+this last plot does not meet any of the goal we stated above. It's just a mess!
+
+
+```{r testquiz}
+question("What is the main problem with the plots of igraphNet and networkNet?",
+    answer("nodes are too small"),
+    answer("the colors are not color blind friendly"),
+    answer("the plot does not inform us on what the network represents", correct = TRUE),
+  )
+```
+
+yes, even if these two example plots are readable, they are not very helpful in 
+telling a story!
+
+## Tell your network story
+
+In this first part of the tutorial we will explore the options for plotting
+networks in igraph.
+
+We will use one of the data sets from a tutorial that I kindly 
+recommend: 
+
+Ognyanova, K. (2019) Network visualization with R. 
+Retrieved from www.kateto.net/network-visualization.
+
+It's a media network
+```{r}
+nodes <- read.csv("Dataset1-Media-Example-NODES.csv", header=T, as.is=T)
+links <- read.csv("Dataset1-Media-Example-EDGES.csv", header=T, as.is=T)
+
+detach("package:intergraph", unload = TRUE)
+library(igraph)
+net <- graph_from_data_frame(d=links, vertices=nodes, directed=T) 
+```
+Loading the network from a data frame allows the automatic upload of several 
+information about the nodes and their relationships.
+
+Let's briefly explore the network
+```{r}
+vcount(net)
+```
+What do nodes represent? We need to know the name of the attribute we want to
+display, and we call it using the $ sign.
+```{r}
+V(net)$media
+```
+How many relationships in total we observed between these media?
+```{r}
+ecount(net)
+```
+
+For a preliminary overview this is enough. We already have a clue of what we are 
+dealing with. 
+
+Let's plot!
+```{r}
+plot(net) 
+```
+we can do better than this... let's remove loops and plot it reducing the arrow 
+size, removing the vertex label and curving the edges.
+```{r}
+net <- igraph::simplify(net, remove.multiple = F, remove.loops = T) 
+plot(net, 
+     edge.arrow.size=.4, 
+     vertex.label=NA, 
+     edge.curved=.1)
+```
+it's already prettier, but still not very informative. 
+
+Printing the media attribute instead of the label makes clearer what we are 
+trying to communicate. Let's do it, together with some aesthetic improvements!
+```{r}
+plot(net, 
+     edge.arrow.size=.2, 
+     edge.color="orange",
+     vertex.color="orange", 
+     vertex.frame.color="#ffffff",#node perimeter
+     vertex.label=V(net)$media, 
+     vertex.label.color="black") 
+```
+this is a much better job! 
+
+We have more information on this network, let's try to show it. We know the 
+audience size for each of those media. We can plot it as a node size! We can 
+also change color according to media type. 
+```{r}
+# Generate colors based on media type:
+colrs <- c("gray50", "tomato", "gold")
+V(net)$color <- colrs[V(net)$media.type] # we attribute media type to color
+
+V(net)$size <- V(net)$audience.size*0.6 # and audience size to size
+
+# The labels are currently node IDs.
+# Setting them to NA will render no labels:
+V(net)$label <- NA
+
+#change arrow size and edge color (in the previous example they were set inside 
+#the plot function. Both options work)
+E(net)$arrow.size <- .2
+E(net)$edge.color <- "gray80"
+
+plot(net,
+     vertex.frame.color="#ffffff",#node perimeter
+     vertex.label=V(net)$media, 
+     vertex.label.color="black"
+     ) 
+legend(x=-1.5, y=-1.1, c("Newspaper","Television", "Online News"), pch=21,
+       col="#777777", pt.bg=colrs, pt.cex=2, cex=.8, bty="n", ncol=1)
+```
+This plot is very informative! in one glance we can easily see that TV channels 
+have a much larger audience than newspapers and online news. 
+That the most popular newspaper is the New York Post, and the most 
+popular TV channel Fox news. 
+
+It is hard to read the direction of the edges though! We can fix it!
+Let’s color the edges of the graph based on their source node color.
+```{r}
+# Generate colors based on media type:
+colrs <- c("gray50", "tomato", "gold")
+V(net)$color <- colrs[V(net)$media.type] # we attribute media type to color
+
+V(net)$size <- V(net)$audience.size*0.6 # and audience size to size
+
+# The labels are currently node IDs.
+# Setting them to NA will render no labels:
+V(net)$label <- NA
+
+# color the edge as the sender 
+edge.start <- ends(net, es=E(net), names=F)[,1]
+edge.col <- V(net)$color[edge.start]
+
+plot(net,
+     vertex.frame.color="#ffffff",#node perimeter
+     vertex.label=V(net)$media, 
+     vertex.label.color="black",
+     edge.color=edge.col, 
+     edge.curved=.1
+     ) 
+legend(x=-1.5, y=-1.1, c("Newspaper","Television", "Online News"), pch=21,
+       col="#777777", pt.bg=colrs, pt.cex=2, cex=.8, bty="n", ncol=1)
+
+```
+
+
+It's interesting to note that BBC is the only non-American media, but it is 
+mentioned or linked by the other news source. Weirdly BBC never mentioned anyone,
+or more likely, it wasn't part of the analyzed sample, but only cited by the 
+American media monitored in this study! 
+
+That's already a large portion of the story these data can tell! 
+
+### Layout
+Network layouts are simply algorithms that return coordinates for each node in 
+a network.
+We can improve the look of our visualization by setting some layout options that
+we believe work best with our data.
+```{r}
+colrs <- c("gray50", "tomato", "gold")
+V(net)$color <- colrs[V(net)$media.type] 
+V(net)$size <- V(net)$audience.size*0.6 
+V(net)$label <- NA
+E(net)$arrow.size <- .2
+E(net)$edge.color <- "gray80"
+
+graph_attr(net, "layout") <- layout_with_lgl # layout option added to the same code
+plot(net,
+     vertex.frame.color="#ffffff",#node perimeter
+     vertex.label=V(net)$media, 
+     vertex.label.color="black"
+     ) 
+legend(x=-1.5, y=-1.1, c("Newspaper","Television", "Online News"), pch=21,
+       col="#777777", pt.bg=colrs, pt.cex=2, cex=.8, bty="n", ncol=1)
+```
+it looks much tidier than before! There are several layout options. 
+Let's explore a few more
+
+```{r}
+colrs <- c("gray50", "tomato", "gold")
+V(net)$color <- colrs[V(net)$media.type] 
+V(net)$size <- V(net)$audience.size*0.6 
+V(net)$label <- NA
+E(net)$arrow.size <- .2
+E(net)$edge.color <- "gray80"
+
+graph_attr(net, "layout") <- layout_in_circle # layout option added to the same code
+plot(net,
+     vertex.frame.color="#ffffff",#node perimeter
+     vertex.label=V(net)$media, 
+     vertex.label.color="black"
+     ) 
+legend(x=-1.5, y=-1.1, c("Newspaper","Television", "Online News"), pch=21,
+       col="#777777", pt.bg=colrs, pt.cex=2, cex=.8, bty="n", ncol=1)
+```
+
+You can play with the code substituting some other layout
+* layout_randomly
+* layout_on_sphere
+* layout_with_fr
+
+Look up these algorithms in the help files to understand them!
+There are many more, and we will encounter them during the following weeks. 
+
+
+
+## ggraph
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
