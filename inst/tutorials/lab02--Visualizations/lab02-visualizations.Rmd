@@ -549,6 +549,7 @@ and print by calling the plots by name.
 
 ```{r dynamic37}
 library(animation)
+library(ndtv)
 ```
 
 ```{r, gapgif, fig.show = 'animate', ffmpeg.format = 'gif', dev ='png'}
@@ -578,7 +579,7 @@ https://imagemagick.org/script/download.php
 
 ```{r dynamic3}
 library(animation)
-library(ndtv)
+
 ```
 
 * check the pathway of _ImageMagick_
