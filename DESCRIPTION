@@ -17,6 +17,8 @@ Depends: R (>= 4.0.0)
 Encoding: UTF-8
 LazyData: true
 Imports:
+  animation,
+  ggplot2
 	ggraph,
 	glue,
 	gradethis,
@@ -24,11 +26,13 @@ Imports:
 	influenceR,
 	learnr (>= 0.10.1),
 	magrittr,
+	ndtv,
 	network,
 	networkD3,
 	remotes,
 	rstudioapi (>= 0.11),
 	sna,
+	statnet
 	utils
 Remotes:
 	github::rstudio-education/gradethis
