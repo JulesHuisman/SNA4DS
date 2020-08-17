@@ -509,10 +509,12 @@ We already know how to make static plots; we just need to
 learn how to put a few of them together. 
 
 
-### Embed dynamic plots on Rmarkdown
+### Making a gif with plots
 
-If we simply need to embed a dynamic plot on the RMarkdown worksheet 
-to show it in html, we have have an easy game to play!
+Unfortunately we won't be able to visualize the gif in this tutorial, 
+because there are too many different system requiremsnts. 
+
+I'll just provide instruction to make it work in your own computer!
 
 Let's first create a plot and let's store it into a variable
 ```{r dynamic}
@@ -522,7 +524,7 @@ p1 <- ggraph::ggraph(net, layout = 'kk') +
 p1
 ```
 
-Let's make the same plot in two more versions using different colours and layout
+Let's make the same plot in two more versions using different colurs and layout
 
 ```{r dynamic1}
 p2 <- ggraph::ggraph(net, layout = 'star') +
@@ -541,31 +543,7 @@ p3
 ```
 
 
-At this point we need to change the header of the code box to  
-_r name-of-your-choice, fig.show='animate', ffmpeg.format='gif', dev='jpeg_
-and print by calling the plots by name.
-
--- you can't see it but the following box contains this header
-
-```{r dynamic37}
-library(animation)
-library(ndtv)
-```
-
-```{r, gapgif, fig.show = 'animate', ffmpeg.format = 'gif', dev ='png'}
-# gapgif, fig.show = 'animate', ffmpeg.format = 'gif', dev = 'png`
-# Display dynamic plots
-
-p1
-p2
-p3
-```
-
-
-If you are seeing the plots moving, we made it!
-Hard to tell from this dynamic viz, but it's the same network!
-
-At this point, we might want to save the plot as a gif file, so it
+At this point, we can save the plot as a gif file, so it
 could be embedded to documents, or shared with colleagues 
 and friends (Ok... nerd friends!)
 
@@ -618,7 +596,32 @@ plots <- base::list(p1, p2, p3)
 #   }
 #   , movie.name = "attempt.gif")
 ```
-You can't see it now, but this code saves the gif in your selected folder. 
+
+
+The code is commented, but you can copy it and try it out.
+
+Also, in some operative systems you should be able to visualize your gif 
+on html file following the instructions:
+* insert an R code box 
+* set the header to 
+_r name-of-your-choice, fig.show='animate', ffmpeg.format='gif', dev='jpeg_
+
+* print by calling the plots by name.
+
+
+```{r}
+# {r name-of-your-choice, fig.show = 'animate', ffmpeg.format = 'gif', dev = 'png'}
+ 
+# Display dynamic plots
+
+# p1
+# p2
+# p3
+```
+
+
+Just that! It's a shame it doesn't run in every system.
+If when you try you the plots moving, your system can do it!
 
 
 ### Interactive Networks
