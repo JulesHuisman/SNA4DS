@@ -88,7 +88,6 @@ detach("package:igraph", unload = TRUE)
 library(intergraph)
 networkNet <- intergraph::asNetwork(igraphNet)
 base::plot(networkNet)
-detach("package:intergraph", unload = TRUE)
 ```
 
 
