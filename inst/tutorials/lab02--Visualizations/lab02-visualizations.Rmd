@@ -478,7 +478,7 @@ ggraph::ggraph(net,  layout = 'lgl') +
                  legend.key.width = unit(0.5,"cm"),
                  legend.position = "left",
                  legend.background = element_rect(color = "red", fill = "blue"),
-                 legend.title = element_text(family = "arial", color = "white")
+                 legend.title = element_text(color = "white")
   ) + 
   ggplot2::ggtitle("Very customized Plot", subtitle = "Do you like it?") 
   
@@ -606,11 +606,11 @@ plots <- base::list(p1, p2, p3)
 #   base::print(plots[i])
 #   }
 
-animation::saveGIF(
-  for (i in 1:length(plots)){
-    base::print(plots[i])
-  }
-  , movie.name = "attempt.gif")
+# animation::saveGIF(
+#   for (i in 1:length(plots)){
+#     base::print(plots[i])
+#   }
+#   , movie.name = "attempt.gif")
 ```
 You can't see it now, but this code saves the gif in your selected folder. 
 
