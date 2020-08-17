@@ -547,13 +547,13 @@ and print by calling the plots by name.
 
 -- you can't see it but the following box contains this header
 
-```{r gapgif, fig.show = 'animate', ffmpeg.format = 'gif', dev = 'png'}
-
+```{r}
+# gapgif, fig.show = 'animate', ffmpeg.format = 'gif', dev = 'png`
 # Display dynamic plots
 
-p1
-p2
-p3
+# p1
+# p2
+# p3
 ```
 
 
