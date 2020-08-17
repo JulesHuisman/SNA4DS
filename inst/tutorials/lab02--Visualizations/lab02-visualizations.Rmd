@@ -578,6 +578,7 @@ https://imagemagick.org/script/download.php
 
 ```{r dynamic3}
 library(animation)
+library(ndtv)
 ```
 
 * check the pathway of _ImageMagick_
