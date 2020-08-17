@@ -24,7 +24,7 @@ Imports:
 	gradethis,
   igraph (>= 1.2.5),
 	influenceR,
-	intergraph,
+	intergraph (>= 2.0),
 	learnr (>= 0.10.1),
 	magrittr,
 	ndtv,
