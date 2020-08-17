@@ -474,15 +474,14 @@ p3</code></pre>
 <p>At this point we need to change the header of the code box to<br />
 <em>r name-of-your-choice, fig.show=‘animate’, ffmpeg.format=‘gif’, dev=’jpeg</em> and print by calling the plots by name.</p>
 <p>– you can’t see it but the following box contains this header</p>
-<pre class="r"><code>#gapgif, fig.show = &#39;animate&#39;, ffmpeg.format = &#39;gif&#39;, dev = &#39;png`
+<pre class="r"><code>library(animation)</code></pre>
+<pre class="r"><code># gapgif, fig.show = &#39;animate&#39;, ffmpeg.format = &#39;gif&#39;, dev = &#39;png`
 # Display dynamic plots
 
 p1</code></pre>
-<p><img src="lab02-visualizations_files/figure-html/unnamed-chunk-1-1.png" width="624" /></p>
 <pre class="r"><code>p2</code></pre>
-<p><img src="lab02-visualizations_files/figure-html/unnamed-chunk-1-2.png" width="624" /></p>
 <pre class="r"><code>p3</code></pre>
-<p><img src="lab02-visualizations_files/figure-html/unnamed-chunk-1-3.png" width="624" /></p>
+<p><img src="lab02-visualizations_files/figure-html/gapgif.gif" width="624" /></p>
 <p>If you are seeing the plots moving, we made it! Hard to tell from this dynamic viz, but it’s the same network!</p>
 <p>At this point, we might want to save the plot as a gif file, so it could be embedded to documents, or shared with colleagues and friends (Ok… nerd friends!)</p>
 <p>We can save the dynamic viz into a gif in several ways. I suggest one relatively easy way to do it here.</p>
