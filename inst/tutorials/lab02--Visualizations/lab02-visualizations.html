@@ -450,16 +450,17 @@ ggraph::ggraph(net, layout = &quot;lgl&quot;) +
 <p>Telling network stories can be very difficult. Sometimes, we need to display how certain networks change over time or show several visualizations that provide different information about the same network.</p>
 <p>In these cases, a dynamic plot can help.</p>
 <p>Dynamics plots are essentially the automatic display of more than one static plot. We already know how to make static plots; we just need to learn how to put a few of them together.</p>
-<div id="section-embed-dynamic-plots-on-rmarkdown" class="section level3">
-<h3>Embed dynamic plots on Rmarkdown</h3>
-<p>If we simply need to embed a dynamic plot on the RMarkdown worksheet to show it in html, we have have an easy game to play!</p>
+<div id="section-making-a-gif-with-plots" class="section level3">
+<h3>Making a gif with plots</h3>
+<p>Unfortunately we won’t be able to visualize the gif in this tutorial, because there are too many different system requiremsnts.</p>
+<p>I’ll just provide instruction to make it work in your own computer!</p>
 <p>Let’s first create a plot and let’s store it into a variable</p>
 <pre class="r"><code>p1 &lt;- ggraph::ggraph(net, layout = &#39;kk&#39;) +
       ggraph::geom_edge_arc(color = &quot;orange&quot;, width = 0.7) +
       ggraph::geom_node_point(size = 5, color = &quot;gray50&quot;)
 p1</code></pre>
 <p><img src="lab02-visualizations_files/figure-html/dynamic-1.png" width="624" /></p>
-<p>Let’s make the same plot in two more versions using different colours and layout</p>
+<p>Let’s make the same plot in two more versions using different colurs and layout</p>
 <pre class="r"><code>p2 &lt;- ggraph::ggraph(net, layout = &#39;star&#39;) +
     ggraph::geom_edge_arc(color = &quot;green&quot;, width = 0.7) +
     ggraph::geom_node_point(size = 5, color = &quot;gray50&quot;)
@@ -471,88 +472,13 @@ p2</code></pre>
     ggraph::geom_node_point(size = 5, color = &quot;gray50&quot;)
 p3</code></pre>
 <p><img src="lab02-visualizations_files/figure-html/dynamic2-1.png" width="624" /></p>
-<p>At this point we need to change the header of the code box to<br />
-<em>r name-of-your-choice, fig.show=‘animate’, ffmpeg.format=‘gif’, dev=’jpeg</em> and print by calling the plots by name.</p>
-<p>– you can’t see it but the following box contains this header</p>
-<pre class="r"><code>library(animation)</code></pre>
-<pre class="r"><code># gapgif, fig.show = &#39;animate&#39;, ffmpeg.format = &#39;gif&#39;, dev = &#39;png`
-# Display dynamic plots
-
-p1</code></pre>
-<pre class="r"><code>p2</code></pre>
-<pre class="r"><code>p3</code></pre>
-<p><img src="lab02-visualizations_files/figure-html/gapgif.gif" width="624" /></p>
-<p>If you are seeing the plots moving, we made it! Hard to tell from this dynamic viz, but it’s the same network!</p>
-<p>At this point, we might want to save the plot as a gif file, so it could be embedded to documents, or shared with colleagues and friends (Ok… nerd friends!)</p>
+<p>At this point, we can save the plot as a gif file, so it could be embedded to documents, or shared with colleagues and friends (Ok… nerd friends!)</p>
 <p>We can save the dynamic viz into a gif in several ways. I suggest one relatively easy way to do it here.</p>
 <ul>
 <li><p>Download the software <em>ImageMagick</em> here <a href="https://imagemagick.org/script/download.php" class="uri">https://imagemagick.org/script/download.php</a></p></li>
 <li><p>call the library <code>animation</code></p></li>
 </ul>
-<pre class="r"><code>library(animation)
-library(ndtv)</code></pre>
-<pre><code>## Loading required package: network</code></pre>
-<pre><code>## network: Classes for Relational Data
-## Version 1.16.0 created on 2019-11-30.
-## copyright (c) 2005, Carter T. Butts, University of California-Irvine
-##                     Mark S. Handcock, University of California -- Los Angeles
-##                     David R. Hunter, Penn State University
-##                     Martina Morris, University of Washington
-##                     Skye Bender-deMoll, University of Washington
-##  For citation information, type citation(&quot;network&quot;).
-##  Type help(&quot;network-package&quot;) to get started.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;network&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:igraph&#39;:
-## 
-##     %c%, %s%, add.edges, add.vertices, delete.edges, delete.vertices,
-##     get.edge.attribute, get.edges, get.vertex.attribute, is.bipartite,
-##     is.directed, list.edge.attributes, list.vertex.attributes,
-##     set.edge.attribute, set.vertex.attribute</code></pre>
-<pre><code>## Loading required package: networkDynamic</code></pre>
-<pre><code>## 
-## networkDynamic: version 0.10.1, created on 2020-01-16
-## Copyright (c) 2020, Carter T. Butts, University of California -- Irvine
-##                     Ayn Leslie-Cook, University of Washington
-##                     Pavel N. Krivitsky, University of Wollongong
-##                     Skye Bender-deMoll, University of Washington
-##                     with contributions from
-##                     Zack Almquist, University of California -- Irvine
-##                     David R. Hunter, Penn State University
-##                     Li Wang
-##                     Kirk Li, University of Washington
-##                     Steven M. Goodreau, University of Washington
-##                     Jeffrey Horner
-##                     Martina Morris, University of Washington
-## Based on &quot;statnet&quot; project software (statnet.org).
-## For license and citation information see statnet.org/attribution
-## or type citation(&quot;networkDynamic&quot;).</code></pre>
-<pre><code>## Loading required package: sna</code></pre>
-<pre><code>## Loading required package: statnet.common</code></pre>
-<pre><code>## 
-## Attaching package: &#39;statnet.common&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     order</code></pre>
-<pre><code>## sna: Tools for Social Network Analysis
-## Version 2.5 created on 2019-12-09.
-## copyright (c) 2005, Carter T. Butts, University of California-Irvine
-##  For citation information, type citation(&quot;sna&quot;).
-##  Type help(package=&quot;sna&quot;) to get started.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;sna&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:igraph&#39;:
-## 
-##     betweenness, bonpow, closeness, components, degree, dyad.census,
-##     evcent, hierarchy, is.connected, neighborhood, triad.census</code></pre>
-<pre><code>## 
-## ndtv: version 0.13.0, created on 2019-05-21
-## Copyright (c) 2019, Skye Bender-deMoll, University of Washington
-##                     with contributions from
-##                     Martina Morris, University of Washington
-## Based on &quot;statnet&quot; project software (statnet.org).
-## For license and citation information see statnet.org/attribution
-## or type citation(&quot;ndtv&quot;).</code></pre>
+<pre class="r"><code>library(animation)</code></pre>
 <ul>
 <li>check the pathway of <em>ImageMagick</em></li>
 </ul>
@@ -580,7 +506,19 @@ library(ndtv)</code></pre>
 #     base::print(plots[i])
 #   }
 #   , movie.name = &quot;attempt.gif&quot;)</code></pre>
-<p>You can’t see it now, but this code saves the gif in your selected folder.</p>
+<p>The code is commented, but you can copy it and try it out.</p>
+<p>Also, in some operative systems you should be able to visualize your gif on html file following the instructions: * insert an R code box * set the header to <em>r name-of-your-choice, fig.show=‘animate’, ffmpeg.format=‘gif’, dev=’jpeg</em></p>
+<ul>
+<li>print by calling the plots by name.</li>
+</ul>
+<pre class="r"><code># {r name-of-your-choice, fig.show = &#39;animate&#39;, ffmpeg.format = &#39;gif&#39;, dev = &#39;png&#39;}
+ 
+# Display dynamic plots
+
+# p1
+# p2
+# p3</code></pre>
+<p>Just that! It’s a shame it doesn’t run in every system. If when you try you the plots moving, your system can do it!</p>
 </div>
 <div id="section-interactive-networks" class="section level3">
 <h3>Interactive Networks</h3>

@@ -27,3 +27,8 @@ is not preferred, or if the user's machine lacks the graphical tools needed,
 setting \code{graphics} to \code{FALSE} will show the list of tutorials in the
 R console.
 }
+\examples{
+\dontrun{
+SNA4DS_tutorials()
+}
+}
