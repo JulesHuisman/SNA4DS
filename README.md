@@ -10,7 +10,7 @@ There are several ways to run the tutorials. Perhaps the easiest is to pick the 
 
 <div class="highlight highlight-source-r"><pre><span class="pl-e">SNA4DS_tutorials()</span></pre></div>
 
-If preferred, the graphical menu can be turned off, using:
+If preferred, the graphical menu can be turned off, using:  
 
 <div class="highlight highlight-source-r"><pre><span class="pl-e">SNA4DS_tutorials(FALSE)</span></pre></div>
 

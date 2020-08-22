@@ -19,9 +19,12 @@ library(gradethis)
 # library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
+```
 
+```{r data, cache=TRUE}
 load("nw_data.RData")
 ```
+
 
 
 ## Introduction
@@ -324,7 +327,7 @@ that is similar to it) in the description.
 
 Note, though, that this will only search the packages you have installed on your
 machine. It will not search all of the other R packages that exist on the
-internet (CRAN, github, Buiconductor, et cetera).
+internet (CRAN, Github, Bioconductor, et cetera).
 
 Oh, and if you want to pull up the help for a package as a whole, run
 `help(package = "package_name")`. For example:
@@ -356,7 +359,7 @@ So, let's see if you have it all in your head now.
 
 ```{r quiz_help, quiz = TRUE}
 quiz(
-  question("How would you get help for the function that implements the _walktrap_ algorithm?",
+  question("How would you get help for the function that implements the _walktrap_ algorithm? (check all that apply)",
     answer("?walktrap", correct = TRUE),
     answer("??walktrap", correct = TRUE),
     answer("help(walktrap", correct = TRUE),
@@ -410,7 +413,7 @@ load packages that have functions with the same name.
 Here's an example. You have a network in your R session that is called `friendship`. 
 This is what it looks like:
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, dependson="data"}
 MyClickScript <- 'alert("You clicked " + d.name + " which is in row " +
        (d.index + 1) +  " of your original R data frame");'
 networkD3::forceNetwork(Links = g3$links, Nodes = g3$nodes,
@@ -424,7 +427,7 @@ You load the `sna` package to calculate the betweenness scores of the actors in
 the network (no worries, next week we will discuss the betweenness measure in
 detail). Run the following and see what happens:
 
-```{r library1, message = FALSE, warning = FALSE, exercise = TRUE}
+```{r library1, message = FALSE, warning = FALSE, exercise = TRUE, dependson="data"}
 library(sna)
 betweenness(friendship)
 ```
@@ -436,7 +439,7 @@ try(library(sna), silent = TRUE)
 Nice, and if you wanted to see the names of the actors next to their scores, you 
 could run:
 
-```{r library1a, exercise = TRUE}
+```{r library1a, exercise = TRUE, dependson="data"}
 data.frame(betweenness = betweenness(friendship), 
            names = network::get.vertex.attribute(friendship, "name"))
 ```
@@ -456,7 +459,7 @@ relative importance of the actors in the network. But first, what again were the
 betweenness scores for the actors in this network? Let's run our previous code
 again. Below, set the function name to `betweenness` and run the code.
 
-```{r library_error, exercise = TRUE}
+```{r library_error, exercise = TRUE, dependson="data"}
 ...(friendship)
 ```
 
@@ -474,7 +477,7 @@ packages?).
 Now, first predict what will happen when you run the follow code, and then
 indeed run it. Does it do what you expected?
 
-```{r library2a, exercise = TRUE}
+```{r library2a, exercise = TRUE, dependson="data"}
 detach(package:influenceR)    # this "unloads" the package
 betweenness(friendship)
 ```
@@ -491,7 +494,7 @@ package.
 
 Try it out:
 
-```{r library3, exercise = TRUE}
+```{r library3, exercise = TRUE, dependson="data"}
 library(sna)
 library(influenceR)   # the `betweenness` function of package `influenceR` is now at the top
 sna::betweenness(friendship)   # you now run `betweenness` from `sna`
