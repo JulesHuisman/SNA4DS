@@ -30,13 +30,15 @@ Imports:
 	ndtv,
 	network,
 	networkD3,
+	papaja,
 	remotes,
 	rstudioapi (>= 0.11),
 	sna,
 	statnet,
 	utils
-Remotes:
-	github::rstudio-education/gradethis
+Remotes: 
+	github::rstudio-education/gradethis,
+	github::crsh/papaja
 URL: https://github.com/SNAnalyst/SNA4DS
 BugReports: https://github.com/SNAnalyst/SNA4DS/issues
 RoxygenNote: 7.1.1
