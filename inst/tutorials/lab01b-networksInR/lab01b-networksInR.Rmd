@@ -1,5 +1,6 @@
 ---
 title: "Lab 01b - Network Analysis in R"
+description: "Week 1: Introductory tutorial about how to use R for network analysis"
 output: 
   learnr::tutorial:
     fig_caption: no
@@ -211,7 +212,7 @@ matrix is symmetrical and binary.
 
 
 ### Edge List
-A very common datastructure is the _edge list_. An edge list is a two-column
+A very common data structure is the _edge list_. An edge list is a two-column
 matrix, with the sender in the first column and the reciever in the second (ie.
 the edge goes from the vertex in the first column to the vertex in the second
 column). In an undirected network, the order of the vertices don’t matter. For
@@ -237,15 +238,80 @@ it is connected to. Then, this is the data type to use.
 ### Going from Data to Networks
 how to construct networks from data frames and edge lists
 
+```{r, include=FALSE, eval=FALSE}
+graph_from_data_frame(d, directed = TRUE, vertices = NULL)
+```
 
-## _network_
-the network package, and sna for some visualization
-do some of the same stuff as above, but now with the network package
+where <code>d</code> is a data frame containing a symbolic edge list in the first
+two columns. Additional columns are considered as edge attributes. 
+(copied from the igraph help page)
+In other words, the first column of <code>d</code> contains the sender and the 
+second column the receiver. If you have any additional variables for each 
+edge, you would put those in columns 3, 4, 5, et cetera. If you have no additional 
+edge variables, <code>d</code> would then just have the two columns.
+
+If you have an undirected network, you only need to specify one direction of the 
+edge (e.g., from Pete to Mary), as long as you add <code>directed = FALSE</code>.
+
+Any variables you might want to add about the vertices can be added through a 
+data frame called as <code>vertices</code>. But you can leave that out, or add it
+later.
+
+
+
+
+
+
+
+
+
+## _statnet_
+`statnet` is not a package by itself, but a collection of packages that are all 
+devoted to network data and are all mutually compatible. The focus of these 
+packages is mainly on the mathematical and statistical analysis of network data. 
+Just as in `igraph`, the visualization engines are quite poor, although we will 
+introduce you to the `ndtv` package next week, in which you'll build a movie of 
+a dynamically changing network.
+
+The two main packages within the `statnet` universe that we will be using this week 
+are `network` and `sna`. The `network` package has a single life purpose: to 
+create and manipulate network data into a well-structured R object.
+The `sna` package is useful for mathematical analyses of the data and some statistical 
+analyses. 
+
+The general `statnet` page is [here](https://cran.r-project.org/web/packages/statnet/index.html) 
+and the extended documentation for the R version is [here](http://statnet.org/).
+
+--> do some of the same stuff as above, but now with the network package
+
+
+
 
 
 ## _intergraph_
 Moving between the two packages
 
+## The R ecosystem of network packages
+There are literally dozens of really useful network packages. Many of them 
+specialize in the analysis of certain types of applications (such as social networks,
+animal foraging networks, bio-networks, causal networks, epidemiology,
+psychological networks, narrative networks, et cetera). 
+Or they specialize in certain types of networks, such as static networks, 
+bipartite networks, signed networks, multiplex networks, dynamic networks
+
+Or they specialize in 
+specific *things* they do with the network data, such as visualization, community 
+detection, mathematical analysis, statistical analysis, et cetera. 
+
+It is impossible to list all packages that do network stuff here, or even to 
+know of all of the packages that exist for network data in R.
+The good news is that `igraph` and the `network` packages are 
+very widely used and there are many other packages that can read in data from 
+either of these two. So, you are starting your network analysis journey in 
+a clever way.
+
+Still, be prepared to use multiple packages in a single analysis and convert 
+your data between them.
 
 
 
