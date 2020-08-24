@@ -21,6 +21,11 @@ tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
 
+```{r load_data, include = FALSE, cache=TRUE}
+load("nw_data.RData")
+```
+
+
 
 ## Introduction
 There are two main packages in R to construct network objects. 
@@ -50,10 +55,10 @@ nonetheless.
 ## igraph
 Let's start with the `igraph` package.
 
-We can easily create an undirected network and add a few nodes and links. Nodes
+We can easily create a network and add a few nodes and links. Nodes
 are called _vertices_ and referred to by integer IDs; links are called _edges_.
 
-```{r book_1_2a, echo = TRUE, include = TRUE}
+```{r book_1_2a, echo = TRUE, include = TRUE, exercise = TRUE}
 g <- igraph::make_empty_graph()
 
 # add one vertex
@@ -73,10 +78,10 @@ plot(g)
 
 
 ### Book, section 1.2
-The code below generates an undirected graph with three edges. The numbers are
+The code below generates a graph with three edges. The numbers are
 interpreted as vertex IDs, so the edges are 1–>2, 2–>3, 3–>1.
 
-```{r, include = TRUE, echo = TRUE}
+```{r g1, include = TRUE, echo = TRUE, exercise = TRUE, cache=TRUE}
 g1 <- igraph::graph( edges=c(1,2, 2,3, 3, 1), n=3, directed=F ) 
 plot(g1)
 class(g1)
@@ -85,7 +90,7 @@ g1
 
 As you see, `igraph` creates a network object of class _igraph_. 
 
-```{r, echo = TRUE}
+```{r g2, echo = TRUE, exercise = TRUE, cache=TRUE}
 g2 <- igraph::graph( c("Jane", "Ali", "Ali", "Hassan", "Jane", "Hassan")) # named vertices
 
 # When the edge list has vertex names, the number of nodes is not needed
@@ -96,7 +101,7 @@ g2
 
 You access the set of nodes (_vertices_), links (_edges_), and neighbors as follows:
 
-```{r}
+```{r g2_neighbors, exercise = TRUE, dependson="g2"}
 igraph::V(g2)
 igraph::E(g2)
 igraph::neighbors(g2, "Jane")
@@ -107,7 +112,7 @@ igraph::neighbors(g2, 1)
 ```
 
 Wanna loop over the nodes?
-```{r}
+```{r g2_loop, exercise = TRUE}
 for (n in igraph::V(g2)) {
   cat("The neighors of vertex", n, ":", igraph::neighbors(g2, n), "\n")
 }
@@ -119,7 +124,7 @@ for (n in igraph::V(g2)$name) {
 ```
 
 Looping over the links:
-```{r}
+```{r g2_loop2, exercise = TRUE}
 for (edge in igraph::E(g2)) {
   print(igraph::E(g2)[edge])
 }
@@ -127,7 +132,7 @@ for (edge in igraph::E(g2)) {
 
 To get the number of vertices and edges, you do the following
 
-```{r}
+```{r g2_count, exercise = TRUE}
 igraph::ecount(g2)
 igraph::vcount(g2)
 ```
@@ -135,7 +140,7 @@ igraph::vcount(g2)
 To get the partners of a given node, or just the vertices linking to or from,
 you can do the following (for actor "Ali)":
 
-```{r}
+```{r g2_neighbors2, exercise = TRUE}
 igraph::neighbors(g2, 2, mode = "all") # incoming and outgoing
 igraph::neighbors(g2, 2, mode = "in") # incoming 
 igraph::neighbors(g2, 2, mode = "out") # outgoing
@@ -146,7 +151,7 @@ particular structures, in case you really want to start from a specific network
 design. Here are just a few:
 
 
-```{r}
+```{r make, exercise = TRUE}
 plot(igraph::make_full_bipartite_graph(4, 5))
 plot(igraph::make_ring(4))
 plot(igraph::make_star(6))
@@ -168,7 +173,7 @@ Small graphs can also be generated using symbols in the
 * ":" for sets of vertices.
 
 
-```{r, echo = TRUE}
+```{r literal, exercise = TRUE, echo = TRUE}
 g3 <- igraph::graph_from_literal(Mary++Magdalena++Janet, Jim+-Pete, Mary-+Roberto, 
 Mary-+Ivan-+Kelly:Danielle, Jesse, Janis, Fabio, Rumana)
 plot(g3, edge.arrow.size = .5, vertex.color = "gold", vertex.size = 15, 
@@ -182,7 +187,7 @@ simple artificial networks to test your data), but is not feasible for larger
 networks. 
 
 ### Basic network data types
-Let's continue with network `g3`. 
+Let's continue with network `g3`.
 
 #### Adjacency matrix
 
@@ -195,7 +200,7 @@ different edge qualities (or tie strengths).
 
 For this network, the adjacency matrix looks as follows
 
-```{r}
+```{r g3_asadj, exercise = TRUE}
 igraph::as_adjacency_matrix(g3, sparse = FALSE)
 ```
 
@@ -203,13 +208,12 @@ Note the argument `sparse = FALSE` in the code above. This displays the zeroes
 in the adjacency matrix. When  `sparse = TRUE`, in the output 0's are replaced
 with a period, making it easier to see very large matrices.
 
-```{r}
+```{r g3_asadj2, exercise = TRUE}
 igraph::as_adjacency_matrix(g3, sparse = TRUE)
 ```
 
 When the network is undirected and unweighted, the corresponding adjacency
 matrix is symmetrical and binary.
-
 
 ### Edge List
 A very common data structure is the _edge list_. An edge list is a two-column
@@ -219,7 +223,7 @@ column). In an undirected network, the order of the vertices don’t matter. For
 weighted networks, you may have a third column that indicates the edge weight.
 
 
-```{r}
+```{r g3_asedge, exercise = TRUE}
 igraph::as_edgelist(g3)
 ```
 
@@ -228,7 +232,7 @@ An _adjacency list_ (or _node list_, is a list that presents the ‘focal’ nod
 and then all the other nodes that are connected to it (i.e., that are "adjacent"
 to it). This looks as follows:
 
-```{r}
+```{r ge_asadj, exercise = TRUE}
 igraph::as_adj_list(g3, mode = "total")
 ```
 As you can see, this isn't nice for directed graphs, but it does work.
@@ -238,27 +242,27 @@ it is connected to. Then, this is the data type to use.
 ### Going from Data to Networks
 how to construct networks from data frames and edge lists
 
-```{r, include=FALSE, eval=FALSE}
+```{r from_dataframe, exercise = TRUE, include=FALSE, eval=FALSE}
 graph_from_data_frame(d, directed = TRUE, vertices = NULL)
 ```
 
 where <code>d</code> is a data frame containing a symbolic edge list in the first
-two columns. Additional columns are considered as edge attributes. 
+two columns. Additional columns are considered as edge attributes.
 (copied from the igraph help page)
-In other words, the first column of <code>d</code> contains the sender and the 
-second column the receiver. If you have any additional variables for each 
-edge, you would put those in columns 3, 4, 5, et cetera. If you have no additional 
+In other words, the first column of <code>d</code> contains the sender and the
+second column the receiver. If you have any additional variables for each
+edge, you would put those in columns 3, 4, 5, et cetera. If you have no additional
 edge variables, <code>d</code> would then just have the two columns.
 
-If you have an undirected network, you only need to specify one direction of the 
+If you have an undirected network, you only need to specify one direction of the
 edge (e.g., from Pete to Mary), as long as you add <code>directed = FALSE</code>.
 
-Any variables you might want to add about the vertices can be added through a 
+Any variables you might want to add about the vertices can be added through a
 data frame called as <code>vertices</code>. But you can leave that out, or add it
 later.
 
 
-
+##<<< from edgelists
 
 
 
@@ -266,30 +270,174 @@ later.
 
 
 ## _statnet_
-`statnet` is not a package by itself, but a collection of packages that are all 
-devoted to network data and are all mutually compatible. The focus of these 
-packages is mainly on the mathematical and statistical analysis of network data. 
-Just as in `igraph`, the visualization engines are quite poor, although we will 
-introduce you to the `ndtv` package next week, in which you'll build a movie of 
+`statnet` is not a package by itself, but a collection of packages that are all
+devoted to network data and are all mutually compatible. The focus of these
+packages is mainly on the mathematical and statistical analysis of network data.
+Just as in `igraph`, the visualization engines are quite poor, although we will
+introduce you to the `ndtv` package next week, in which you'll build a movie of
 a dynamically changing network.
 
-The two main packages within the `statnet` universe that we will be using this week 
-are `network` and `sna`. The `network` package has a single life purpose: to 
+The two main packages within the `statnet` universe that we will be using this week
+are `network` and `sna`. The `network` package has a single life purpose: to
 create and manipulate network data into a well-structured R object.
-The `sna` package is useful for mathematical analyses of the data and some statistical 
-analyses. 
+The `sna` package is useful for mathematical analyses of the data and some statistical
+analyses.
 
-The general `statnet` page is [here](https://cran.r-project.org/web/packages/statnet/index.html) 
+The general `statnet` page is [here](https://cran.r-project.org/web/packages/statnet/index.html)
 and the extended documentation for the R version is [here](http://statnet.org/).
 
---> do some of the same stuff as above, but now with the network package
 
+Let's first generate an network with 5 nodes.
+
+```{r net_start, exercise = TRUE}
+net <- network::network.initialize(5)
+net
+class(net)
+summary(net)
+plot(net)
+```
+
+You can then add some edges.
+
+```{r net_add, exercise = TRUE}
+net <- network::add.edge(net, 1, 2)
+net <- network::add.edge(net, 1, 3)
+net <- network::add.edge(net, 2, 3)
+net <- network::add.edge(net, 2, 4)
+net <- network::add.edge(net, 3, 2)
+net <- network::add.edge(net, 5, 3)
+plot(net)
+```
+
+
+Here's that same network, constructed from an adjacency matrix.
+
+```{r first_network, exercise = TRUE}
+my_first_network <- rbind(c(0, 1, 1, 0, 0),
+                          c(0, 0, 1, 1, 0),
+                          c(0, 1, 0, 0, 0),
+                          c(0, 0, 0, 0, 0),
+                          c(0, 0, 1, 0, 0))
+rownames(my_first_network) <- c("A", "B", "C", "D", "E")
+colnames(my_first_network) <- rownames(my_first_network)
+my_first_network <- network::network(my_first_network, matrix= "adjacency")
+class(my_first_network)
+summary(my_first_network)
+plot(my_first_network)
+```
+
+Did you notice that the `network` package creates an object of class `network`?
+
+The object has a bunch of attributes (stored in lists). You can add as many user-defined attributes
+as you want, but the following attributes are required of all network objects.
+
+- bipartite: indicates the presence of a bipartition
+
+- directed: are edges are to be interpreted as directed?
+
+- hyper: is the network allowed to contain hyperedges?
+
+- loops: are loops permitted within the network?
+
+- multiple: are multiplex edges permitted within the network? Where multiple is `FALSE`, network
+methods assume all edges to be unique.
+
+- n the number of vertices in the network (this can be 0).
+
+
+How do we access the info inside the network object? Let's start by loading an interesting
+network dataset.
+
+```{r emon, cache=TRUE}
+data("emon", package = "network")
+```
+
+This is actually an object that contains 7 networks.
+
+```{r length_emon, exercise = TRUE}
+length(emon)
+```
+
+Let's take the first one.
+
+```{r, cache=TRUE}
+Cheyenne <- emon$Cheyenne
+```
+
+```{r cheyenne, echo = FALSE, cache=TRUE}
+data("emon", package = "network")
+Cheyenne <- emon$Cheyenne
+```
+
+This is an interorganizational network in the context of search and rescue (SAR) activities.
+
+Do you remember how to access the help file on this data set? Try it out below:
+
+```{r grade_emon_help1, exercise = TRUE}
+
+```
+
+```{r grade_emon_help1-solution}
+?network::emon
+```
+
+```{r grade_emon_help1-check}
+gradethis::grade_code(correct = "Excellent work.")
+```
+
+Now, below look at the object `Cheyenne`. Print it, get a summary, and make a simple plot.
+
+```{r grade_emon_print, exercise = TRUE}
+
+```
+
+```{r grade_emon_print-solution}
+print(Cheyenne)
+summary(Cheyenne)
+plot(Cheyenne)
+```
+
+Don't worry about the plot being very ugly, we will teach you how to make beautiful network plots
+later in this course.
+
+```{r cheyenne-attrs, exercise = TRUE}
+# let's see the edges of actor 1
+# limit ourselves to the first three, to prevent lengthy output in this tutorial
+network::get.edges(Cheyenne, 1)[1:3]
+
+# get the attributes of the network
+network::list.network.attributes(Cheyenne)
+
+# get the value of the `directed` attribute
+network::get.network.attribute(Cheyenne, "directed")
+
+# what attributes to the nodes have?
+network::list.vertex.attributes(Cheyenne)
+
+# let's set an additional attribute
+network::set.vertex.attribute(Cheyenne, "Status", c("high", "high", "high", "high", "high", "high",
+                                                    "high", "high", "low", "low", "low", "low", "low", "low"))
+network::get.vertex.attribute(Cheyenne, "Status")
+```
+
+The `network` package offers various options to manually construct a network. See the help 
+for the package to find out more. But, you will rarely construct a network by hand, 
+it is just no fun. And if you do, it is probably easier to use `igraph` and then 
+convert to the `network` format. We find `igraph` easier to use and you'll only have 
+to learn the api for one of two packages. That's much easier. But feel free to do 
+the handowkr in `network` if you feel the urge to.
+
+What you *will* do, is read in data (edge lists, dataframes, csv files, et cetera) 
+and construct networks from there. So let's do that here.
+
+Above you can already see how you would read in an adjacendy matrix (for example from 
+a csv file) and turn that into a matrix.
 
 
 
 
 ## _intergraph_
-Moving between the two packages
+Moving between the two packages ##<<<
 
 ## The R ecosystem of network packages
 There are literally dozens of really useful network packages. Many of them 

@@ -631,4 +631,4 @@ Guide](http://jef.works/R-style-guide/).
 
 OK, that is enough R stuff. Let's now do some network stuff. 
 
-This happens in the next tutorial: `lab01b-networksInR`.
+This happens in the next tutorial: `lab01b-networksInR`. Enjoy!
