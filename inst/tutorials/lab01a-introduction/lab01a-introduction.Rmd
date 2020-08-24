@@ -21,7 +21,7 @@ tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r load_data, cache=TRUE}
+```{r load_data, include = FALSE, cache=TRUE}
 load("nw_data.RData")
 ```
 
