@@ -34,11 +34,11 @@ We are really excited that you decided to take this course.
 
 The purpose of this tutorial is:
 
-* to get acquainted with the type of online tutorials we use for this course
-* to familiarize yourself (again) with R
+* to get acquainted with the type of online tutorials we use for this course;
+* to familiarize yourself (again) with R;
 * to set some conventions (*best practices*) that we will strictly adhere to in 
-this course
-* to learn how to construct social networks in R
+this course;
+* to learn how to construct social networks in R.
 
 _Let's get to it!_
 
