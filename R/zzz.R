@@ -24,7 +24,7 @@ magrittr::`%>%`
                           "To suppress this message use:\n",
                           "\tsuppressPackageStartupMessages(library(SNA4DS))\n\n",
                           "You can check if you have the latest version with 'check_SNA4DS()'\n",
-                          sep="")
+                          sep = "")
   packageStartupMessage(print_message)
 }
 

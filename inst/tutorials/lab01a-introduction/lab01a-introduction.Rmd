@@ -52,8 +52,7 @@ have the correct version.
 ver <- rstudioapi::versionInfo()$version
 correct_version <- (ver >= 1.3)
 
-if (correct_version) print(paste("You are running Rstudio version", ver, "which 
-                                 is excellent!"))
+if (correct_version) print(paste("You are running Rstudio version", ver, "which is excellent!"))
 if (!correct_version) print(paste("You are running Rstudio version", ver, "which 
                                   is too low a version of Rstudio. Make sure to 
                                   update Rstudio to its latest version, otherwise 
@@ -471,13 +470,12 @@ Hey, what happened? Well, `influenceR` also has a function that is called
 `betweenness` and since you loaded `influenceR` last, the `betweenness` function
 of the `influenceR` package is now higher in R's search path than the
 `betweenness` function of the `sna` package. In this case, the `influenceR`
-package throws an error ("<code>Not a graph object</code>"), because it expects 
-an object in a different form than
-the object `g`. But if `influenceR` would have been able to directly deal with
-this object `friendship`, it would not give an error and might have given you a
-very different result than you wanted (because who says that the `betweenness`
-function does the exact same thing in both the `influenceR` and the `sna`
-packages?).
+package throws an error ("<code>Not a graph object</code>"), because it expects
+an object in a different form than the object `g`. But if `influenceR` would
+have been able to deal with this `friendship` object, it would not have given
+you an error and might have given you a very different result than you wanted
+(because who says that the `betweenness` function does the exact same thing in
+both the `influenceR` and the `sna` packages?).
 
 Now, first predict what will happen when you run the follow code, and then
 indeed run it. Does it do what you expected?
@@ -517,9 +515,10 @@ So, in this course we expect you to use `::` throughout. There are a few
 exceptions to this rule, and we will let you know explicitly. Unless we tell you
 explicitly that you can make a specific exception, use `::` always!
 
-Try it out. In the code clock below, write the code such that it will calculate
-closeness scores using the `sna` package. The appropriate function is called
-`closeness`. As just agree upon, do not load the `sna` package for this.
+Try it out. In the code block below, write the code such that it will calculate
+closeness scores on this friendship network using the `sna` package. The
+appropriate function is called `closeness`. As just agree upon, do not load the
+`sna` package for this.
 
 ```{r library4, exercise = TRUE}
 
