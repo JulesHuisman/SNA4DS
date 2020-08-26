@@ -1,7 +1,7 @@
 Package: SNA4DS
 Type: Package
 Title: Social Network Analysis for Data Science
-Version: 0.0.95
+Version: 0.0.96
 Authors@R: c(person(given = "Roger",
 					family = "Leenders",
 					role = c("aut", "cre"),

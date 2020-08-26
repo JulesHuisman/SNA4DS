@@ -537,6 +537,11 @@ so you can try out how `intergraph` works.
 
 
 ### From `network` to `igraph`
+
+```{r, echo = FALSE}
+load("advice_nws.RData")
+```
+
 ```{r to_network, dependson = "advice_nws"}
 class(advice_network)
 ```
@@ -559,6 +564,11 @@ igraph::get.vertex.attribute(advice_igraph, "AGE")
 Awesomeness.
 
 ### From `igraph` to `network`
+
+```{r, echo = FALSE}
+load("advice_nws.RData")
+```
+
 ```{r to_igraph, dependson = "advice_nws"}
 class(advice_igraph)
 ```
