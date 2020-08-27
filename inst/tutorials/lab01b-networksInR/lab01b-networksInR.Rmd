@@ -18,16 +18,14 @@ library(learnr)
 library(gradethis)
 # library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
-knitr::opts_chunk$set(echo = TRUE, include = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r load_data, include = FALSE, cache=TRUE}
-load("nw_data.RData")
-```
 
-```{r advice_nws, echo = FALSE, cache = TRUE}
-load("advice_nws.RData")
-```
+
+
+
+
 
 ## Introduction
 There are two main packages in R to construct network objects. 
@@ -83,8 +81,8 @@ plot(g)
 The code below generates a graph with three edges. The numbers are
 interpreted as vertex IDs, so the edges are 1–>2, 2–>3, 3–>1.
 
-```{r g1, include = TRUE, echo = TRUE, exercise = TRUE, cache=TRUE}
-g1 <- igraph::graph( edges=c(1, 2, 2, 3, 3, 1), n=3, directed=F ) 
+```{r g1, include = TRUE, echo = TRUE, exercise = TRUE}
+g1 <- igraph::graph(edges = c(1, 2, 2, 3, 3, 1), n = 3, directed = F) 
 plot(g1)
 class(g1)
 g1
@@ -92,7 +90,7 @@ g1
 
 As you see, `igraph` creates a network object of class _igraph_. 
 
-```{r g2, echo = TRUE, exercise = TRUE, cache=TRUE}
+```{r g2, echo = TRUE, exercise = TRUE}
 g2 <- igraph::graph( c("Jane", "Ali", "Ali", "Hassan", "Jane", "Hassan")) # named vertices
 
 # When the edge list has vertex names, the number of nodes is not needed
@@ -103,7 +101,11 @@ g2
 
 You access the set of nodes (_vertices_), links (_edges_), and neighbors as follows:
 
-```{r g2_neighbors, exercise = TRUE, dependson="g2"}
+```{r load_g2, include = FALSE}
+g2 <- SNA4DS:::g2
+```
+
+```{r g2_neighbors, exercise = TRUE, exercise.setup = "load_g2"}
 igraph::V(g2)
 igraph::E(g2)
 igraph::neighbors(g2, "Jane")
@@ -114,7 +116,7 @@ igraph::neighbors(g2, 1)
 ```
 
 Wanna loop over the nodes?
-```{r g2_loop, exercise = TRUE}
+```{r g2_loop, exercise = TRUE, exercise.setup = "load_g2"}
 for (n in igraph::V(g2)) {
   cat("The neighors of vertex", n, ":", igraph::neighbors(g2, n), "\n")
 }
@@ -126,7 +128,7 @@ for (n in igraph::V(g2)$name) {
 ```
 
 Looping over the links:
-```{r g2_loop2, exercise = TRUE}
+```{r g2_loop2, exercise = TRUE, exercise.setup = "load_g2"}
 for (edge in igraph::E(g2)) {
   print(igraph::E(g2)[edge])
 }
@@ -134,7 +136,7 @@ for (edge in igraph::E(g2)) {
 
 To get the number of vertices and edges, you do the following
 
-```{r g2_count, exercise = TRUE}
+```{r g2_count, exercise = TRUE, exercise.setup = "load_g2"}
 igraph::ecount(g2)
 igraph::vcount(g2)
 ```
@@ -142,7 +144,7 @@ igraph::vcount(g2)
 To get the partners of a given node, or just the vertices linking to or from,
 you can do the following (for actor "Ali)":
 
-```{r g2_neighbors2, exercise = TRUE}
+```{r g2_neighbors2, exercise = TRUE, exercise.setup = "load_g2"}
 igraph::neighbors(g2, 2, mode = "all") # incoming and outgoing
 igraph::neighbors(g2, 2, mode = "in") # incoming 
 igraph::neighbors(g2, 2, mode = "out") # outgoing
@@ -204,7 +206,11 @@ different edge qualities (or tie strengths).
 
 For this network, the adjacency matrix looks as follows
 
-```{r g3_asadj, exercise = TRUE}
+```{r load_g3, include = FALSE}
+g3 <- SNA4DS:::g3
+```
+
+```{r g3_asadj, exercise = TRUE, exercise.setup = "load_g3"}
 igraph::as_adjacency_matrix(g3, sparse = FALSE)
 ```
 
@@ -212,7 +218,7 @@ Note the argument `sparse = FALSE` in the code above. This displays the zeroes
 in the adjacency matrix. When  `sparse = TRUE`, in the output 0's are replaced
 with a period, making it easier to see very large matrices.
 
-```{r g3_asadj2, exercise = TRUE}
+```{r g3_asadj2, exercise = TRUE, exercise.setup = "load_g3"}
 igraph::as_adjacency_matrix(g3, sparse = TRUE)
 ```
 
@@ -227,7 +233,7 @@ column). In an undirected network, the order of the vertices don’t matter. For
 weighted networks, you may have a third column that indicates the edge weight.
 
 
-```{r g3_asedge, exercise = TRUE}
+```{r g3_asedge, exercise = TRUE, exercise.setup = "load_g3"}
 igraph::as_edgelist(g3)
 ```
 
@@ -236,7 +242,7 @@ An _adjacency list_ (or _node list_, is a list that presents the ‘focal’ nod
 and then all the other nodes that are connected to it (i.e., that are "adjacent"
 to it). This looks as follows:
 
-```{r ge_asadj, exercise = TRUE}
+```{r ge_asadj, exercise = TRUE, exercise.setup = "load_data"}
 igraph::as_adj_list(g3, mode = "total")
 ```
 
@@ -294,7 +300,7 @@ my_first_network <- rbind(c(0, 1, 1, 0, 0),
                           c(0, 0, 1, 0, 0))
 rownames(my_first_network) <- c("A", "B", "C", "D", "E")
 colnames(my_first_network) <- rownames(my_first_network)
-my_first_network <- network::network(my_first_network, matrix= "adjacency")
+my_first_network <- network::network(my_first_network, matrix = "adjacency")
 class(my_first_network)
 summary(my_first_network)
 plot(my_first_network)
@@ -322,7 +328,7 @@ methods assume all edges to be unique.
 How do we access the info inside the network object? Let's start by loading an interesting
 network dataset.
 
-```{r emon, cache=TRUE}
+```{r emon}
 data("emon", package = "network")
 ```
 
@@ -334,11 +340,11 @@ length(emon)
 
 Let's take the first one.
 
-```{r, cache=TRUE}
+```{r}
 Cheyenne <- emon$Cheyenne
 ```
 
-```{r cheyenne, echo = FALSE, cache=TRUE}
+```{r cheyenne, echo = FALSE}
 data("emon", package = "network")
 Cheyenne <- emon$Cheyenne
 ```
@@ -417,6 +423,7 @@ You can  construct networks from data frames with `igraph` as follows:
 graph_from_data_frame(d, directed = TRUE, vertices = NULL)
 ```
 
+
 where <code>d</code> is a data frame containing a symbolic edge list in the first
 two columns. Additional columns are considered as edge attributes.
 (copied from the igraph help page)
@@ -436,7 +443,7 @@ later.
 Let's read in some data to make a network with. Both files contain column names, 
 so make sure to set `header = TRUE`.
 
-```{r nw_maken_data, cache = TRUE}
+```{r nw_maken_data}
 advice_data_frame <- read.table("advice.txt", header = TRUE)
 attributes <- read.csv('attributes.csv', header = TRUE)
 ```
@@ -444,24 +451,22 @@ attributes <- read.csv('attributes.csv', header = TRUE)
 
 Since the edge list is a bit long, let's look at just the top six rows via head()...
 
-```{r head, exercise = TRUE, dependson = "nw_maken_data"}
+```{r nw_data_inladen, include = FALSE}
+attributes <- SNA4DS:::attributes
+advice_data_frame <- SNA4DS:::advice_data_frame
+```
+
+
+```{r head, exercise = TRUE, exercise.setup = "nw_data_inladen"}
 head(advice_data_frame)
 
 # ... or the bottom six rows via tail().
 tail(advice_data_frame)
 ```
 
-You can view your data in a spreadsheet-like window, using `fix()`. 
+The attributes:
 
-> Note that this spreadsheet-like window may open BEHIND your current window, so 
-make sure to look there if you don't see it pop up. Also note that you need to 
-close the spreadsheet window, before R continues. So if you are wondering why R 
-is not responding, you should realize you forgot to close the spreadsheet.
-
-```{r fix, exercise = TRUE, dependson = "nw_maken_data"}
-# To view your data in a spreadsheet-like window, use the command 'fix()'. 
-fix(advice_data_frame)
-
+```{r}
 # view the attributes data just as is
 attributes
 ```
@@ -469,14 +474,20 @@ attributes
 The `attributes` contain the attributes for the vertices, the `advice_data_frame` 
 has the edgelist. Let's make a directed network from that using `igraph`.
 
-```{r advice_igraph, exercise = TRUE, dependson = "nw_maken_data"}
-advice_igraph <- igraph::graph_from_data_frame(advice_data_frame, directed = TRUE, vertices = attributes) 
 
+
+```{r maak_advice_igraph, exercise = TRUE, exercise.setup = "nw_data_inladen"}
+advice_igraph <- igraph::graph_from_data_frame(advice_data_frame, directed = TRUE, vertices = attributes)
 advice_igraph
 ```
 
+
+```{r load_advice_igraph, include = FALSE}
+advice_igraph <- SNA4DS:::advice_igraph
+```
+
 Let's look at the network a little bit.
-```{r igraph_nw, dependson = "advice_igraph", exercise = TRUE}
+```{r igraph_nw, exercise.setup = "load_advice_igraph", exercise = TRUE}
 # you can see the adjacency matrix as follows:
 igraph::as_adjacency_matrix(advice_igraph)
 
@@ -495,7 +506,7 @@ attributes <- read.csv('attributes.csv', header = TRUE)
 ```
 
 
-```{r network_nw, cache = TRUE, exercise = TRUE}
+```{r network_nw, exercise = TRUE}
 # construct the network with the edges
 advice_network <- network::network.edgelist(advice_data_frame, network::network.initialize(21,directed = TRUE), ignore.eval = FALSE)
 
@@ -510,7 +521,13 @@ advice_network
 ```
 
 This is the same network, check:
-```{r nw_check, dependson = "network_nw", exercise = TRUE}
+
+```{r advice_network_inlezen, include = FALSE}
+advice_network <- SNA4DS:::advice_network
+```
+
+
+```{r nw_check, exercise.setup = "advice_network_inlezen", exercise = TRUE}
 # you can see the adjacency matrix as follows:
 adj_network <- network::as.sociomatrix(advice_network)
 
@@ -523,6 +540,7 @@ sna::betweenness(advice_network)
 
 
 ## `intergraph`
+
 In actual analyses, you might want to use functionality from both `statnet` and 
 `sna`. Unfortunately, they do not understand each other's network objects, so 
 you need to generate an `igraph` network object to use with `igraph` and a `network` 
@@ -537,19 +555,13 @@ so you can try out how `intergraph` works.
 
 
 ### From `network` to `igraph`
-
-```{r, echo = FALSE}
-load("advice_nws.RData")
+```{}
+class(advice_network)    # network
 ```
-
-```{r to_network, dependson = "advice_nws"}
-class(advice_network)
-```
-
 
 Convert it to a `network` object.
 
-```{r ig_check, exercise = TRUE, dependson = "to_network"}
+```{r ig_check, exercise = TRUE, exercise.setup = "advice_network_inlezen"}
 as_ig <- intergraph::asIgraph(advice_network)
 
 # is it now indeed a correct `igraph` object?
@@ -565,17 +577,13 @@ Awesomeness.
 
 ### From `igraph` to `network`
 
-```{r, echo = FALSE}
-load("advice_nws.RData")
-```
-
-```{r to_igraph, dependson = "advice_nws"}
-class(advice_igraph)
+```{}
+class(advice_igraph)     # igraph
 ```
 
 Now convert it to `igraph`
 
-```{r check_network, exercise = TRUE, dependson = "to_igraph"}
+```{r check_network, exercise = TRUE, exercise.setup = "load_advice_igraph"}
 # convert it
 as_network <- intergraph::asNetwork(advice_igraph)
 
@@ -592,6 +600,7 @@ Voilà.
 
 
 ## The R ecosystem of network packages
+
 There are literally dozens of really useful network packages. Many of them
 specialize in the analysis of certain types of applications (such as social networks,
 animal foraging networks, bio-networks, causal networks, epidemiology,
