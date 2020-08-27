@@ -18,6 +18,9 @@ Encoding: UTF-8
 LazyData: true
 Imports:
 	backports (>= 1.1.7),
+	desc,
+	devtools,
+	fs,
 	glue,
 	gradethis,
     igraph (>= 1.2.5),
@@ -27,8 +30,11 @@ Imports:
 	network,
 	networkD3,
 	remotes,
+	rlang,
 	rstudioapi (>= 0.11),
 	sna,
+	stats,
+	usethis,
 	utils
 Remotes:
 	github::rstudio-education/gradethis

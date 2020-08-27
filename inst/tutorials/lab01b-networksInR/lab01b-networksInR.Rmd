@@ -242,7 +242,7 @@ An _adjacency list_ (or _node list_, is a list that presents the ‘focal’ nod
 and then all the other nodes that are connected to it (i.e., that are "adjacent"
 to it). This looks as follows:
 
-```{r ge_asadj, exercise = TRUE, exercise.setup = "load_data"}
+```{r ge_asadj, exercise = TRUE, exercise.setup = "load_g3"}
 igraph::as_adj_list(g3, mode = "total")
 ```
 
@@ -371,7 +371,7 @@ Do you remember how to access the help file on this data set? Try it out below:
 gradethis::grade_code(correct = "Excellent work.")
 ```
 
-Now, below look at the object `Cheyenne`. Print it, get a summary, and make a simple plot.
+Now, below look at the object `Cheyenne`. Print it and get a summary.
 
 ```{r grade_emon_print, exercise = TRUE, exercise.setup = "emon-laden"}
 
@@ -380,7 +380,6 @@ Now, below look at the object `Cheyenne`. Print it, get a summary, and make a si
 ```{r grade_emon_print-solution}
 print(Cheyenne)
 summary(Cheyenne)
-plot(Cheyenne)
 ```
 
 Don't worry about the plot being very ugly, we will teach you how to make beautiful network plots
@@ -449,11 +448,10 @@ later.
 Let's read in some data to make a network with. Both files contain column names, 
 so make sure to set `header = TRUE`.
 
-```{r nw_maken_data}
-advice_data_frame <- read.table("advice.txt", header = TRUE)
-attributes <- read.csv('attributes.csv', header = TRUE)
 ```
-
+advice_data_frame <- read.table("https://github.com/SNAnalyst/SNA4DS/blob/master/inst/tutorials/lab01b-networksInR/advice.txt", header = TRUE)
+attributes <- read.csv('https://github.com/SNAnalyst/SNA4DS/blob/master/inst/tutorials/lab01b-networksInR/attributes.csv', header = TRUE)
+```
 
 Since the edge list is a bit long, let's look at just the top six rows via head()...
 
@@ -507,17 +505,11 @@ igraph::betweenness(advice_igraph)
 
 To do this with `network`, we do this as follows:
 
-```{r}
-advice_data_frame <- read.table("advice.txt", header = TRUE)
-attributes <- read.csv('attributes.csv', header = TRUE)
-```
-
-
-```{r network_nw, exercise = TRUE}
+```{r network_nw, exercise = TRUE, exercise.setup = "nw_data_inladen"}
 # construct the network with the edges
 advice_network <- network::network.edgelist(advice_data_frame, network::network.initialize(21,directed = TRUE), ignore.eval = FALSE)
 
-# now add the vetrex attributes
+# now add the vertex attributes
 advice_network <- network::set.vertex.attribute(advice_network, attrname = "AGE", value = attributes$AGE)
 advice_network <- network::set.vertex.attribute(advice_network, attrname = "TENURE", value = attributes$TENURE)
 advice_network <- network::set.vertex.attribute(advice_network, attrname = "LEVEL", value = attributes$LEVEL)

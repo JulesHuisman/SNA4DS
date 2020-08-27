@@ -21,12 +21,6 @@ tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r load_data, include = FALSE}
-load("nw_data.RData")
-```
-
-
-
 ## Introduction
 
 Welcome to the first tutorial of __Social Network Analysis for Data Science__!
@@ -394,13 +388,12 @@ load packages that have functions with the same name.
 
 ```{r nw_data-laden, echo = FALSE, include = FALSE}
 load("nw_data.RData")
-friendship <- g
 ```
 
 Here's an example. You have a network in your R session that is called `friendship`. 
 This is what it looks like:
 
-```{r, echo = FALSE}
+```{r MyClickScript, echo = FALSE}
 MyClickScript <- 'alert("You clicked " + d.name + " which is in row " +
        (d.index + 1) +  " of your original R data frame");'
 networkD3::forceNetwork(Links = g3$links, Nodes = g3$nodes,
@@ -414,13 +407,16 @@ You load the `sna` package to calculate the betweenness scores of the actors in
 the network (no worries, next week we will discuss the betweenness measure in
 detail). Run the following and see what happens:
 
+```{r load_data, include = FALSE}
+friendship <- SNA4DS:::lab1_friendship
+```
 
-```{r library1, message = FALSE, warning = FALSE, exercise = TRUE, exercise.setup = "nw_data-laden"}
+```{r library1, message = FALSE, warning = FALSE, exercise = TRUE, exercise.setup = "load_data"}
 library(sna)
 betweenness(friendship)
 ```
 
-```{r sna_inladen, message = FALSE, warning = FALSE, echo = FALSE, exercise.setup = "nw_data-laden"}
+```{r sna_inladen, message = FALSE, warning = FALSE, echo = FALSE, exercise.setup = "load_data"}
 try(library(sna), silent = TRUE)
 ```
 
@@ -455,7 +451,7 @@ library(influenceR)
 ```
 
 
-```{r library_error, exercise = TRUE, exercise.setup = c("nw_data-laden", "influenceR_setup")}
+```{r library_error, exercise = TRUE, exercise.setup = c("load_data", "influenceR_setup")}
 ...(friendship)
 ```
 

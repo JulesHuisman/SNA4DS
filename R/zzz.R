@@ -8,12 +8,14 @@ magrittr::`%>%`
 
 
 
+
+
+
+
 .onLoad <- function(libname, pkgname) {
   op <- options()
   invisible()
 }
-
-
 
 
 .onAttach <- function(lib, pkg,...){
