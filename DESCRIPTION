@@ -18,7 +18,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
   animation,
-  backports (>= 1.1.7)
+  backports (>= 1.1.7),
   ggplot2 (>= 3.3.2),
 	ggraph (>= 2.0.0),
 	glue,
