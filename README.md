@@ -10,9 +10,12 @@ There are several ways to run the tutorials. Perhaps the easiest is to pick the 
 
 <div class="highlight highlight-source-r"><pre><span class="pl-e">SNA4DS_tutorials()</span></pre></div>
 
-If preferred, the graphical menu can be turned off, using:
+If preferred, the graphical menu can be turned off, using:  
 
 <div class="highlight highlight-source-r"><pre><span class="pl-e">SNA4DS_tutorials(FALSE)</span></pre></div>
+
+The package contains an <b>experimental</b> function that (hopefully) checks whether you have the latest version installed in your machine. In case you do not have the latest version installed, it can also install the latest version for you. But don't fully rely on this function, it is experimental.
+<div class="highlight highlight-source-r"><pre><span class="pl-e">check_SNA4DS()</span></pre></div>
 
 
 <!-- badges: start -->

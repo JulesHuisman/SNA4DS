@@ -1,7 +1,7 @@
 Package: SNA4DS
 Type: Package
 Title: Social Network Analysis for Data Science
-Version: 0.1.0
+Version: 0.0.97
 Authors@R: c(person(given = "Roger",
 					family = "Leenders",
 					role = c("aut", "cre"),
@@ -18,6 +18,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
   animation,
+  backports (>= 1.1.7)
   ggplot2 (>= 3.3.0),
 	ggraph (>= 2.0.0),
 	glue,
