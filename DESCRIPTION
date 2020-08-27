@@ -1,7 +1,7 @@
 Package: SNA4DS
 Type: Package
 Title: Social Network Analysis for Data Science
-Version: 0.1.0
+Version: 0.0.98
 Authors@R: c(person(given = "Roger",
 					family = "Leenders",
 					role = c("aut", "cre"),
@@ -17,17 +17,12 @@ Depends: R (>= 4.0.0)
 Encoding: UTF-8
 LazyData: true
 Imports:
-<<<<<<< HEAD
-	backports (>= 1.1.7),
-	desc,
-	devtools,
-	fs,
-=======
   animation,
   backports (>= 1.1.7),
+  desc,
+  fs,
   ggplot2 (>= 3.3.2),
 	ggraph (>= 2.0.0),
->>>>>>> 94955c44154907c29f739a76eaa003b5107565be
 	glue,
 	gradethis,
   igraph (>= 1.2.5),
@@ -41,14 +36,11 @@ Imports:
 	papaja,
 	remotes,
 	rlang,
+	rprojroot,
 	rstudioapi (>= 0.11),
-	sna,
-<<<<<<< HEAD
+	statnet,
 	stats,
 	usethis,
-=======
-	statnet,
->>>>>>> 94955c44154907c29f739a76eaa003b5107565be
 	utils
 Remotes: 
 	github::rstudio-education/gradethis,
