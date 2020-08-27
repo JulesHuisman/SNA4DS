@@ -337,23 +337,6 @@ help(package = "ergm")
 
 (you will be spending quite some time with this package later in the course)
 
-### Getting help: Using `RSiteSearch`
-
-And what if you are looking for a function or functionality that is not in one
-of the packages on your machine? The first thing to do would be to search the R
-archives. Let's search for the `metric.degree.min` function. You do this through
-`RSiteSearch`:
-
-
-```{r rsitesearch, exercise = TRUE}
-RSiteSearch("metric.degree.min")
-```
-
-This will open a web page with the threads in which this term has been discussed
-in the [R discussion group](http://search.r-project.org). But here you can try
-Google as well, of course. Or go to [the Rseek webpage](https://rseek.org/)
-which uses Google to seek for R specific reults.
-
 So, let's see if you have it all in your head now.
 
 ```{r quiz_help, quiz = TRUE}
@@ -409,7 +392,7 @@ and _package1_ will become second in the path. That is not a problem, until you
 load packages that have functions with the same name.
 
 
-```{r, echo = FALSE, include = FALSE}
+```{r nw_data-laden, echo = FALSE, include = FALSE}
 load("nw_data.RData")
 friendship <- g
 ```
@@ -431,24 +414,20 @@ You load the `sna` package to calculate the betweenness scores of the actors in
 the network (no worries, next week we will discuss the betweenness measure in
 detail). Run the following and see what happens:
 
-```{r, echo = FALSE, include = FALSE}
-load("nw_data.RData")
-friendship <- g
-```
 
-```{r library1, message = FALSE, warning = FALSE, exercise = TRUE}
+```{r library1, message = FALSE, warning = FALSE, exercise = TRUE, exercise.setup = "nw_data-laden"}
 library(sna)
 betweenness(friendship)
 ```
 
-```{r, message = FALSE, warning = FALSE, echo = FALSE}
+```{r sna_inladen, message = FALSE, warning = FALSE, echo = FALSE, exercise.setup = "nw_data-laden"}
 try(library(sna), silent = TRUE)
 ```
 
 Nice, and if you wanted to see the names of the actors next to their scores, you 
 could run:
 
-```{r library1a, exercise = TRUE}
+```{r library1a, exercise = TRUE, exercise.setup = "sna_inladen", message = FALSE, warning = FALSE}
 data.frame(betweenness = betweenness(friendship), 
            names = network::get.vertex.attribute(friendship, "name"))
 ```
@@ -459,7 +438,7 @@ Well, that works nicely. You loaded the `sna` package and then could easily
 calculate the betweenness scores. Now, you want to use some of the
 functionalities from the `influenceR` package. Load that.
 
-```{r influenceR_laden, exercise = TRUE}
+```{r influenceR_laden, exercise = TRUE, exercise.setup = "sna_inladen"}
 library(influenceR)
 ```
 
@@ -468,12 +447,15 @@ relative importance of the actors in the network. But first, what again were the
 betweenness scores for the actors in this network? Let's run our previous code
 again. Below, set the function name to `betweenness` and run the code.
 
-```{r, echo = FALSE, include = FALSE}
-load("nw_data.RData")
-friendship <- g
+```{r influenceR_setup, warning = FALSE, message = FALSE, include = FALSE}
+try(detach(package:sna), silent = TRUE)
+library(influenceR)
+# load("nw_data.RData")
+# friendship <- g
 ```
 
-```{r library_error, exercise = TRUE}
+
+```{r library_error, exercise = TRUE, exercise.setup = c("nw_data-laden", "influenceR_setup")}
 ...(friendship)
 ```
 
@@ -481,7 +463,7 @@ Hey, what happened? Well, `influenceR` also has a function that is called
 `betweenness` and since you loaded `influenceR` last, the `betweenness` function
 of the `influenceR` package is now higher in R's search path than the
 `betweenness` function of the `sna` package. In this case, the `influenceR`
-package throws an error ("<code>Not a graph object</code>"), because it expects
+package throws an error ("<code>__Not a graph object__</code>"), because it expects
 an object in a different form than the object `g`. But if `influenceR` would
 have been able to deal with this `friendship` object, it would not have given
 you an error and might have given you a very different result than you wanted
@@ -496,17 +478,14 @@ package.
 
 Try it out:
 
-```{r, echo = FALSE, include = FALSE}
-load("nw_data.RData")
-friendship <- g
+```{r library3, exercise = TRUE, exercise.setup = "library_error"}
+sna::betweenness(friendship)
 ```
 
-
-```{r library3, exercise = TRUE}
-library(sna)
-library(influenceR)   # the `betweenness` function of package `influenceR` is now at the top
-sna::betweenness(friendship)   # you now run `betweenness` from `sna`
-```
+you now run `betweenness` from `sna` on the `betweenness` object, regardless of 
+any other packages that you might have currently loaded. Of course, this requires 
+that the package is __installed__, but it need not be attached. In fact, stop 
+attaching at all!
 
 If you use a lot of functions from other packages this is can become rather
 verbose. There’s also a minor performance penalty associated with :: (on the
@@ -525,7 +504,7 @@ closeness scores on this friendship network using the `sna` package. The
 appropriate function is called `closeness`. As just agree upon, do not load the
 `sna` package for this.
 
-```{r library4, exercise = TRUE}
+```{r library4, exercise = TRUE, exercise.setup = "library3"}
 
 ```
 

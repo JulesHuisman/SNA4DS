@@ -1,0 +1,769 @@
+---
+title: "lab02-visualizations"
+output: 
+  learnr::tutorial:
+    fig_caption: no
+    progressive: true
+    allow_skip: true
+    toc: true
+    toc_depth: 3
+    theme: readable
+runtime: shiny_prerendered
+    
+---
+
+```{r setup, include = FALSE}
+library(learnr)
+library(gradethis)
+# library(magrittr)
+tutorial_options(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE)
+```
+
+## Why should we visualize networks?
+The visualization of networks is a specific field of data visualization.
+In general, we visualize data for several reasons, but one of the most 
+important is to make data and results clear and understandable for a 
+larger public. Communicability is an essential skill both in academia 
+and in the private sector. 
+
+You might have very important findings, but if your audience does not
+understand them, they are worth nothing. 
+A great visualization makes more than half of the job! 
+Great visualizations are story tellers!
+
+### Goals of network visualization
+
+* to identify key actors and the relationship between them
+* to spot most influential actors
+* to check the strength of relationships
+* to see whether people belong to sub-groups inside large networks 
+* to analyze the structural properties of networks
+* to unfold diffusion patterns
+* to observe network evolution
+* to summaries any relationship among entities in one picture
+* ... and many more reasons!
+
+
+## Basic network plots
+
+Plotting networks is essentially plotting dots and lines. 
+The R environment allows us to do it already.
+```{r nonNetPlot}
+x <- 1:10
+y1 <- x*x
+y2  <- 2*y1
+base::plot(x, y1, type = "b", pch = 19, 
+            col = "red", xlab = "x", ylab = "y")
+```
+
+However, it isn't easy to represent what you want in the 
+R base programming language only.
+R base does not recognize a network and does not provide 
+a ready-made environment to plot them.
+
+Hence there are a few packages that help us on the job. 
+
+### Basic plots
+There are two very popular packages to plot networks
+
+* `igraph`
+* `networks`
+
+you met them already
+
+Let's check a first example with `igraph`
+```{r randomEs1}
+library(igraph)
+set.seed(10000)
+igraphNet <- igraph::erdos.renyi.game(10, 2/10)
+base::plot(igraphNet)
+```
+
+This is the most basic network plot we can have. 
+
+We can do a very similar one using `network` 
+```{r randomEs2}
+detach("package:igraph", unload = TRUE)
+library(intergraph)
+networkNet <- intergraph::asNetwork(igraphNet)
+base::plot(networkNet)
+```
+
+
+Different layout set up, same output (fortunately...
+otherwise it would mean we made some mistakes somewhere)
+
+
+For more complex networks to plot, we need to make our visualization
+skills more sophisticated
+```{r randomEs3}
+library(igraph)
+set.seed(10001)
+igraphNetLarge <- igraph::erdos.renyi.game(1000, 1/1000)
+base::plot(igraphNetLarge)
+
+```
+
+
+This last plot does not meet any of the goal we stated above. It's just a mess!
+
+
+```{r testquiz, echo = FALSE}
+question("What is the main problem with the plots of igraphNet and networkNet?",
+    answer("nodes are too small"),
+    answer("the colors are not color blind friendly"),
+    answer("the plot does not inform us on what the network represents", correct = TRUE)
+  )
+```
+
+Yes, even if these two example plots are readable, 
+they are not very helpful to tell a story!
+
+## Tell your network story
+
+In this first part of the tutorial, we will explore the options for plotting
+networks in `igraph`. The package `network` has very similar tools, but it 
+provides a smaller number of customizable options. 
+
+We will use one of the data sets from a tutorial that I kindly 
+recommend: 
+
+Ognyanova, K. (2019) Network visualization with R. 
+Retrieved from www.kateto.net/network-visualization.
+
+It's a media network
+```{r dataload, results = "hide"}
+nodes <- utils::read.csv("Dataset1-Media-Example-NODES.csv", header = T, as.is = T)
+links <- utils::read.csv("Dataset1-Media-Example-EDGES.csv", header = T, as.is = T)
+
+library(igraph)
+net <- igraph::graph_from_data_frame(d=links, vertices=nodes, directed = T) 
+```
+
+
+Loading the network from a data frame allows the automatic upload of large 
+quantities of information about the nodes and their relationships.
+
+Let's briefly explore the network.
+```{r datacheck}
+igraph::vcount(net)
+```
+
+What do nodes represent? We need to know the name of the attribute 
+we want to display, and we call it using the $ sign.
+
+```{r datacheck1}
+igraph::V(net)$media
+```
+
+How many relationships in total we observed between these media?
+```{r datacheck2}
+igraph::ecount(net)
+```
+
+For a preliminary overview this is enough. We already have a clue of what we are 
+dealing with. 
+
+Let's plot!
+```{r plot1}
+base::plot(net) 
+```
+
+We can do better than this... let's remove loops and plot it reducing the arrow 
+size, removing the vertex label and curving the edges.
+
+```{r plot2}
+net <- igraph::simplify(net, remove.multiple = F, remove.loops = T) 
+base::plot(net, 
+           edge.arrow.size = .4, 
+           vertex.label = NA, 
+           edge.curved = .1)
+```
+
+
+It's already prettier, but still not very informative. 
+
+Printing the media name (one of the attributes) instead of the label 
+clarifies what we are trying to communicate. Let's do it, together
+with some aesthetic improvements!
+```{r plot3}
+base::plot(net, 
+           edge.arrow.size = .2, 
+           edge.color = "orange",
+           vertex.color = "orange", 
+           vertex.frame.color = "#ffffff", # node perimeter
+           vertex.label = igraph::V(net)$media, 
+           vertex.label.cex = 0.6,  # vertex label size
+           vertex.label.color = "black") 
+```
+
+This is a much better job! 
+
+We have more information on this network, let's try to show it.
+We know the audience size for each of those media. We can plot 
+it as a node size! We can also change color according to media type. 
+```{r plot4}
+# Generate colors based on media type:
+colrs <- c("gray50", "tomato", "gold")
+igraph::V(net)$color <- colrs[igraph::V(net)$media.type] # we attribute media type to color
+
+igraph::V(net)$size <- igraph::V(net)$audience.size*0.6 # and audience size to size
+
+# The labels are currently node IDs.
+# Setting them to NA will render no labels:
+igraph::V(net)$label <- NA
+
+#change arrow size and edge color (in the previous example they were set inside 
+#the plot function. Both options work)
+igraph::E(net)$arrow.size <- .2
+igraph::E(net)$edge.color <- "gray80"
+
+base::plot(net,
+           vertex.frame.color = "#ffffff",#node perimeter
+           vertex.label = igraph::V(net)$media, 
+           vertex.label.cex = 0.6,  # vertex label size
+           vertex.label.color = "black"
+) 
+graphics::legend(x = -1.5, y = -1.1, c("Newspaper","Television", "Online News"), pch = 21,
+                 col = "#777777", pt.bg = colrs, pt.cex = 2, cex = .8, bty = "n", ncol = 1)
+```
+
+
+This plot is very informative! In one glance, we can easily see that TV 
+channels have a much larger audience than newspapers and online news. 
+That the most popular newspaper is the New York Post, and the most 
+popular TV channel Fox news. 
+
+It is hard to read the direction of the edges, though! We can fix it!
+Let’s color the edges of the graph based on their source node color.
+```{r plot5}
+# Generate colors based on media type:
+colrs <- c("gray50", "tomato", "gold")
+igraph::V(net)$color <- colrs[igraph::V(net)$media.type] # we attribute media type to color
+
+igraph::V(net)$size <- igraph::V(net)$audience.size*0.6 # and audience size to size
+
+# The labels are currently node IDs.
+# Setting them to NA will render no labels:
+igraph::V(net)$label <- NA
+
+# color the edge as the sender 
+edge.start <- igraph::ends(net, es = igraph::E(net), names = F)[,1]
+edge.col <- igraph::V(net)$color[edge.start]
+
+base::plot(net,
+           vertex.frame.color = "#ffffff",#node perimeter
+           vertex.label = igraph::V(net)$media, 
+           vertex.label.cex = 0.6,  # vertex label size
+           vertex.label.color = "black",
+           edge.color = edge.col, 
+           edge.curved = .1
+) 
+graphics::legend(x = -1.5, y = -1.1, c("Newspaper","Television", "Online News"), pch = 21,
+                 col = "#777777", pt.bg = colrs, pt.cex = 2, cex = .8, bty = "n", ncol = 1)
+
+```
+
+
+It's interesting to note that the BBC is the only non-American media, 
+but it is mentioned or linked by other news sources. Weirdly BBC never 
+mentioned anyone, or more likely, it wasn't part of the analyzed sample, 
+but only cited by the American media monitored in this study! 
+
+That's already a large portion of the story these data can tell! 
+
+### Layout
+
+Network layouts are simply algorithms that return coordinates 
+for each node in a network.
+We can improve the look of our visualization by setting some 
+layout options that we believe work best with our data.
+
+```{r plot6}
+colrs <- c("gray50", "tomato", "gold")
+igraph::V(net)$color <- colrs[igraph::V(net)$media.type] 
+igraph::V(net)$size <- igraph::V(net)$audience.size*0.6 
+igraph::V(net)$label <- NA
+igraph::E(net)$arrow.size <- .2
+igraph::E(net)$edge.color <- "gray80"
+
+graph_attr(net, "layout") <- layout_with_lgl # layout option added to the same code
+base::plot(net,
+           vertex.frame.color = "#ffffff",#node perimeter
+           vertex.label = igraph::V(net)$media, 
+           vertex.label.cex = 0.6,  # vertex label size
+           vertex.label.color = "black"
+) 
+graphics::legend(x = -1.5, y = -1.1, c("Newspaper","Television", "Online News"), pch = 21,
+                 col = "#777777", pt.bg = colrs, pt.cex = 2, cex = .8, bty = "n", ncol = 1)
+```
+
+
+It looks much tidier than before! There are several layout options. 
+Let's explore a few more
+
+```{r plot7}
+colrs <- c("gray50", "tomato", "gold")
+igraph::V(net)$color <- colrs[igraph::V(net)$media.type] 
+igraph::V(net)$size <- igraph::V(net)$audience.size*0.6 
+igraph::V(net)$label <- NA
+igraph::E(net)$arrow.size <- .2
+igraph::E(net)$edge.color <- "gray80"
+
+graph_attr(net, "layout") <- layout_in_circle # layout option added to the same code
+base::plot(net,
+           vertex.frame.color = "#ffffff",#node perimeter
+           vertex.label = igraph::V(net)$media, 
+           vertex.label.cex = 0.6,  # vertex label size
+           vertex.label.color = "black"
+) 
+graphics::legend(x = -1.5, y = -1.1, c("Newspaper","Television", "Online News"), 
+                 pch = 21, col = "#777777", pt.bg = colrs, pt.cex = 2, cex = .8, bty = "n", ncol = 1)
+```
+
+You can play with the code substituting some other layout
+* layout_randomly
+* layout_on_sphere
+* layout_with_fr
+
+Look up these algorithms in the help files to understand them!
+There are many more, and we will encounter them during the following weeks. 
+
+
+
+## ggraph
+
+`ggplot2` is the most popular package for visualization in R but it does not 
+handle network data. The `ggraph` package address the problem expanding 
+`ggplot2`. 
+
+The logic behind `ggplot2` consists of building plots adding features to 
+a structure layer by layer. 
+
+
+### A bit with ggplot2
+
+Let's see an example with the toy data set 'mtcars' from the 
+package `datasets`. 
+
+Shall we take a look?
+
+```{r dataNonNet}
+utils::data(mtcars, package = "datasets")
+head(mtcars) # let's have a look to the data
+```
+
+
+First we create a canvas
+```{r ggplotexample}
+library(ggplot2)
+ggplot2::ggplot(mtcars)
+```
+
+
+Then we had the variable of interest
+
+```{r ggplotexample1}
+# variables of interest mapped
+ggplot2::ggplot(mtcars, ggplot2::aes(x = disp, y = wt))
+```
+
+Now we plot the data adding geometric points
+```{r ggplotexample2}
+ggplot2::ggplot(mtcars, ggplot2::aes(x = disp, y = wt)) +
+  ggplot2::geom_point()
+```
+
+Layer by layer we can make it as pretty as we like
+```{r ggplotexample3, message = FALSE, warning = FALSE}
+ggplot2::ggplot(mtcars, ggplot2::aes(x = disp, y = wt)) +
+  ggplot2::geom_point(ggplot2::aes(color = gear)) + # the colour expresses one chosen attribute
+  ggplot2::geom_smooth(se = TRUE) +  # adding the line that minimizes the distance and
+  # display the standard error
+  ggplot2::theme_bw()+ # changing the background colour
+  ggplot2::ggtitle("Some mtcars plot I like")
+
+  
+```
+
+It's (almost) completely customizable
+
+
+### Let's try ggraph
+
+We are lucky, since `ggraph` reads `igraph` format. We can just keep plotting 
+our media network. Let's create a canvas first.
+```{r ggpraphexample, message = FALSE, warning = FALSE}
+library(ggraph)
+ggraph::ggraph(net) 
+```
+
+Let's add nodes and adges now
+
+```{r ggpraphexample1, message = FALSE, warning = FALSE}
+ggraph::ggraph(net) +
+  ggraph::geom_edge_link() +   # add edges to the plot
+  ggraph::geom_node_point()    # add nodes to the plot
+```
+
+This is already pretty decent I would say! A specific layout is already set.
+But we can easily change it!
+```{r ggpraphexample2, message = FALSE, warning = FALSE}
+ggraph::ggraph(net, layout = "kk") + # changed layout
+  ggraph::geom_edge_link() +
+  ggraph::geom_node_point() +
+  ggplot2::ggtitle("Pretty Plot in Progress") + # same as in ggplot2!
+  ggplot2::theme_bw() # same as in ggplot2!
+```
+
+Let's try something else
+```{r ggpraphexample3, echo = FALSE}
+ggraph::ggraph(net, layout = "lgl") + # changed layout again
+  ggraph::geom_edge_fan(color = "gray50", width = 0.8, alpha = 0.5) + # set the type of edge 
+  # to make sure any overlapping multiplex edges will be fanned out.
+  ggraph::geom_node_point(color = igraph::V(net)$color, size = 8) + # used the color we set before
+  ggplot2::ggtitle("Even Prettier Plot") +
+  ggplot2::theme_void() # removed the grid that is not always helpful in network viz
+```
+
+
+We can also set the edges to a curvy shape
+```{r ggpraphexample4}
+ggraph::ggraph(net, layout = 'linear') + 
+  ggraph::geom_edge_arc(color = "orange", width = 0.7) +
+  ggraph::geom_node_point(size = 5, color = "gray50") +
+  ggplot2::ggtitle("Legit Weird Plot") +
+  ggplot2::theme_void()
+```
+
+Funny look together with this linear layout right?
+But we can be serious too
+```{r ggpraphexample5}
+library(ggplot2)
+ggraph::ggraph(net, layout = "lgl") +
+  ggraph::geom_edge_link(aes(color = type)) +           # colors by edge type 
+  ggraph::geom_node_point(aes(size = audience.size)) +  # size by audience size  
+  ggplot2::theme_void() +
+  ggplot2::ggtitle("More informative Plot")
+```
+
+
+Here we can observe the size of the audience from the node size 
+and the type of edge from the color. 
+
+We can also observe that a legend is printed automatically. 
+However, we can still switch it off if for some reasons we don't want it!
+```{r ggpraphexample6, message = FALSE, warning = FALSE}
+ggraph::ggraph(net,  layout = 'lgl') +
+  ggraph::geom_edge_arc(color = "yellow", curvature = 0.3) +  # we can decide on the curvature  
+  ggraph::geom_node_point(color = "blue", aes(size = audience.size)) +     
+  ggraph::geom_node_text(aes(label = media), size = 3, color = "gray50", repel = T) +
+  ggplot2::theme_void() +
+  ggplot2::theme(legend.position = "none") + # eliminate legend
+  ggplot2::ggtitle("Plot in yellow and blue")
+
+```
+
+
+We can also customize more features
+
+```{r ggpraphexample7}
+ggraph::ggraph(net,  layout = 'lgl') +
+  ggraph::geom_edge_fan(color = "blue") + # change edge option
+  ggraph::geom_node_point(color = "red", aes(size = audience.size)) +     
+  ggraph::geom_node_text(aes(label = media), size = 4, color = "black", repel = T) +
+  ggplot2::theme_void() +
+  ggplot2::theme(legend.key.size = unit(1.5, "cm"),
+                 legend.key.width = unit(0.5,"cm"),
+                 legend.position = "left",
+                 legend.background = element_rect(color = "red", fill = "blue"),
+                 legend.title = element_text(color = "white")
+  ) + 
+  ggplot2::ggtitle("Very customized Plot", subtitle = "Do you like it?") 
+  
+  
+```
+Yes, very customizable, but please never plot something so ugly :)
+
+
+
+Plotting in `ggraph` is much more flexible than `igraph` and `networks`, since
+we can benefit from all the options that are already set for `ggplot2`.
+```{r removePackage, echo = FALSE, include = FALSE}
+detach("package:ggraph", unload = TRUE)
+```
+
+
+## Dynamic Plots
+
+Telling network stories can be very difficult. Sometimes, we need 
+to display how certain networks change over time or show several 
+visualizations that provide different information about the same network. 
+
+In these cases, a dynamic plot can help. 
+
+Dynamics plots are essentially the automatic display of more
+than one static plot.
+We already know how to make static plots; we just need to 
+learn how to put a few of them together. 
+
+
+### Making a gif with plots
+
+Unfortunately we won't be able to visualize the gif in this tutorial, 
+because there are too many different system requiremsnts. 
+
+I'll just provide instruction to make it work in your own computer!
+
+Let's first create a plot and let's store it into a variable
+```{r dynamic}
+p1 <- ggraph::ggraph(net, layout = 'kk') +
+      ggraph::geom_edge_arc(color = "orange", width = 0.7) +
+      ggraph::geom_node_point(size = 5, color = "gray50")
+p1
+```
+
+Let's make the same plot in two more versions using different colurs and layout
+
+```{r dynamic1}
+p2 <- ggraph::ggraph(net, layout = 'star') +
+    ggraph::geom_edge_arc(color = "green", width = 0.7) +
+    ggraph::geom_node_point(size = 5, color = "gray50")
+p2
+```
+
+and...
+
+```{r dynamic2}
+p3 <- ggraph::ggraph(net, layout = 'linear') +
+    ggraph::geom_edge_arc(color = "blue", width = 0.7) +
+    ggraph::geom_node_point(size = 5, color = "gray50")
+p3
+```
+
+
+At this point, we can save the plot as a gif file, so it
+could be embedded to documents, or shared with colleagues 
+and friends (Ok... nerd friends!)
+
+We can save the dynamic viz into a gif in several ways. 
+I suggest one relatively easy way to do it here. 
+
+* Download the software _ImageMagick_ here 
+https://imagemagick.org/script/download.php
+
+* call the library `animation`
+
+```{r dynamic3}
+library(animation)
+
+```
+
+* check the pathway of _ImageMagick_
+```{r dynamic4}
+animation::ani.options("convert")
+```
+
+* If your R Studio can't find it automatically, you should find it manually,
+place it in a convenient folder and feed a pathway to the following line of code. 
+For instance, this is mine, running on Linux (aka each system has a different
+way to specify pathways. Make sure you use the right one for your system). 
+
+```{r dynamic5}
+animation::ani.options(convert = "home/claudia/Documents/ImageMagick-6.8.8-Q16/convert.exe")
+```
+
+When you are done with setting up, we can make a gif! The `saveGIF` function
+handles expressions (check the help page). We need to find a way to give it what
+it wants. 
+
+* Let's save our plots in a list 
+* Write a for loop that goes through the list
+* Place the for loop as an argument in the `saveGIF` function
+
+```{r dynamic6}
+plots <- base::list(p1, p2, p3)
+
+# for loop to be inserted as the function argument
+# for (i in 1:length(plots)){
+#   base::print(plots[i])
+#   }
+
+# animation::saveGIF(
+#   for (i in 1:length(plots)){
+#     base::print(plots[i])
+#   }
+#   , movie.name = "attempt.gif")
+```
+
+
+The code is commented, but you can copy it and try it out.
+
+Also, in some operative systems you should be able to visualize your gif 
+on html file following the instructions:
+* insert an R code box 
+* set the header to 
+_r name-of-your-choice, fig.show='animate', ffmpeg.format='gif', dev='jpeg_
+
+* print by calling the plots by name.
+
+
+```{r}
+# {r name-of-your-choice, fig.show = 'animate', ffmpeg.format = 'gif', dev = 'png'}
+ 
+# Display dynamic plots
+
+# p1
+# p2
+# p3
+```
+
+
+Just that! It's a shame it doesn't run in every system.
+If when you try you the plots moving, your system can do it!
+
+
+### Interactive Networks
+
+Another cool thing we can make is interactive networks. An interactive 
+network allows the reader to zoom in and out, move the layout, 
+focus on subgraphs, and display extra information 
+when pointing a node with the cursor. 
+
+Let's give it a go with the `networkD3` library after making a data frame 
+with the kind of data that it likes!
+
+* The nodes IDs have to be numeric, and they also have to start from 0:
+An easy way to get there is to transform our character IDs into a factor 
+variable, transform it to numeric, and make sure it starts from zero 
+by subtracting 1.
+
+* Then we can customize the node names with an attribute such as media, 
+provided it is a factor variable
+
+
+```{r dynamic7, message = FALSE, warning = FALSE}
+library(networkD3)
+```
+
+```{r dynamic8}
+# make node IDs numeric
+links.d3 <- base::data.frame(from = as.numeric(factor(links$from))-1, 
+                             to = as.numeric(factor(links$to))-1 )
+
+# Uses the name of the media as node ID used as a factor variable.  
+# We create the idn variable so we do not overscribe the original variable 
+# a factor
+nodes.d3 <- base::cbind(idn = factor(nodes$media, levels = nodes$media), nodes) 
+
+networkD3::forceNetwork(Links = links.d3, Nodes = nodes.d3, Source = "from", Target = "to",
+                        NodeID = "idn", Group = "type.label",linkWidth = 1,
+                        linkColour = "#afafaf", fontSize = 12, zoom = T, legend = T,
+                        Nodesize = 6, opacity = 0.8, charge = -300, 
+                        width = 600, height = 400)
+```
+
+### Let's make a movie!
+
+I'm pretty sure we are not going to win an Oscar, but it's still pretty cool to 
+make a movie with network viz!
+
+The `ndtv` package can help us to do it! 
+
+`ndtv` is part of the `statnet` family and it takes class `network` objects. 
+Hence we will use one of the `statnet`'s toy data set to try out.
+The Florentine Marriage is a classic of Social Network Analysis. It describes 
+the way the Medici family got to rule Florence about 500 years ago. 
+They strategically married with the most powerful other families 
+in order to make alliances and rule the city. 
+
+```{r dynamic9, message = FALSE, warning = FALSE}
+
+library(ndtv)
+library(statnet)
+
+```
+
+Temporal Data
+
+```{r dynamic10}
+utils::data(short.stergm.sim)
+base::class(short.stergm.sim)
+utils::head(as.data.frame(short.stergm.sim))
+```
+
+This is a temporal edge list:
+
+* An edge goes from a node with ID in the tail column 
+* to a node with ID in the head column. 
+
+* Edges exist from time point onset to time point terminus. 
+
+* Each of those periods is recorded on a separate row in the data frame above.
+
+IMPORTANT: The idea of onset and terminus censoring refers to start and 
+end points enforced by the beginning and end of network observation rather
+than by actual tie formation/dissolution
+
+
+Here is the Florentine Marriage movie!
+
+```{r dynamic11, results = 'asis'}
+
+ndtv::render.d3movie(short.stergm.sim,
+                     displaylabels=TRUE,
+                     output.mode = 'inline' #,
+                     # filename = "Florentine.html if yo run this argument it opens
+                     # the movie on browser and it saves the movie on you set folder.
+)
+```
+
+Take into account the box header needs to be set to
+_r name-of-your-choice,results = 'asis'_.
+
+Very complex visualizations can be displayed with the `ndtv` and we might use it 
+again later in the semester. However, we need to grasp a better understanding of
+temporal network data sets in order to properly master this sort of visualizations.
+
+### A tiny bit jump into temporal data
+
+DIY is the best way to learn something. Let's make temporal data from scratch!
+
+```{r dynamic12, message = FALSE, warning = FALSE}
+t0<-network::as.network(matrix(c(0,1,0,
+                        0,0,0,
+                        1,0,0),ncol = 3,byrow = TRUE))
+
+t1<-network::as.network(matrix(c(0,1,0,
+                        0,1,0,
+                        0,0,0),ncol = 3,byrow = TRUE))
+
+t2<-network::as.network(matrix(c(0,0,0,
+                        0,1,0,
+                        0,1,0),ncol = 3,byrow = TRUE))
+# convert a list of networks into networkDynamic object
+tnet<-networkDynamic::networkDynamic(network.list = list(t0,t1,t2))
+
+```
+
+
+Prepare the pop-corn!
+```{r dynamic13,results = 'asis'}
+ndtv::render.d3movie(tnet,
+                     output.mode = 'inline')
+```
+
+It worked! 
+
+For this week this is enough! We can make more complicated viz later on in 
+the semester!
+
+
+
+
+### Conclusive Remarks
+
+Needless to say, making good visualizations takes plenty of time, and to a
+certain extent, it is an art! Try to express your creativity and to have 
+fun when you do it! 
