@@ -334,13 +334,19 @@ data("emon", package = "network")
 
 This is actually an object that contains 7 networks.
 
-```{r length_emon, exercise = TRUE}
+```{r emon-laden, include = FALSE}
+data("emon", package = "network")
+Cheyenne <- emon$Cheyenne
+```
+
+
+```{r length_emon, exercise = TRUE, exercise.setup = "emon-laden"}
 length(emon)
 ```
 
 Let's take the first one.
 
-```{r}
+```{r chey, exercise = TRUE, exercise.setup = "emon-laden"}
 Cheyenne <- emon$Cheyenne
 ```
 
@@ -353,7 +359,7 @@ This is an interorganizational network in the context of search and rescue (SAR)
 
 Do you remember how to access the help file on this data set? Try it out below:
 
-```{r grade_emon_help1, exercise = TRUE}
+```{r grade_emon_help1, exercise = TRUE, exercise.setup = "emon-laden"}
 
 ```
 
@@ -367,7 +373,7 @@ gradethis::grade_code(correct = "Excellent work.")
 
 Now, below look at the object `Cheyenne`. Print it, get a summary, and make a simple plot.
 
-```{r grade_emon_print, exercise = TRUE}
+```{r grade_emon_print, exercise = TRUE, exercise.setup = "emon-laden"}
 
 ```
 
@@ -380,7 +386,7 @@ plot(Cheyenne)
 Don't worry about the plot being very ugly, we will teach you how to make beautiful network plots
 later in this course.
 
-```{r cheyenne-attrs, exercise = TRUE}
+```{r cheyenne-attrs, exercise = TRUE, exercise.setup = "emon-laden"}
 # let's see the edges of actor 1
 # limit ourselves to the first three, to prevent lengthy output in this tutorial
 network::get.edges(Cheyenne, 1)[1:3]
@@ -482,12 +488,13 @@ advice_igraph
 ```
 
 
-```{r load_advice_igraph, include = FALSE}
+```{r load_intergraph, include = FALSE}
 advice_igraph <- SNA4DS:::advice_igraph
+advice_network <- SNA4DS:::advice_network
 ```
 
 Let's look at the network a little bit.
-```{r igraph_nw, exercise.setup = "load_advice_igraph", exercise = TRUE}
+```{r igraph_nw, exercise.setup = "load_intergraph", exercise = TRUE}
 # you can see the adjacency matrix as follows:
 igraph::as_adjacency_matrix(advice_igraph)
 
@@ -522,12 +529,7 @@ advice_network
 
 This is the same network, check:
 
-```{r advice_network_inlezen, include = FALSE}
-advice_network <- SNA4DS:::advice_network
-```
-
-
-```{r nw_check, exercise.setup = "advice_network_inlezen", exercise = TRUE}
+```{r nw_check, exercise.setup = "load_intergraph", exercise = TRUE}
 # you can see the adjacency matrix as follows:
 adj_network <- network::as.sociomatrix(advice_network)
 
@@ -561,7 +563,7 @@ class(advice_network)    # network
 
 Convert it to a `network` object.
 
-```{r ig_check, exercise = TRUE, exercise.setup = "advice_network_inlezen"}
+```{r ig_check, exercise = TRUE, exercise.setup = "load_intergraph"}
 as_ig <- intergraph::asIgraph(advice_network)
 
 # is it now indeed a correct `igraph` object?
@@ -583,7 +585,7 @@ class(advice_igraph)     # igraph
 
 Now convert it to `igraph`
 
-```{r check_network, exercise = TRUE, exercise.setup = "load_advice_igraph"}
+```{r check_network, exercise = TRUE, exercise.setup = "load_intergraph"}
 # convert it
 as_network <- intergraph::asNetwork(advice_igraph)
 
