@@ -20,7 +20,7 @@
 #' R 3.6.0 and can only be read by R versions 3.5.0 and higher.
 #'
 #' @return nothing
-#' @internal
+#' @keywords internal
 save_internal_data <- function(..., overwrite_vars = FALSE, overwrite = FALSE,
                                 compress = "bzip2", version = 2) {
   check_is_package("use_data()")
@@ -70,7 +70,7 @@ save_internal_data <- function(..., overwrite_vars = FALSE, overwrite = FALSE,
 
 
 
-
+#' @keywords internal
 check_is_package <- function(whos_asking = NULL) {
   if (is_package()) {
     return(invisible())
@@ -84,7 +84,7 @@ check_is_package <- function(whos_asking = NULL) {
 }
 
 
-
+#' @keywords internal
 get_objs_from_dots <- function(.dots) {
   if (length(.dots) == 0L) {
     usethis::ui_stop("Nothing to save.")
@@ -104,7 +104,7 @@ get_objs_from_dots <- function(.dots) {
 }
 
 
-
+#' @keywords internal
 use_dependency <- function(package, type, min_version = NULL) {
   stopifnot(rlang::is_string(package))
   stopifnot(rlang::is_string(type))
@@ -163,7 +163,7 @@ use_dependency <- function(package, type, min_version = NULL) {
   invisible()
 }
 
-
+#' @keywords internal
 check_files_absent <- function(paths, overwrite) {
   if (overwrite) {
     return()
@@ -179,19 +179,19 @@ check_files_absent <- function(paths, overwrite) {
 
 
 
-
+#' @keywords internal
 dots <- function(...) {
   eval(substitute(alist(...)))
 }
 
-
+#' @keywords internal
 version_spec <- function(x) {
   x <- gsub("(<=|<|>=|>|==)\\s*", "", x)
   numeric_version(x)
 }
 
 
-
+#' @keywords internal
 is_package <- function(base_path = usethis::proj_get()) {
   res <- tryCatch(rprojroot::find_package_root_file(path = base_path),
                   error = function(e) NULL)

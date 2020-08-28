@@ -40,3 +40,4 @@ can be safely overwritten and whether the data object can be overwritten.
 
 NOTE: this is experimental, warranty until the doorstep at best.
 }
+\keyword{internal}

@@ -346,7 +346,7 @@ length(emon)
 
 Let's take the first one.
 
-```{r chey, exercise = TRUE, exercise.setup = "emon-laden"}
+```
 Cheyenne <- emon$Cheyenne
 ```
 

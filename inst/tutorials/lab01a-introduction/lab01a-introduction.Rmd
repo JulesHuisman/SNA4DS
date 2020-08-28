@@ -416,25 +416,26 @@ library(sna)
 betweenness(friendship)
 ```
 
-```{r sna_inladen, message = FALSE, warning = FALSE, echo = FALSE, exercise.setup = "load_data"}
-try(library(sna), silent = TRUE)
-```
-
 Nice, and if you wanted to see the names of the actors next to their scores, you 
 could run:
 
-```{r library1a, exercise = TRUE, exercise.setup = "sna_inladen", message = FALSE, warning = FALSE}
+```{r load_data_and_sna, include = FALSE, message = FALSE, warning = FALSE}
+friendship <- SNA4DS:::lab1_friendship
+library(sna, quietly = TRUE)
+```
+
+
+```{r library1a, exercise = TRUE, exercise.setup = "load_data_and_sna", message = FALSE, warning = FALSE}
 data.frame(betweenness = betweenness(friendship), 
            names = network::get.vertex.attribute(friendship, "name"))
 ```
 
-###
 
 Well, that works nicely. You loaded the `sna` package and then could easily
 calculate the betweenness scores. Now, you want to use some of the
 functionalities from the `influenceR` package. Load that.
 
-```{r influenceR_laden, exercise = TRUE, exercise.setup = "sna_inladen"}
+```{r influenceR_laden, exercise = TRUE, exercise.setup = "library1a", message = TRUE, warning = TRUE}
 library(influenceR)
 ```
 
@@ -443,15 +444,15 @@ relative importance of the actors in the network. But first, what again were the
 betweenness scores for the actors in this network? Let's run our previous code
 again. Below, set the function name to `betweenness` and run the code.
 
-```{r influenceR_setup, warning = FALSE, message = FALSE, include = FALSE}
-try(detach(package:sna), silent = TRUE)
-library(influenceR)
-# load("nw_data.RData")
-# friendship <- g
-```
+<!-- ```{r influenceR_setup, warning = FALSE, message = FALSE, include = FALSE} -->
+<!-- try(detach(package:sna), silent = TRUE) -->
+<!-- library(influenceR) -->
+<!-- # load("nw_data.RData") -->
+<!-- # friendship <- g -->
+<!-- ``` -->
 
 
-```{r library_error, exercise = TRUE, exercise.setup = c("load_data", "influenceR_setup")}
+```{r library_error, exercise = TRUE, exercise.setup = "influenceR_laden"}
 ...(friendship)
 ```
 
@@ -497,7 +498,7 @@ explicitly that you can make a specific exception, use `::` always!
 
 Try it out. In the code block below, write the code such that it will calculate
 closeness scores on this friendship network using the `sna` package. The
-appropriate function is called `closeness`. As just agree upon, do not load the
+appropriate function is called `closeness`. As just agreed upon, do not load the
 `sna` package for this.
 
 ```{r library4, exercise = TRUE, exercise.setup = "library3"}
