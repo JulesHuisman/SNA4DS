@@ -411,7 +411,7 @@ detail). Run the following and see what happens:
 ```{r load_data, include = FALSE}
 friendship <- SNA4DS:::lab1_friendship
 ```
-
+![]()
 
 ```{r library1, message = FALSE, warning = FALSE, exercise = TRUE, exercise.setup = "load_data"}
 library(sna)
@@ -444,18 +444,13 @@ library(influenceR)
 You want to use the `influenceR` package to calculate some measures on the
 relative importance of the actors in the network. But first, what again were the
 betweenness scores for the actors in this network? Let's run our previous code
-again. Below, set the function name to `betweenness` and run the code.
+again. Below, we set the function name to `betweenness` and run the code.
 
-```{r influenceR_setup, warning = FALSE, message = FALSE, include = FALSE}
-library(sna, quietly = TRUE)
-library(influenceR, quietly = TRUE)
-friendship <- SNA4DS:::lab1_friendship
+```
+betweenness(friendship)
 ```
 
-
-```{r library_error, exercise = TRUE, exercise.setup = "influenceR_setup"}
-...(friendship)
-```
+<center><b><span style='background:red'>NOT A GRAPH OBJECT</span></b></center><br>
 
 Hey, what happened? Well, `influenceR` also has a function that is called
 `betweenness` and since you loaded `influenceR` last, the `betweenness` function
