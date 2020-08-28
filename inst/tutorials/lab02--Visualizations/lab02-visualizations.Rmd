@@ -53,7 +53,7 @@ The R environment allows us to do it already.
 x <- 1:10
 y1 <- x*x
 y2  <- 2*y1
-base::plot(x, y1, type = "b", pch = 19, 
+plot(x, y1, type = "b", pch = 19, 
             col = "red", xlab = "x", ylab = "y")
 ```
 
@@ -77,7 +77,7 @@ Let's check a first example with `igraph`
 library(igraph)
 set.seed(10000)
 igraphNet <- igraph::erdos.renyi.game(10, 2/10)
-base::plot(igraphNet)
+plot(igraphNet)
 ```
 
 This is the most basic network plot we can have. 
@@ -87,7 +87,7 @@ We can do a very similar one using `network`
 detach("package:igraph", unload = TRUE)
 library(intergraph)
 networkNet <- intergraph::asNetwork(igraphNet)
-base::plot(networkNet)
+plot(networkNet)
 ```
 
 
@@ -101,7 +101,7 @@ skills more sophisticated
 library(igraph)
 set.seed(10001)
 igraphNetLarge <- igraph::erdos.renyi.game(1000, 1/1000)
-base::plot(igraphNetLarge)
+plot(igraphNetLarge)
 
 ```
 
@@ -167,7 +167,7 @@ dealing with.
 
 Let's plot!
 ```{r plot1}
-base::plot(net) 
+plot(net) 
 ```
 
 We can do better than this... let's remove loops and plot it reducing the arrow 
@@ -175,7 +175,7 @@ size, removing the vertex label and curving the edges.
 
 ```{r plot2}
 net <- igraph::simplify(net, remove.multiple = F, remove.loops = T) 
-base::plot(net, 
+plot(net, 
            edge.arrow.size = .4, 
            vertex.label = NA, 
            edge.curved = .1)
@@ -188,7 +188,7 @@ Printing the media name (one of the attributes) instead of the label
 clarifies what we are trying to communicate. Let's do it, together
 with some aesthetic improvements!
 ```{r plot3}
-base::plot(net, 
+plot(net, 
            edge.arrow.size = .2, 
            edge.color = "orange",
            vertex.color = "orange", 
@@ -219,7 +219,7 @@ igraph::V(net)$label <- NA
 igraph::E(net)$arrow.size <- .2
 igraph::E(net)$edge.color <- "gray80"
 
-base::plot(net,
+plot(net,
            vertex.frame.color = "#ffffff",#node perimeter
            vertex.label = igraph::V(net)$media, 
            vertex.label.cex = 0.6,  # vertex label size
@@ -252,7 +252,7 @@ igraph::V(net)$label <- NA
 edge.start <- igraph::ends(net, es = igraph::E(net), names = F)[,1]
 edge.col <- igraph::V(net)$color[edge.start]
 
-base::plot(net,
+plot(net,
            vertex.frame.color = "#ffffff",#node perimeter
            vertex.label = igraph::V(net)$media, 
            vertex.label.cex = 0.6,  # vertex label size
@@ -289,7 +289,7 @@ igraph::E(net)$arrow.size <- .2
 igraph::E(net)$edge.color <- "gray80"
 
 graph_attr(net, "layout") <- layout_with_lgl # layout option added to the same code
-base::plot(net,
+plot(net,
            vertex.frame.color = "#ffffff",#node perimeter
            vertex.label = igraph::V(net)$media, 
            vertex.label.cex = 0.6,  # vertex label size
@@ -312,7 +312,7 @@ igraph::E(net)$arrow.size <- .2
 igraph::E(net)$edge.color <- "gray80"
 
 graph_attr(net, "layout") <- layout_in_circle # layout option added to the same code
-base::plot(net,
+plot(net,
            vertex.frame.color = "#ffffff",#node perimeter
            vertex.label = igraph::V(net)$media, 
            vertex.label.cex = 0.6,  # vertex label size
@@ -583,16 +583,16 @@ it wants.
 * Place the for loop as an argument in the `saveGIF` function
 
 ```{r dynamic6}
-plots <- base::list(p1, p2, p3)
+plots <- list(p1, p2, p3)
 
 # for loop to be inserted as the function argument
 # for (i in 1:length(plots)){
-#   base::print(plots[i])
+#   print(plots[i])
 #   }
 
 # animation::saveGIF(
 #   for (i in 1:length(plots)){
-#     base::print(plots[i])
+#     print(plots[i])
 #   }
 #   , movie.name = "attempt.gif")
 ```
@@ -649,13 +649,13 @@ library(networkD3)
 
 ```{r dynamic8}
 # make node IDs numeric
-links.d3 <- base::data.frame(from = as.numeric(factor(links$from))-1, 
+links.d3 <- data.frame(from = as.numeric(factor(links$from))-1, 
                              to = as.numeric(factor(links$to))-1 )
 
 # Uses the name of the media as node ID used as a factor variable.  
 # We create the idn variable so we do not overscribe the original variable 
 # a factor
-nodes.d3 <- base::cbind(idn = factor(nodes$media, levels = nodes$media), nodes) 
+nodes.d3 <- cbind(idn = factor(nodes$media, levels = nodes$media), nodes) 
 
 networkD3::forceNetwork(Links = links.d3, Nodes = nodes.d3, Source = "from", Target = "to",
                         NodeID = "idn", Group = "type.label",linkWidth = 1,
@@ -689,7 +689,7 @@ Temporal Data
 
 ```{r dynamic10}
 utils::data(short.stergm.sim)
-base::class(short.stergm.sim)
+class(short.stergm.sim)
 utils::head(as.data.frame(short.stergm.sim))
 ```
 
