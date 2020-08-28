@@ -94,6 +94,7 @@ see the result of your code by clicking the _Run Code_ button.
 Try it. Write the R code required to add two plus two:
 
 ```{r two-plus-two, exercise=TRUE}
+...
 ```
 
 Actually, we often want you to write some code and then check whether your code 
@@ -411,6 +412,7 @@ detail). Run the following and see what happens:
 friendship <- SNA4DS:::lab1_friendship
 ```
 
+
 ```{r library1, message = FALSE, warning = FALSE, exercise = TRUE, exercise.setup = "load_data"}
 library(sna)
 betweenness(friendship)
@@ -474,7 +476,14 @@ package.
 
 Try it out:
 
-```{r library3, exercise = TRUE, exercise.setup = "library_error"}
+```{r influenceR_setup2, warning = FALSE, message = FALSE, include = FALSE}
+library(sna, quietly = TRUE)
+library(influenceR, quietly = TRUE)
+friendship <- SNA4DS:::lab1_friendship
+```
+
+
+```{r library3, exercise = TRUE, exercise.setup = "influenceR_setup2"}
 sna::betweenness(friendship)
 ```
 
