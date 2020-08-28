@@ -21,7 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Claudia Zucca \email{Claudia.Zucca@jads.nl}
+  \item Claudia Zucca \email{C.Zucca@jads.nl}
 }
 
 }

@@ -362,7 +362,7 @@ ggplot2::ggplot(mtcars)
 ```
 
 
-Then we had the variable of interest
+Then we add the variable of interest
 
 ```{r ggplotexample1}
 # variables of interest mapped
@@ -720,7 +720,7 @@ ndtv::render.d3movie(short.stergm.sim,
 ```
 
 Take into account the box header needs to be set to
-_r name-of-your-choice,results = 'asis'_.
+_r name-of-your-choice, results = 'asis'_.
 
 Very complex visualizations can be displayed with the `ndtv` and we might use it 
 again later in the semester. However, we need to grasp a better understanding of
