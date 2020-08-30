@@ -26,6 +26,7 @@ Imports:
 	glue,
 	gradethis,
   igraph (>= 1.2.5),
+  igraphdata,
 	influenceR,
 	intergraph (>= 2.0),
 	learnr (>= 0.10.1),
