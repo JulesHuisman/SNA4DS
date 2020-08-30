@@ -38,6 +38,7 @@ Imports:
 	rlang,
 	rprojroot,
 	rstudioapi (>= 0.11),
+	sna,
 	statnet,
 	stats,
 	usethis,
