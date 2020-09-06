@@ -20,15 +20,15 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-### Introduction
+## Introduction
 Welcome to the third tutorial in the series of __Social Network Analysis for Data Science__!
-This week is devoted to an introduction to measuring networks in r. A more advanced tutorial, 
-Measure II, will follow next week.
+This week is devoted to an introduction to measuring networks in r. 
+Another tutorial, Measure II, will follow next week.
 
-In this tutorial you will familiarize with network data and, 
+In this tutorial, you will familiarize with network data and, 
 try to code some of the topics we covered in the class.
 
-## Let's get started
+### Let's get started
 
 
 ```{r testquiz}
@@ -41,17 +41,16 @@ and what does this imply for the understanding of the social reality.", correct 
 ```
 
 
-### Network structures
-
-In class we covered some standard network structures. Let's explore them 
-together.
+## Network structures
+In class, we covered some standard network structures. 
+Let's explore them together.
 
 `igraph` allows you to generate networks with regular structures.
 
-In the following example we use the function `igraph::make_full_graph` 
+In the following example, we use the function `igraph::make_full_graph` 
 to generate a fully connected graph with 10 nodes. 
 
-## Full Graph
+### Full Graph
 ```{r full_graph, echo = TRUE, include = TRUE, exercise = TRUE}
 library(igraph)
 full <- igraph::make_full_graph(10, directed = FALSE, loops = FALSE)
@@ -61,9 +60,9 @@ plot(full)
 ```
 
 
-The previous chunk of code generated and plotted a fully connected graph 
-with 10 nodes. Try to substitute 10 with 100 and 3, and observe 
-what happens if you reduce and increase the number of nodes. 
+The previous chunk of code generated and plotted a fully connected graph with 
+10 nodes. Try to substitute 10 with 100 and 3, and observe what happens if you 
+reduce and increase the number of nodes. 
 
 Independently of the number of nodes you choose, it is going 
 to be fully connected. 
@@ -73,16 +72,15 @@ can also try to generate and plot a directed graph, by setting
 the parameter `directed` to `TRUE`. 
 
 
-## Star
-In the following chunk we generate another standard shape, 
+### Star
+In the following chunk, we generate another standard shape, 
 the star.  
 
-Please note that I'm skiping a passage here and putting the star
-function directly into the plot function. This implies that my 
-star is not stored as a variable in my `r` environment.
+Please note that I'm skipping a passage and putting the star
+function directly into the plot function. This implies that 
+my star is not stored as a variable in my `r` environment.
 In this case, it will print, that it's what I need now,
 but it won't be saved for future work. 
-
 
 
 ```{r star, echo = TRUE, include = TRUE, exercise = TRUE}
@@ -91,30 +89,32 @@ plot(igraph::make_star(10, mode = "out"))
 ```
 
 
-This time we generated a directed graph. In this case too you can 
-have different kind o ties. But the way to do it it is different 
-from the previous function even if they both belong to `igraph`.
-There is no common standard due to the participation of different
-developers to the package. This means that you need to check the 
-help file every time. In this case you use `?igraph::make_star`. 
-There are three more possible options after "out" that you 
-specify with the parameter `mode`: "in",  "mutual", "undirected".
+This time we generated a directed graph. In this case too, 
+you can have different kinds of ties. But the way to do it 
+is different from the previous function even if they both 
+belong to `igraph`.
+There is no common standard due to the participation of 
+different developers that contributed to the package. 
+This means that you need to check the help file every time. 
+In this case, you use `?igraph::make_star`. 
+There are three more possible arguments after "out" to be 
+specified with the parameter `mode`: "in",  "mutual", "undirected".
 Try them and see what happens before moving on to the next regular
 structure!
 
 
-## Ring
+### Ring
 
 Our next shape is the Ring
 
 ```{r ring, echo = TRUE, include = TRUE, exercise = TRUE}
-plot(print_all(igraph::make_ring(10, directed = TRUE, mutual = TRUE)))
+plot(igraph::make_ring(10, directed = TRUE, mutual = TRUE))
 ```
 
 This is also directed. To make it undirected you need to set two 
 parameters to `FALSE`.
 
-## Linear
+### Linear
 The next regular shape we plot is a linear one. The linear shape is
 just like a ring that is missing one edge. 
 
@@ -130,33 +130,33 @@ ring <- ring - edge("e|f") # removing the edge that goes from node e to f
 plot(ring)
 
 ```
-We could also have removed one edge calling it by name.
+We could also have removed one edge calling it by its name.
 Try to add up this further chunk of code and see what happens:
 `ring <- ring - edge("A")
 plot(ring)`
 
 
-## Tree
+### Tree
 
-As we have seen in the lecture a tree is a very weird network type. 
+As we have seen in the lecture, a tree is a peculiar network type. 
 If you type `?igraph::make_tree` in your console, you find out that
 the second parameter you pass on is the number of children. In the
-following example there are three of them
+following example, there are two of them.
+
 ```{r tree, echo = TRUE, include = TRUE, exercise = TRUE}
 plot(igraph::make_tree(10, 2, mode = "out"))
 ```
 
-While the first parameter is obviously the number of nodes, the
+While the first parameter is the number of nodes, the
 `children` parameters is setting the number of connection of a node. 
-In this case the number of `out` connection. Try also 'in' and
+In this case, the number of `out` connection. Try also 'in' and
 'undirected' and see how the tree changes. 
 
 
-
-## Make Lattice
+### Lattice
 
 The lattice is one of the most fascinating shape we will ever 
-study in network theory. The following code and print a squared one
+study in network theory. The following code prints a squared one
 
 ```{r lattice, echo = TRUE, include = TRUE, exercise = TRUE}
 
@@ -166,10 +166,10 @@ plot(igraph::make_lattice(length = 5, dim = 2))
 # plot(igraph::make_lattice(c(5, 5, 5)))
 ```
 
-But also comment the first line of code and  make the second line run
+But try also to comment the first line of code and make the second line run
 to observe how a lattice can also be!
 
-## Combine Graphs
+### Combine Graphs
 
 These shapes have a theoretical relevance per se, but they
 are also helpful if we want to create graphs with specific
@@ -200,9 +200,12 @@ plot(net)
 
 ```
 
-### Watch the Matrix!
 
-Networks (graphs) are matrices and they speak matrix algebra.
+
+## Watch the Matrix!
+
+
+Networks (graphs) are matrices, and they speak matrix algebra.
 The easiest way to CLEARLY understand network structures is from 
 observing a matrix.
 
@@ -214,8 +217,8 @@ mat <- matrix(0, 3, 3)
 
 mat
 ```
-If a network is undirected the matrix is symmetrical along the 
-diagonal, since the tie is reciprocal
+If a network is undirected, the matrix is symmetrical along the 
+diagonal since the tie is reciprocal.
 
 ```{r mat_sym,  echo = TRUE, include = TRUE, exercise = TRUE}
 mat[2,1] <- 1
@@ -234,10 +237,10 @@ plot(g)
 ```
 
 
-In case the matrix is not symmetrical, 
+In case the matrix is not symmetrical, we should plot it as a direct graph.
 
 ```{r mat_on-sym, echo = TRUE, include = TRUE, exercise = TRUE}
-
+# make the matrix not symmetrical
 mat[1,3] <- 1
 
 g <- igraph::graph_from_adjacency_matrix(mat, mode = 'directed')
@@ -245,61 +248,61 @@ plot(g)
 
 ```
 
-We should plot it as a direct graph. Note that `ìgraph` doesn't know 
-if your data is symmetrical or not. If you set 'undirected' for a 
-non-symmetrical matrix, it will plot anyway. Normally you get this 
-information from the data collection. Otherwise always check the
-matrix
+Note that `ìgraph` doesn't know if your data is symmetrical or not. 
+If you set 'undirected' for a non-symmetrical matrix, it will plot it
+anyway. You usually get this information from the data collection. 
+Otherwise, always check the matrix.
 
 ```{r mat_non-sym_check, echo = TRUE, include = TRUE, exercise = TRUE}
 isSymmetric(mat)
 ```
 
-
+When you are unsure about some network theory, my advice is to
+generate a small matrix and make experiments to check how it works!
 
 Ah yes sorry about the title, but in case of misunderstanding,
 the Matrix movie is not relevant for this section! :)
 
 
 
-### Media Network
+## Measuring the Media Network
 
 After pure theoretical network shapes, we move back to our 
 beloved social sphere and get back to the media network 
 we employed in the previous tutorial already. Even if we 
 plotted it in many different ways we still know nothing 
-about it and we are not able to fully answer any research
-question concerning this network yet.
+about it, and we cannot fully answer any research question 
+concerning this network yet.
 
 
-```{r import data}
+```{r import data, echo = TRUE, include = TRUE}
 nodes <- read.csv("Dataset1-Media-Example-NODES.csv", header=T, as.is=T)
 links <- read.csv("Dataset1-Media-Example-EDGES.csv", header=T, as.is=T)
 
 net <- igraph::graph_from_data_frame(d=links, vertices=nodes, directed=T) 
 net
 ```
-What do we know? We have 17 nodes and 49 edgesFor what concerns
-the nodes we know their name, what type of media  they are
-(Newspaper, TV, Online) and the size of the audience. 
-For what concern the edge we know the type and the weight. We
-will come back to the type later. For now, let's pretend it's 
-one type only.
+What do we know now? We have 17 nodes and 49 edges. For 
+what concerns the nodes we know their name, what type of 
+media  they are (Newspaper, TV, Online) and the size of 
+the audience. About the edges, we know the type and the 
+weight. We will come back to the type in the following weeks. 
+For now, let's pretend it's one type only.
 
 
-## Distance in a Network
+### Distance in a Network
 
-When we talk about distance in a network we are looking for
+When we talk about distance in a network, we are looking for
 the number of edges that separate one node from another in 
-the same network provided that these two nodes are connected.
-This distance between two nodes is called path and its length
+the same graph provided that these two nodes are connected.
+This distance between two nodes is called a path, and its length
 is the number of links. The sequence of alternating nodes
-and edges in a path is called walk. If it is possible to get 
+and edges in a path is called a walk. If it is possible to get 
 from one node to the other, the other is reachable. 
 
 If we use `igraph::distances` we get a table with all the 
-distances between each pair of nodes
-from ``
+distances between each pair of nodes.
+
 ```{r distances, echo = TRUE, include = TRUE, exercise = TRUE}
 igraph::distances(net, mode = "all")
 
@@ -311,11 +314,10 @@ of connections only.
 
 
 ### Shortest Path
-
-The shortest path, or geodesic between two pair of vertices is
-a path with the minimal number of vertices. The `igraph::shortest_paths`
-function shows the shortest path from a given node (in the example 
-below s01) and all the other nodes.
+The shortest path, or geodesic, between a pair of vertices, is
+a path with minimal vertices. The `igraph::shortest_paths`
+function shows the shortest path from a given node (in the 
+example below s01) and all the other nodes.
 
 ```{r shortest_path, echo = TRUE, include = TRUE, exercise = TRUE}
 
@@ -325,15 +327,15 @@ igraph::shortest_paths(net, "s01", to = V(net), mode =  "all", output = "vpath")
 ```
 Note that: 
 
-1) it provides the distance also from the node itself
-2) the distance the be expressed both with nodes or paths. 
+1) it provides the distance also from the node itself.
+2) the distance can be expressed both with nodes or paths. 
 
 Check the help file `?igraph::shortest_paths` to check what the 
 parameters `predecessors` and `inbound_edges` do.
 
 
 
-## Diameter
+### Diameter
 
 The diameter is the longest shortest path in the networks.
 
@@ -345,16 +347,15 @@ igraph::diameter(net)
 
 ```
 
+
 The diameter can be useful in many ways. For instance, if 
-you have several 
-snapshots of the same network that evolves over time and 
-you want to compare how relationships between pair of
-nodes changed on the structural level.
+you have several snapshots of the same network that evolves 
+over time and you want to compare how relationships between 
+pair of nodes changed at the structural level.
 
-But there are other measures that can help us comparing 
-networks
+But other measures can also help us compare networks
 
-## Average path length
+### Average path length
 
 The average path length tells us the average distance 
 between each pair of nodes. 
@@ -364,13 +365,14 @@ mean_distance(net)
 A fully connected network has average path length of 1, 
 since every single node is connected to any other.
 
-## Density and Sparsity
+### Density and Sparsity
 
 The density of a graph is the ratio of the number of 
 edges and the number of possible edges.
 Network density tells you the extent to which a network
 is connected. We call sparse a network with very few 
-connection and dense one with many connections.
+connections and dense, one with many connections.
+
 ```{r density, echo = TRUE, include = TRUE, exercise = TRUE}
 igraph::edge_density(net, loops=TRUE)  
 
@@ -383,135 +385,291 @@ specify whether the network is directed or undirected.
 
 You have to pass the network in the right way. Our
 network is directed, so we did right, but if we want
-also to check the undirected density we can
+also to check the undirected density we can do it as 
+shown in the following example
 
 ```{r density_undirected, echo = TRUE, include = TRUE, exercise = TRUE}
 
 igraph::edge_density(as.undirected(net), loops=TRUE) 
 
 ```
-Anyway remember that measures per se tell you nothing. They only 
+
+Anyway, remember that measures per se tell you nothing. They only 
 help you if they are used to support a theoretical argument.
-If I tell you that I had 5 ice creams you cannot really 
-understand what I'm talking about. If I say 5 ice creams 
-in one hour you would tell me to slow down that it's not healthy. 
-If I had 5 ice creams the all summer you could ask me if 
-I'm on a diet. The context (theory for us) makes the measure 
-meaningful. 
+If I tell you that I had five ice creams, you cannot understand 
+what I'm talking about. 
+If I say five ice creams in one hour, you would tell me to slow 
+down that it's not healthy. 
+If I had five ice creams in the last six months, you could ask me if 
+I'm on a diet. The context (theory for us) makes the measure meaningful. 
 
 
+## Node Degree
 
+Another significant measure that helps in understanding networks is 
+the degree of the nodes. 
+Node degree is the number of edges connected to the node. To measure 
+the degree of each node, we use the `degree` function from the `igraph`
+package. 
 
-### Node Degree
+```{r degree_directed, echo = TRUE, include = TRUE, exercise = TRUE}
 
-
-```{r}
-igraph::degree(friends, v = V(friends), mode = "all",loops = TRUE, normalized = FALSE)
-
-igraph::degree(friends, v = V(friends), mode = "out", loops = TRUE, normalized = FALSE)
-
-igraph::degree(friends, v = V(friends), mode = "in", loops = TRUE, normalized = FALSE)
-
-igraph::degree(friends, v = V(friends), mode = "total", loops = TRUE, normalized = FALSE)
-
-Ufriends <- as.undirected(friends)
-
-degree <- igraph::degree(Ufriends, v = V(Ufriends), mode = "all", loops = TRUE, normalized = FALSE)
-# each output gives the same answer
-
-degree_distribution(graph, cumulative = FALSE, ...)
-
-library(xtable)
-nodes <- igraph::V(friends)$name <- letters[1:10]
-
-(graph <- data.frame(cbind(nodes, degree)))
-
-```
-
-
-
-## Eulerian Path
-```{r}
-
-```
-
-
-
-### weighted networks
-
-```{r}
-igraph::ecount(friends)
-
-igraph::E(friends)$weight <-base::floor(stats::runif(igraph::ecount(friends), min=0, max=20))
-
-
-E.list <- as.data.frame(igraph::as_edgelist(friends))
-
-E.list <- cbind(E.list, E(friends)$weight)
-
-colnames(E.list) <- c("ego", "alter", "weight")
-
-
-
-```
-
-## Strenght
-```{r}
-strength(friends) ### inserisco???
-```
-
-
-
-
-### Network Components
-
-## Subgraphs
-```{r}
-
-u2 <- induced_subgraph(friends, 1:7)
-plot(friends)
-plot(u2)
-u3 <- subgraph.edges(u, 1:5, 1:5)
+# out degree
+igraph::degree(net, v = V(net), mode = "out", loops = TRUE, normalized = FALSE)
+# in degree
+igraph::degree(net, v = V(net), mode = "in", loops = TRUE, normalized = FALSE)
+# total degree
+igraph::degree(net, v = V(net), mode = "total", loops = TRUE, normalized = FALSE)
 
 
 
 ```
 
 
-## Cliques
-```{r}
-cliques(friends, min = 2, max = 3) ## all the cliques beween min e max n nodes
 
-largest_cliques(friends)
+Since our network is directed, we can specify three options for 
+the estimation of the degree. Each line in the output corresponds 
+respectively to ''out'', ''in'' and ''total'' degree. 
+Again, out-degree is the numbers of ties coming from a 
+specific node, in degree, is the number of ties received, 
+and the total is the sum of the two.
 
-max_cliques(friends)
+We can calculate the undirected version too (sometimes 
+it helps!)
+
+
+```{r degree_undirected, echo = TRUE, include = TRUE, exercise = TRUE}
+Unet <- as.undirected(net)
+
+igraph::degree(Unet, v = V(Unet), mode = "all", loops = TRUE, normalized = FALSE)
+
 ```
 
-## Assortativity degree
-```{r}
-assortativity_degree
+
+
+Pay attention to the fact that undirected degree and total
+degree have different results! 
+If you consider the network as directed, some ties are counted 
+twice if the relationship is not mutual. This condition is not 
+valid for undirected, where there can be only one tie between two
+nodes.
+
+Remember, if you write the code the way I did now, you are 
+just printing the node degree in your console. If you need
+to work with that, you need to save it into a variable.
+
+
+## Weighted Networks
+
+Sometimes we need to describe relationships that are more 
+articulated than a simple connection. One situation that we
+often encounter in life is the need to understand the intensity
+of a relationship. If someone texts you one time only, you 
+can hardly call him a friend. If this person texts you three 
+times per week, you can claim you are closed, but not as much 
+as if they text you three times per hour. In network terms, we 
+express this with an edge attribute called weight. 
+
+In our media data set, the weight expresses how often these
+media mention or provide a hyperlink connecting to 
+another media (type). For now, let's assume that mentioning 
+and linking is the same, and let's just check how often
+they do so. 
+
+
+
+```{r weight, echo = TRUE, include = TRUE, exercise = TRUE}
+library(ggraph)
+ggraph::ggraph(net, layout = 'stress') + 
+  ggraph::geom_edge_arc(aes(width = weight), color = 'grey', strength = 0) + 
+  ggraph::geom_node_point(size = 4) + 
+  ggraph::geom_node_text(aes(label = media), size = 4, color = "black", repel = T) +
+  ggplot2::ggtitle("Media Weighted Plot") +
+  ggplot2::theme_void() 
 ```
 
-## Measure Homophiliy
-
-### Bipartite Networks
-
-```{r}
-g <- make_bipartite_graph( rep(0:1,length=10), c(1:10))
-print(g, v=TRUE)
-
-plot(g)
 
 
-g <- make_full_bipartite_graph(6,3)
-proj <- bipartite_projection(g)
-graph.isomorphic(proj[[1]], make_full_graph(10))
-graph.isomorphic(proj[[2]], make_full_graph(5))
+From the plot, we can immediately see that some relationships are
+more intense than others. A simple visualization can readily help 
+us understand the situation and formulate hypotheses on why some 
+relationships are more intense than others. 
 
-plot(g)
+You need to think in causal terms. Are more intense relationships
+the cause or the consequence of some other event? Are they the 
+independent or the dependent variable in our causal model? 
+
+
+Weight is a very crucial and versatile network attribute that
+allows several sophisticated network manipulations and it's 
+widely employed in network models. 
+
+Weight can be expressed both as an edge attribute and as an
+adjacency matrix that rather than being filled with 0s and 1s,
+it is filled with the corresponding weights. 
+
+### Strength
+
+When we deal with weighted networks, the degree provides only 
+partial information since this measure does not account for 
+the weight of the edges, but only for the raw number. 
+
+To address this problem, we can use a measure of strength that
+balances degree and weight. 
+
+
+
+```{r strength, echo = TRUE, include = TRUE, exercise = TRUE}
+igraph::strength(net) 
+```
+
+
+According to the kind of analysis your are doing you should
+decide whether it is more helpful to use degree or strength.
+
+
+## Network Components
+
+Real-life networks are composed of regular shapes that can be 
+subsetted and analyzed more closely to make sense of their structure. 
+These parts are called components, or subgraphs.
+
+
+
+### Subgraphs
+We can eliminate some nodes from the network in order to 
+focus on the remaining ones that we selected according to
+some criteria. The function `igraph::induced_subgraph`, keeps
+only the nodes mentioned as an argument.
+
+
+
+```{r subgraph, echo = TRUE, include = TRUE, exercise = TRUE}
+
+sub <- igraph::induced_subgraph(net, c('s01','s02'))
+# sub <- igraph::induced_subgraph(net, 1:7)
+
+sub
+# plot(sub)
+
+```
+
+All the attributes are unchanged, but every other node disappeared. 
+You can also call the nodes by number. 
+Try to run the second line of code and comment on the first one instead.
+Try to plot them too, to observe the subgraph.
+
+Explore the `igraph ` documentation to find other functions to
+create subgraphs.
+
+
+
+### Cliques
+
+A clique is a fully connected subset of nodes in an undirected graph.
+The function `igraph::cliques` allows you to find the number of cliques
+comprised of a certain number of nodes that you specify with the `min`
+and `max` parameters. 
+
+```{r cliques, echo = TRUE, include = TRUE, exercise = TRUE }
+igraph::cliques(net, min = 4, max = 6) ## all the cliques beween min e max n nodes
+
+# igraph::largest_cliques(net)
+# 
+# igraph::max_cliques(net)
+```
+
+Try to change the number of nodes and try the other two functions.
+
+
+## Assortativity
+
+Assortativity represents to what extent nodes in a
+network associate with other nodes in the network, 
+being of similar sort or being of opposing kind.
+
+One of the most popular measures of assortativity
+concerns to the degree of the nodes.
+
+
+### Assortativity degree
+```{r assort_degree, echo = TRUE, include = TRUE, exercise = TRUE }
+# random graph
+assortativity_degree(sample_gnp(10000, 3/10000))
+
+# preferential attachment
+assortativity_degree(sample_pa(10000, m=4))
+
+# media network
+assortativity_degree(net)
+```
+
+
+A random network has an assortativity degree level closed
+to zero; while a real network is more likely to show
+some pattern since nodes tends to be connected 
+for some reason. Networks characterized by
+preferential attachment tend to be dissortative.
+
+Aka, nodes have things in common.
+
+We can also check the assortativity according to
+nodes attributes. For instance, according to the 
+audience size of each media.
+
+```{r assort, echo = TRUE, include = TRUE, exercise = TRUE}
+
+assortativity(net, V(net)$audience.size, directed=T)
+
+```
+
+If two nodes are connected and represent people 
+that share the same behavior we talk of homophily. 
+
+
+
+## Bipartite Networks
+
+Bipartite networks are graphs that express relationships
+between two sets of objects, such as people and clubs. 
+In contrast, one mode networks only focus on one set of
+objects. For example, people only. If we extend the concept to 
+N set of objects, we will have N-partite graphs.  
+
+`igraph` allows us to create bipartite data. Let's try out!
+
+```{r bipatite_gen, echo = TRUE, include = TRUE, exercise = TRUE}
+
+g <- igraph::make_full_bipartite_graph(6,3)
+g
+
+```
+
+We can also plot it with a special layout for bipartite
+
+```{r bipatite_plot, echo = TRUE, include = TRUE, exercise = TRUE}
+plot(g, vertex.label = NA, vertex.size = 7, layout = igraph::layout.bipartite)
+```
+
+
+Try to plot it with another layout for one-mode networks.
+
+We might also want to project our bipartite graph so it represents 
+the relationships within one set of object at a time.
+
+```{r bipatite_proj, echo = TRUE, include = TRUE, exercise = TRUE}
+
+proj <- igraph::bipartite_projection(g)
 plot(proj[[1]])
-plot(proj[[2]])
-
+# plot(proj[[2]])
 
 ```
 
+If it's bipartite, there are two sets, hence two projections.
+Try out both. Do you understand the difference?
+
+
+In the Lab about data manipulation we will explore real
+bipartite data.
+
+See you next week!
