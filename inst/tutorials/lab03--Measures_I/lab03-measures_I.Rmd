@@ -126,7 +126,7 @@ That's exactly how we are going to generate it then!
 ring <- igraph::make_ring(10)
 igraph::V(ring)$name <- letters[1:10] # naming nodes
 igraph::E(ring)$name <- LETTERS[1:10] # naming edges
-ring <- ring - edge("e|f") # removing the edge that goes from node e to f
+ring <- ring - igraph::edge("e|f") # removing the edge that goes from node e to f
 plot(ring)
 
 ```
@@ -180,7 +180,9 @@ G1 <- igraph::make_tree(10, 2, mode = "out")
 
 G2 <- igraph::make_star(10, mode = "out")
 
-net <- G1 %u% G2
+net <- igraph::union(G1,G2)
+# same as above written differently -it might not run in the tutorial
+# net <- G1 %u% G2 
 
 plot(net)
 
@@ -194,7 +196,10 @@ net1 <- igraph::graph_from_literal(D-A:B:F:G, A-C-F-A, B-E-G-B, A-B, F-G,
                   H-F:G, H-I-J)
 net2 <- igraph::graph_from_literal(D-A:F:Y, B-A-X-F-H-Z, F-Y)
 
-net <- net1 %u% net2
+
+net <- igraph::union(net1,net2)
+# same as above written differently -it might not run in the tutorial
+# net <- net1 %u% net2
 
 plot(net)
 
@@ -253,7 +258,7 @@ plot(g)
 In case the matrix is not symmetrical, we should plot it as a direct graph.
 
 ```{r mat_on-sym, echo = TRUE, include = TRUE, exercise = TRUE}
-# make the matrix not symmetrical
+# make a not symmetrical matrix
 
 mat <- matrix(0, 3, 3)
 mat[1,3] <- 1
@@ -293,25 +298,27 @@ about it, and we cannot fully answer any research question
 concerning this network yet.
 
 
+```{r load_media_net, include = FALSE}
+media_net <- SNA4DS:::media_net
+
+```
+
+
 ```{r media_net, echo = TRUE, include = TRUE}
 nodes <- read.csv("Dataset1-Media-Example-NODES.csv", header=T, as.is=T)
 links <- read.csv("Dataset1-Media-Example-EDGES.csv", header=T, as.is=T)
 
 media_net <- igraph::graph_from_data_frame(d=links, vertices=nodes, directed=T) 
-
+media_net
 ```
+
+
 What do we know now? We have 17 nodes and 49 edges. For 
 what concerns the nodes we know their name, what type of 
 media  they are (Newspaper, TV, Online) and the size of 
 the audience. About the edges, we know the type and the 
 weight. We will come back to the type in the following weeks. 
 For now, let's pretend it's one type only.
-
-
-
-```{r load_media_net, include = FALSE}
-media_net <- SNA4DS:::media_net
-```
 
 
 ### Distance in a Network
@@ -345,7 +352,7 @@ example below s01) and all the other nodes.
 
 ```{r media_net_shortPath, exercise = TRUE, exercise.setup = "load_media_net"}
 
-igraph::shortest_paths(media_net, "s01", to = V(media_net), mode =  "all", output = "vpath")
+igraph::shortest_paths(media_net, "s01", to = igraph::V(media_net), mode =  "all", output = "vpath")
   
 
 ```
@@ -366,9 +373,6 @@ The diameter is the longest shortest path in the networks.
 ```{r media_net_diameter, exercise = TRUE, exercise.setup = "load_media_net"}
 igraph::diameter(media_net)
 
-
-# mean_distance(friends)
-
 ```
 
 
@@ -384,7 +388,7 @@ But other measures can also help us compare networks
 The average path length tells us the average distance 
 between each pair of nodes. 
 ```{r media_net_meanDist, exercise = TRUE, exercise.setup = "load_media_net"}
-mean_distance(media_net)
+igraph::mean_distance(media_net)
 ```
 A fully connected network has average path length of 1, 
 since every single node is connected to any other.
@@ -414,7 +418,7 @@ shown in the following example
 
 ```{r media_net_distancesUnd, exercise = TRUE, exercise.setup = "load_media_net"}
 
-igraph::edge_density(as.undirected(media_net), loops=TRUE) 
+igraph::edge_density(igraph::as.undirected(media_net), loops=TRUE) 
 
 ```
 
@@ -439,11 +443,11 @@ package.
 ```{r media_net_degreeDir, exercise = TRUE, exercise.setup = "load_media_net"}
 
 # out degree
-igraph::degree(media_net, v = V(media_net), mode = "out", loops = TRUE, normalized = FALSE)
+igraph::degree(media_net, v = igraph::V(media_net), mode = "out", loops = TRUE, normalized = FALSE)
 # in degree
-igraph::degree(media_net, v = V(media_net), mode = "in", loops = TRUE, normalized = FALSE)
+igraph::degree(media_net, v = igraph::V(media_net), mode = "in", loops = TRUE, normalized = FALSE)
 # total degree
-igraph::degree(media_net, v = V(media_net), mode = "total", loops = TRUE, normalized = FALSE)
+igraph::degree(media_net, v = igraph::V(media_net), mode = "total", loops = TRUE, normalized = FALSE)
 
 
 
@@ -463,9 +467,9 @@ it helps!)
 
 
 ```{r media_net_degreeUnd, exercise = TRUE, exercise.setup = "load_media_net"}
-Umedia_net <- as.undirected(media_net)
+Umedia_net <- igraph::as.undirected(media_net)
 
-igraph::degree(Umedia_net, v = V(Umedia_net), mode = "all", loops = TRUE, normalized = FALSE)
+igraph::degree(Umedia_net, v = igraph::V(Umedia_net), mode = "all", loops = TRUE, normalized = FALSE)
 
 ```
 
@@ -619,13 +623,13 @@ concerns to the degree of the nodes.
 ### Assortativity degree
 ```{r media_net_assortDeg, exercise = TRUE, exercise.setup = "load_media_net"}
 # random graph
-assortativity_degree(sample_gnp(10000, 3/10000))
+igraph::assortativity_degree(igraph::sample_gnp(10000, 3/10000))
 
 # preferential attachment
-assortativity_degree(sample_pa(10000, m=4))
+igraph::assortativity_degree(igraph::sample_pa(10000, m=4))
 
 # media network
-assortativity_degree(media_net)
+igraph::assortativity_degree(media_net)
 ```
 
 
@@ -643,7 +647,7 @@ audience size of each media.
 
 ```{r media_net_assort, exercise = TRUE, exercise.setup = "load_media_net"}
 
-assortativity(media_net, V(media_net)$audience.size, directed=T)
+igraph::assortativity(media_net, igraph::V(media_net)$audience.size, directed=T)
 
 ```
 
