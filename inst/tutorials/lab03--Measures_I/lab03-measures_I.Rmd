@@ -4,7 +4,7 @@ output:
   learnr::tutorial:
     fig_caption: no
     progressive: true
-    allow_skip: no
+    allow_skip: true
     # toc: true
     # toc_depth: 2
     theme: readable
@@ -16,7 +16,7 @@ runtime: shiny_prerendered
 library(learnr)
 library(gradethis)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
@@ -217,10 +217,17 @@ mat <- matrix(0, 3, 3)
 
 mat
 ```
+
+
+
+
 If a network is undirected, the matrix is symmetrical along the 
 diagonal since the tie is reciprocal.
 
-```{r mat_sym,  echo = TRUE, include = TRUE, exercise = TRUE}
+
+
+```{r mat_sym, echo = TRUE, include = TRUE, exercise = TRUE }
+mat <- matrix(0, 3, 3)
 mat[2,1] <- 1
 mat[1,2] <- 1
 mat[3,2] <- 1
@@ -231,7 +238,13 @@ isSymmetric(mat)
 ```
 if we import it into `igraph` we can plot it 
 
-```{r mat_sym_plot, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r mat_sym_plot, echo = TRUE, include = TRUE, exercise = TRUE }
+
+mat <- matrix(0, 3, 3)
+mat[2,1] <- 1
+mat[1,2] <- 1
+mat[3,2] <- 1
+mat[2,3] <- 1
 g <- igraph::graph_from_adjacency_matrix(mat, mode = 'undirected')
 plot(g)
 ```
@@ -241,6 +254,8 @@ In case the matrix is not symmetrical, we should plot it as a direct graph.
 
 ```{r mat_on-sym, echo = TRUE, include = TRUE, exercise = TRUE}
 # make the matrix not symmetrical
+
+mat <- matrix(0, 3, 3)
 mat[1,3] <- 1
 
 g <- igraph::graph_from_adjacency_matrix(mat, mode = 'directed')
@@ -253,7 +268,10 @@ If you set 'undirected' for a non-symmetrical matrix, it will plot it
 anyway. You usually get this information from the data collection. 
 Otherwise, always check the matrix.
 
-```{r mat_non-sym_check, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r mat_non-sym_check, echo = TRUE, include = TRUE, exercise = TRUE,}
+
+mat <- matrix(0, 3, 3)
+mat[1,3] <- 1
 isSymmetric(mat)
 ```
 
@@ -275,12 +293,12 @@ about it, and we cannot fully answer any research question
 concerning this network yet.
 
 
-```{r import data, echo = TRUE, include = TRUE}
+```{r media_net, echo = TRUE, include = TRUE}
 nodes <- read.csv("Dataset1-Media-Example-NODES.csv", header=T, as.is=T)
 links <- read.csv("Dataset1-Media-Example-EDGES.csv", header=T, as.is=T)
 
-net <- igraph::graph_from_data_frame(d=links, vertices=nodes, directed=T) 
-net
+media_net <- igraph::graph_from_data_frame(d=links, vertices=nodes, directed=T) 
+
 ```
 What do we know now? We have 17 nodes and 49 edges. For 
 what concerns the nodes we know their name, what type of 
@@ -288,6 +306,12 @@ media  they are (Newspaper, TV, Online) and the size of
 the audience. About the edges, we know the type and the 
 weight. We will come back to the type in the following weeks. 
 For now, let's pretend it's one type only.
+
+
+
+```{r load_media_net, include = FALSE}
+media_net <- SNA4DS:::media_net
+```
 
 
 ### Distance in a Network
@@ -303,8 +327,8 @@ from one node to the other, the other is reachable.
 If we use `igraph::distances` we get a table with all the 
 distances between each pair of nodes.
 
-```{r distances, echo = TRUE, include = TRUE, exercise = TRUE}
-igraph::distances(net, mode = "all")
+```{r media_net_distances, exercise = TRUE, exercise.setup = "load_media_net"}
+igraph::distances(media_net, mode = "all")
 
 ```
 
@@ -319,9 +343,9 @@ a path with minimal vertices. The `igraph::shortest_paths`
 function shows the shortest path from a given node (in the 
 example below s01) and all the other nodes.
 
-```{r shortest_path, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r media_net_shortPath, exercise = TRUE, exercise.setup = "load_media_net"}
 
-igraph::shortest_paths(net, "s01", to = V(net), mode =  "all", output = "vpath")
+igraph::shortest_paths(media_net, "s01", to = V(media_net), mode =  "all", output = "vpath")
   
 
 ```
@@ -339,8 +363,8 @@ parameters `predecessors` and `inbound_edges` do.
 
 The diameter is the longest shortest path in the networks.
 
-```{r diameter, echo = TRUE, include = TRUE, exercise = TRUE}
-igraph::diameter(net)
+```{r media_net_diameter, exercise = TRUE, exercise.setup = "load_media_net"}
+igraph::diameter(media_net)
 
 
 # mean_distance(friends)
@@ -359,8 +383,8 @@ But other measures can also help us compare networks
 
 The average path length tells us the average distance 
 between each pair of nodes. 
-```{r mean_dist, echo = TRUE, include = TRUE, exercise = TRUE}
-mean_distance(net)
+```{r media_net_meanDist, exercise = TRUE, exercise.setup = "load_media_net"}
+mean_distance(media_net)
 ```
 A fully connected network has average path length of 1, 
 since every single node is connected to any other.
@@ -373,8 +397,8 @@ Network density tells you the extent to which a network
 is connected. We call sparse a network with very few 
 connections and dense, one with many connections.
 
-```{r density, echo = TRUE, include = TRUE, exercise = TRUE}
-igraph::edge_density(net, loops=TRUE)  
+```{r media_net_density, exercise = TRUE, exercise.setup = "load_media_net"}
+igraph::edge_density(media_net, loops=TRUE)  
 
 ```
 
@@ -388,9 +412,9 @@ network is directed, so we did right, but if we want
 also to check the undirected density we can do it as 
 shown in the following example
 
-```{r density_undirected, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r media_net_distancesUnd, exercise = TRUE, exercise.setup = "load_media_net"}
 
-igraph::edge_density(as.undirected(net), loops=TRUE) 
+igraph::edge_density(as.undirected(media_net), loops=TRUE) 
 
 ```
 
@@ -412,14 +436,14 @@ Node degree is the number of edges connected to the node. To measure
 the degree of each node, we use the `degree` function from the `igraph`
 package. 
 
-```{r degree_directed, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r media_net_degreeDir, exercise = TRUE, exercise.setup = "load_media_net"}
 
 # out degree
-igraph::degree(net, v = V(net), mode = "out", loops = TRUE, normalized = FALSE)
+igraph::degree(media_net, v = V(media_net), mode = "out", loops = TRUE, normalized = FALSE)
 # in degree
-igraph::degree(net, v = V(net), mode = "in", loops = TRUE, normalized = FALSE)
+igraph::degree(media_net, v = V(media_net), mode = "in", loops = TRUE, normalized = FALSE)
 # total degree
-igraph::degree(net, v = V(net), mode = "total", loops = TRUE, normalized = FALSE)
+igraph::degree(media_net, v = V(media_net), mode = "total", loops = TRUE, normalized = FALSE)
 
 
 
@@ -438,10 +462,10 @@ We can calculate the undirected version too (sometimes
 it helps!)
 
 
-```{r degree_undirected, echo = TRUE, include = TRUE, exercise = TRUE}
-Unet <- as.undirected(net)
+```{r media_net_degreeUnd, exercise = TRUE, exercise.setup = "load_media_net"}
+Umedia_net <- as.undirected(media_net)
 
-igraph::degree(Unet, v = V(Unet), mode = "all", loops = TRUE, normalized = FALSE)
+igraph::degree(Umedia_net, v = V(Umedia_net), mode = "all", loops = TRUE, normalized = FALSE)
 
 ```
 
@@ -478,9 +502,9 @@ they do so.
 
 
 
-```{r weight, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r media_net_weight, exercise = TRUE, exercise.setup = "load_media_net"}
 library(ggraph)
-ggraph::ggraph(net, layout = 'stress') + 
+ggraph::ggraph(media_net, layout = 'stress') + 
   ggraph::geom_edge_arc(aes(width = weight), color = 'grey', strength = 0) + 
   ggraph::geom_node_point(size = 4) + 
   ggraph::geom_node_text(aes(label = media), size = 4, color = "black", repel = T) +
@@ -519,8 +543,8 @@ balances degree and weight.
 
 
 
-```{r strength, echo = TRUE, include = TRUE, exercise = TRUE}
-igraph::strength(net) 
+```{r media_net_strength, exercise = TRUE, exercise.setup = "load_media_net"}
+igraph::strength(media_net) 
 ```
 
 
@@ -544,10 +568,10 @@ only the nodes mentioned as an argument.
 
 
 
-```{r subgraph, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r media_net_subg, exercise = TRUE, exercise.setup = "load_media_net"}
 
-sub <- igraph::induced_subgraph(net, c('s01','s02'))
-# sub <- igraph::induced_subgraph(net, 1:7)
+sub <- igraph::induced_subgraph(media_net, c('s01','s02'))
+# sub <- igraph::induced_subgraph(media_net, 1:7)
 
 sub
 # plot(sub)
@@ -571,12 +595,12 @@ The function `igraph::cliques` allows you to find the number of cliques
 comprised of a certain number of nodes that you specify with the `min`
 and `max` parameters. 
 
-```{r cliques, echo = TRUE, include = TRUE, exercise = TRUE }
-igraph::cliques(net, min = 4, max = 6) ## all the cliques beween min e max n nodes
+```{r media_net_cliques, exercise = TRUE, exercise.setup = "load_media_net" }
+igraph::cliques(media_net, min = 4, max = 6) ## all the cliques beween min e max n nodes
 
-# igraph::largest_cliques(net)
+# igraph::largest_cliques(media_net)
 # 
-# igraph::max_cliques(net)
+# igraph::max_cliques(media_net)
 ```
 
 Try to change the number of nodes and try the other two functions.
@@ -593,7 +617,7 @@ concerns to the degree of the nodes.
 
 
 ### Assortativity degree
-```{r assort_degree, echo = TRUE, include = TRUE, exercise = TRUE }
+```{r media_net_assortDeg, exercise = TRUE, exercise.setup = "load_media_net"}
 # random graph
 assortativity_degree(sample_gnp(10000, 3/10000))
 
@@ -601,7 +625,7 @@ assortativity_degree(sample_gnp(10000, 3/10000))
 assortativity_degree(sample_pa(10000, m=4))
 
 # media network
-assortativity_degree(net)
+assortativity_degree(media_net)
 ```
 
 
@@ -617,9 +641,9 @@ We can also check the assortativity according to
 nodes attributes. For instance, according to the 
 audience size of each media.
 
-```{r assort, echo = TRUE, include = TRUE, exercise = TRUE}
+```{r media_net_assort, exercise = TRUE, exercise.setup = "load_media_net"}
 
-assortativity(net, V(net)$audience.size, directed=T)
+assortativity(media_net, V(media_net)$audience.size, directed=T)
 
 ```
 
@@ -648,6 +672,8 @@ g
 We can also plot it with a special layout for bipartite
 
 ```{r bipatite_plot, echo = TRUE, include = TRUE, exercise = TRUE}
+
+g <- igraph::make_full_bipartite_graph(6,3)
 plot(g, vertex.label = NA, vertex.size = 7, layout = igraph::layout.bipartite)
 ```
 
@@ -658,7 +684,7 @@ We might also want to project our bipartite graph so it represents
 the relationships within one set of object at a time.
 
 ```{r bipatite_proj, echo = TRUE, include = TRUE, exercise = TRUE}
-
+g <- igraph::make_full_bipartite_graph(6,3)
 proj <- igraph::bipartite_projection(g)
 plot(proj[[1]])
 # plot(proj[[2]])
