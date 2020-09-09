@@ -35,6 +35,7 @@ Imports:
 	network,
 	networkD3,
 	papaja,
+	Rdpack,
 	remotes,
 	rlang,
 	rprojroot,
@@ -47,6 +48,7 @@ Imports:
 Remotes: 
 	github::rstudio-education/gradethis,
 	github::crsh/papaja
+RdMacros: Rdpack
 URL: https://github.com/SNAnalyst/SNA4DS
 BugReports: https://github.com/SNAnalyst/SNA4DS/issues
 RoxygenNote: 7.1.1
