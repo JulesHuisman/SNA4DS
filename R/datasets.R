@@ -9,8 +9,8 @@
 #' @keywords datasets
 #' @format A data frame with 297 vertices and 2344 edges. Directed, Weighted.
 #' @source \url{http://networkrepository.com/celegansneural.php}
-#' @references J. White, E. Southgate, J. Thompson, S. Brenner, 1998.
-#' @export
+#' @references
+#' \insertRef{White1986}{SNA4DS}
 "elegans"
 
 
@@ -35,12 +35,12 @@
 #' internet, this specific dataset is the dataset as used in the text book.
 #'
 #' @source \url{http://konect.cc/networks/enron/} and \url{http://www.cs.cmu.edu/~enron/}
-#' @references Jérôme Kunegis. KONECT – The Koblenz Network Collection. In
-#' Proc. Int. Conf. on World Wide Web Companion, pages 1343–1350, 2013.
-#' doi:10.1145/2487788.2488173 and B. Klimmt, Y. Yang. Introducing the Enron
-#' corpus. In Proc. Eur. Conf. on Mach. Learn., pages 217–226, 2004.
+#' @references
+#' \insertRef{KONECT}{SNA4DS}
+#'
+#' \insertRef{ENRONCORPUS}{SNA4DS}
+#'
 #' @keywords datasets
-#' @export
 "enron"
 
 
@@ -55,7 +55,6 @@
 #'
 #' @format 143 vertices and 622 edges. Directed, Weighted.
 #' @keywords datasets
-#' @export
 "ia_enron"
 
 
@@ -69,7 +68,6 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 15220 vertices with 194103 edges. Directed, Unweighted.
-#' @export
 "enwiki"
 
 
@@ -85,13 +83,13 @@
 #' eco-florida also exists and is slightly larger
 #'
 #' @source \url{http://networkrepository.com/eco-everglades.php}
-#' @references Ulanowicz, Robert E and DeAngelis, Donald L., 1998, "Network
-#' analysis of trophic dynamics in south florida ecosystems," FY97: The Florida
-#' Bay Ecosystem, 20688--20038. Also: Melian, Carlos J and Bascompte, Jordi,
-#' 2004, "Food web cohesion," Ecology 85: 2, 352-358, publisher =Eco Soc America.
+#' @references
+#' \insertRef{ulanowicz1998network}{SNA4DS}
+#'
+#' \insertRef{melian2004food}{SNA4DS}
+#'
 #' @keywords datasets
 #' @format A data frame with 15220 vertices with 194103 edges. Directed, Unweighted.
-#' @export
 "everglades"
 
 
@@ -111,30 +109,7 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 252999 vertices and 1015187 edges. Undirected, Unweighted.
-#' @export
 "imdb_costars"
-
-
-#' imdb movies and stars
-#'
-#' imdb movies and stars network
-#'
-#' imdb movies and stars network, in \code{igraph}-format. This network is used in the course
-#' text book.
-#'
-#' This is a bipartite network, where an edge exists when the actor played in a
-#' specific movie. This network can be collapsed to a weighted unimodal network
-#' (as the #' \code{imdb_costars} network).
-#'
-#' I added the actual names of the actors and movies through the imdb database.
-#'
-#' @source \url{https://www.imdb.com/}
-#'
-#' @keywords datasets
-#' @format A data frame with 252999 vertices and 1015187 edges. Undirected, Unweighted.
-#' @export
-"imdb_movies_and_stars"
-
 
 
 #' Northwestern University Facebook network
@@ -150,11 +125,11 @@
 #' @source \url{http://networkrepository.com/socfb-Northwestern25.php}
 #' @references
 #' \insertRef{Traud:2011fs}{SNA4DS}
+#'
 #' \insertRef{traud2012social}{SNA4DS}
 #'
 #' @keywords datasets
 #' @format A data frame with 10567 vertices and 488336 edges. Undirected, unweighted.
-#' @export
 "northwestern"
 
 
@@ -169,12 +144,12 @@
 #'
 #' @source \url{http://networkrepository.com/tech-RL-caida.php}
 #' @references
-#' \insertRef{Traud:rossi2013topology}{SNA4DS}
+#' \insertRef{rossi2013topology}{SNA4DS}
+#'
 #' \insertRef{spring2002measuring}{SNA4DS}
 #'
 #' @keywords datasets
 #' @format A data frame with 190914 vertices and 607610 edges. Undirected, unweighted.
-#' @export
 "routers"
 
 
@@ -249,7 +224,6 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 22405 vertices and 77920 edges. Directed, unweighted.
-#' @export
 "twitter"
 
 
@@ -269,7 +243,6 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 546 vertices and 2781 edges. Undirected, unweighted.
-#' @export
 "us_air"
 
 
@@ -287,8 +260,7 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 3179 vertices and 18617 edges. Undirected, unweighted.
-#' @export
-"us_air"
+"world_air"
 
 
 
@@ -302,7 +274,6 @@
 #' @keywords datasets
 #' @format A data frame with 1870 vertices and 4480 edges. Undirected, unweighted.
 #' @source \url{http://networkrepository.com/bio-yeast-protein-inter.php}
-#' @references Jeong, H. and Mason, S.P. and Barabasi, A.L. and Oltvai, Z.N., 2001,
-#' "Lethality and centrality in protein networks," arXiv preprint cond-mat/0105306}.
-#' @export
-"yeast
+#' @references
+#' \insertRef{jeong2001lethality}{SNA4DS}
+"yeast"

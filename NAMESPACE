@@ -3,4 +3,5 @@
 export("%>%")
 export(SNA4DS_tutorials)
 export(check_SNA4DS)
+importFrom(Rdpack,reprompt)
 importFrom(magrittr,"%>%")
