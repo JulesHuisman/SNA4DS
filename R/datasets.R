@@ -10,7 +10,7 @@
 #' @format A data frame with 297 vertices and 2344 edges. Directed, Weighted.
 #' @source \url{http://networkrepository.com/celegansneural.php}
 #' @references
-#' \insertRef{White1986}{SNA4DS}
+#' \insertRef{Elegans}{SNA4DS}
 "elegans"
 
 

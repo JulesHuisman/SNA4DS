@@ -21,6 +21,6 @@ elegans network, in \code{igraph}-format. This network is used in the course
 text book.
 }
 \references{
-\insertRef{White1986}{SNA4DS}
+\insertRef{Elegans}{SNA4DS}
 }
 \keyword{datasets}

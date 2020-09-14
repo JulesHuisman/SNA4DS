@@ -2,6 +2,8 @@
 
 export("%>%")
 export(SNA4DS_tutorials)
+export(centralityChart)
 export(check_SNA4DS)
 importFrom(Rdpack,reprompt)
 importFrom(magrittr,"%>%")
+importFrom(rlang,.data)
