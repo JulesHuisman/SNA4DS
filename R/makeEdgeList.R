@@ -29,7 +29,7 @@
 #' in the names data frame.
 #'
 #' @return a data frame
-#' @export
+#' @export makeEdgeList
 #'
 #' @examples
 #' \dontrun{

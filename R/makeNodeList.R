@@ -25,7 +25,7 @@
 #' in the same order as column one of the names data frame
 #'
 #' @return a vector or a data frame 
-#' @export
+#' @export makeNodeList
 #'
 #' @examples
 #' \dontrun{
