@@ -44,6 +44,7 @@ Imports:
 	sna,
 	statnet,
 	stats,
+	tidyverse,
 	usethis,
 	utils,
 Remotes: 
