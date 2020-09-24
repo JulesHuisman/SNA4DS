@@ -29,9 +29,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' namedf <- data.frame(respondent = c('A', 'B', 'C'), 
-#'                        alter1 = c('D', 'C', 'A'), 
-#'                        alter2 = c('B', 'A', 'A') )
+#' namedf <- data.frame(respondent = c('A', 'B', 'C'), alter1 = c('D', 'C', 'A'), alter2 = c('B', 'A', 'A') )
 #' attributeV <- c(1:3)
 #' 
 #' nodelist <-  makeNodeList(names =  namedf, attribute = attributeV)  
