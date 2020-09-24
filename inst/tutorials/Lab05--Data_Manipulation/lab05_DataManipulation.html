@@ -496,9 +496,8 @@ learnr:::store_exercise_cache("DfGen", list(setup = NULL, chunks = list(list(lab
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-        label = "DfGen", exercise = TRUE, out.width.px = 624, 
-        out.height.px = 384, code = "(df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5)))", 
-        params.src = "DfGen, echo = TRUE, include = TRUE, exercise = TRUE", 
+        label = "DfGen", exercise = TRUE, code = "(df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5)))", 
+        out.width.px = 624, out.height.px = 384, params.src = "DfGen, echo = TRUE, include = TRUE, exercise = TRUE", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -532,8 +531,8 @@ learnr:::store_exercise_cache("grade_df1", list(setup = NULL, chunks = list(list
     ref.label = NULL, child = NULL, engine = "r", split = FALSE, 
     include = TRUE, purl = TRUE, max.print = 1000, tutorial = TRUE, 
     exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-    label = "grade_df1", exercise = TRUE, out.width.px = 624, 
-    out.height.px = 384, code = c("", ""), params.src = "grade_df1, exercise = TRUE", 
+    label = "grade_df1", exercise = TRUE, code = c("", ""), out.width.px = 624, 
+    out.height.px = 384, params.src = "grade_df1, exercise = TRUE", 
     fig.num = 0L, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -566,10 +565,10 @@ learnr:::store_exercise_cache("anotherBind", list(setup = NULL, chunks = list(li
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-        label = "anotherBind", exercise = TRUE, out.width.px = 624, 
-        out.height.px = 384, code = c("", "df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5))", 
+        label = "anotherBind", exercise = TRUE, code = c("", 
+        "df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5))", 
         "col_three <- rep(0,10)", "", "(df <- cbind(df, col_three))", 
-        "", ""), params.src = "anotherBind, exercise = TRUE", 
+        "", ""), out.width.px = 624, out.height.px = 384, params.src = "anotherBind, exercise = TRUE", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -606,12 +605,12 @@ learnr:::store_exercise_cache("grade_rbind", list(setup = NULL, chunks = list(li
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-        label = "grade_rbind", exercise = TRUE, out.width.px = 624, 
-        out.height.px = 384, code = c("", "df_A <- data.frame(col_one = rep('A',5), col_two = rep(1, 5))", 
+        label = "grade_rbind", exercise = TRUE, code = c("", 
+        "df_A <- data.frame(col_one = rep('A',5), col_two = rep(1, 5))", 
         "df_B <- data.frame(col_one = rep('B',5), col_two = rep(2, 5))", 
         "", "# how do you put them together and print them in one go?", 
-        ""), params.src = "grade_rbind, exercise = TRUE", fig.num = 0, 
-        exercise.df_print = "paged"), engine = "r"))
+        ""), out.width.px = 624, out.height.px = 384, params.src = "grade_rbind, exercise = TRUE", 
+        fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -642,10 +641,10 @@ learnr:::store_exercise_cache("colnames", list(setup = NULL, chunks = list(list(
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-        label = "colnames", exercise = TRUE, out.width.px = 624, 
-        out.height.px = 384, code = c("", "df <- data.frame(c('A', 'B'), c(1, 1))", 
+        label = "colnames", exercise = TRUE, code = c("", "df <- data.frame(c('A', 'B'), c(1, 1))", 
         "", "colnames(df) <- c('one', 'two')", "rownames(df) <- c('one', 'two')", 
-        "", "df", ""), params.src = "colnames, echo = TRUE, include = TRUE, exercise = TRUE", 
+        "", "df", ""), out.width.px = 624, out.height.px = 384, 
+        params.src = "colnames, echo = TRUE, include = TRUE, exercise = TRUE", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -677,10 +676,9 @@ learnr:::store_exercise_cache("accessCol", list(setup = NULL, chunks = list(list
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-        label = "accessCol", exercise = TRUE, out.width.px = 624, 
-        out.height.px = 384, code = c("df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5))", 
+        label = "accessCol", exercise = TRUE, code = c("df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5))", 
         "", "", "df$col_two", "", "# or", "df[ , 2]", "", ""), 
-        params.src = "accessCol, echo = TRUE, include = TRUE, exercise = TRUE", 
+        out.width.px = 624, out.height.px = 384, params.src = "accessCol, echo = TRUE, include = TRUE, exercise = TRUE", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -712,11 +710,10 @@ learnr:::store_exercise_cache("accessRow", list(setup = NULL, chunks = list(list
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-        label = "accessRow", exercise = TRUE, out.width.px = 624, 
-        out.height.px = 384, code = c("", "df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5))", 
+        label = "accessRow", exercise = TRUE, code = c("", "df <- data.frame(col_one = LETTERS[1:10], col_two = rep(1:2, 5))", 
         "", "df[3, ] # prints out row three", "", "df[3:7, ] # prints out rows from 3 to 7", 
         "", "df[3:7, 2] <- c(rep(0,5)) # replaces the values from 3 to 7 in column 2", 
-        "df", ""), params.src = "accessRow, echo = TRUE, include = TRUE, exercise = TRUE", 
+        "df", ""), out.width.px = 624, out.height.px = 384, params.src = "accessRow, echo = TRUE, include = TRUE, exercise = TRUE", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -749,11 +746,10 @@ learnr:::store_exercise_cache("accessRowTwo", list(setup = NULL, chunks = list(l
         message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
-        label = "accessRowTwo", exercise = TRUE, out.width.px = 624, 
-        out.height.px = 384, code = c("df <- data.frame(one = c('A', 'B'), two = c(1, 1))", 
+        label = "accessRowTwo", exercise = TRUE, code = c("df <- data.frame(one = c('A', 'B'), two = c(1, 1))", 
         "class(df)", "class(df$two)", "", "df <- as.matrix(df)", 
         "", "class(df)", "", "df <- as.data.frame(df)", "", "class(df$two)", 
-        ""), params.src = "accessRowTwo, echo = TRUE, include = TRUE, exercise = TRUE", 
+        ""), out.width.px = 624, out.height.px = 384, params.src = "accessRowTwo, echo = TRUE, include = TRUE, exercise = TRUE", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -791,8 +787,9 @@ learnr:::store_exercise_cache("FakeNetActors_explore", list(setup = "FakeNetActo
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "FakeNetActors_explore", exercise = TRUE, exercise.setup = "load_FakeNetActors", 
-        out.width.px = 624, out.height.px = 384, code = c("# the data is loadead in another box you cannot see. If it doesn't load re-install SNA4DS", 
-        "FakeNetActors", ""), params.src = "FakeNetActors_explore, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
+        code = c("# the data is loadead in another box you cannot see. If it doesn't load re-install SNA4DS", 
+        "FakeNetActors", ""), out.width.px = 624, out.height.px = 384, 
+        params.src = "FakeNetActors_explore, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -830,8 +827,8 @@ learnr:::store_exercise_cache("FakeNetActors_edgelist", list(setup = "FakeNetAct
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "FakeNetActors_edgelist", exercise = TRUE, exercise.setup = "load_FakeNetActors", 
-        out.width.px = 624, out.height.px = 384, code = c("(edgelist <- SNA4DS::makeEdgeList(names = FakeNetActors[, c('respondent', 'friend_one' , 'friend_two' )]))", 
-        ""), params.src = "FakeNetActors_edgelist, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
+        code = c("(edgelist <- SNA4DS::makeEdgeList(names = FakeNetActors[, c('respondent', 'friend_one' , 'friend_two' )]))", 
+        ""), out.width.px = 624, out.height.px = 384, params.src = "FakeNetActors_edgelist, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -869,8 +866,8 @@ learnr:::store_exercise_cache("FakeNetActors_nodelist", list(setup = "FakeNetAct
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "FakeNetActors_nodelist", exercise = TRUE, exercise.setup = "load_FakeNetActors", 
-        out.width.px = 624, out.height.px = 384, code = c("(nodelist <- SNA4DS::makeNodeList(names = FakeNetActors[, c('respondent', 'friend_one' , 'friend_two' )], attribute = FakeNetActors$sex))", 
-        ""), params.src = "FakeNetActors_nodelist, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
+        code = c("(nodelist <- SNA4DS::makeNodeList(names = FakeNetActors[, c('respondent', 'friend_one' , 'friend_two' )], attribute = FakeNetActors$sex))", 
+        ""), out.width.px = 624, out.height.px = 384, params.src = "FakeNetActors_nodelist, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -911,9 +908,8 @@ learnr:::store_exercise_cache("gradeFakeNetActors_makegraph", list(setup = "Fake
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "gradeFakeNetActors_makegraph", exercise = TRUE, 
-        exercise.setup = "load_FakeNetActors", out.width.px = 624, 
-        out.height.px = 384, code = c("", "ActorsNet <-", "  "
-        ), params.src = "gradeFakeNetActors_makegraph, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
+        exercise.setup = "load_FakeNetActors", code = c("", "ActorsNet <-", 
+        "  "), out.width.px = 624, out.height.px = 384, params.src = "gradeFakeNetActors_makegraph, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -950,13 +946,13 @@ learnr:::store_exercise_cache("extractMat", list(setup = "FakeNetActors <- SNA4D
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "extractMat", exercise = TRUE, exercise.setup = "load_FakeNetActors", 
-        out.width.px = 624, out.height.px = 384, code = c("ActorsNet <- igraph::graph_from_data_frame(d = edgelist, vertices = nodelist, directed = T)", 
+        code = c("ActorsNet <- igraph::graph_from_data_frame(d = edgelist, vertices = nodelist, directed = T)", 
         "", "(ActorAdjMat <- igraph::as_adjacency_matrix(ActorsNet))", 
         "", "AdjMatGraph <- igraph::graph_from_adjacency_matrix(ActorAdjMat)", 
         "", "# extract attribute", "", "sex <- igraph::V(ActorsNet)$attribute", 
         "", "# add attribute to the graph made with the adj mat", 
         "", "igraph::V(AdjMatGraph)$sex <- sex", "", "AdjMatGraph"
-        ), params.src = "extractMat, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
+        ), out.width.px = 624, out.height.px = 384, params.src = "extractMat, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -996,9 +992,9 @@ learnr:::store_exercise_cache("extractEdgeList", list(setup = "FakeNetActors <- 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "extractEdgeList", exercise = TRUE, exercise.setup = "load_FakeNetActors", 
-        out.width.px = 624, out.height.px = 384, code = c("ActorsNet <- igraph::graph_from_data_frame(d = edgelist, vertices = nodelist, directed = T)", 
+        code = c("ActorsNet <- igraph::graph_from_data_frame(d = edgelist, vertices = nodelist, directed = T)", 
         "", "ActorEdL <- ", "", "EdgeListGraph <- ", "", ""), 
-        params.src = "extractEdgeList, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
+        out.width.px = 624, out.height.px = 384, params.src = "extractEdgeList, exercise = TRUE, exercise.setup = \"load_FakeNetActors\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -1035,8 +1031,8 @@ learnr:::store_exercise_cache("apollo13_dataOverview", list(setup = "Apollo13 <-
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "apollo13_dataOverview", exercise = TRUE, exercise.setup = "load_apollo13", 
-        out.width.px = 624, out.height.px = 384, code = c("", 
-        "head(Apollo13)", ""), params.src = "apollo13_dataOverview, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
+        code = c("", "head(Apollo13)", ""), out.width.px = 624, 
+        out.height.px = 384, params.src = "apollo13_dataOverview, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -1073,8 +1069,8 @@ learnr:::store_exercise_cache("apollo13_nrow", list(setup = "Apollo13 <- SNA4DS:
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "apollo13_nrow", exercise = TRUE, exercise.setup = "load_apollo13", 
-        out.width.px = 624, out.height.px = 384, code = c("", 
-        "nrow(Apollo13)", ""), params.src = "apollo13_nrow, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
+        code = c("", "nrow(Apollo13)", ""), out.width.px = 624, 
+        out.height.px = 384, params.src = "apollo13_nrow, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -1111,9 +1107,9 @@ learnr:::store_exercise_cache("apollo13_Roger", list(setup = "Apollo13 <- SNA4DS
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "apollo13_Roger", exercise = TRUE, exercise.setup = "load_apollo13", 
-        out.width.px = 624, out.height.px = 384, code = c("", 
-        "roger <- Apollo13[grep('Roger', Apollo13$Message), ]", 
-        "head(roger)"), params.src = "apollo13_Roger, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
+        code = c("", "roger <- Apollo13[grep('Roger', Apollo13$Message), ]", 
+        "head(roger)"), out.width.px = 624, out.height.px = 384, 
+        params.src = "apollo13_Roger, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -1153,8 +1149,8 @@ learnr:::store_exercise_cache("apollo13_time", list(setup = "Apollo13 <- SNA4DS:
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "apollo13_time", exercise = TRUE, exercise.setup = "load_apollo13", 
-        out.width.px = 624, out.height.px = 384, code = c("", 
-        "TimeWindow <- ", ""), params.src = "apollo13_time, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
+        code = c("", "TimeWindow <- ", ""), out.width.px = 624, 
+        out.height.px = 384, params.src = "apollo13_time, exercise = TRUE, exercise.setup = \"load_apollo13\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -1192,12 +1188,11 @@ learnr:::store_exercise_cache("media_net_tidyverse", list(setup = "media_net <- 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "media_net_tidyverse", exercise = TRUE, exercise.setup = "load_media_net", 
-        out.width.px = 624, out.height.px = 384, code = c("library(tidyverse)", 
-        "", "media<-tidygraph::as_tbl_graph(media_net)", "# shows info on edges", 
-        "media %>%  tidygraph::activate(edges) %>%  tidygraph::as_tibble()", 
+        code = c("library(tidyverse)", "", "media<-tidygraph::as_tbl_graph(media_net)", 
+        "# shows info on edges", "media %>%  tidygraph::activate(edges) %>%  tidygraph::as_tibble()", 
         "# there are two types of edges, here we filter for one of them", 
         "# store the output", "# print it", "(media_edges <- media %>% tidygraph::activate(edges) %>% tidygraph::filter(type==\"hyperlink\"))"
-        ), params.src = "media_net_tidyverse, exercise = TRUE, exercise.setup = \"load_media_net\"", 
+        ), out.width.px = 624, out.height.px = 384, params.src = "media_net_tidyverse, exercise = TRUE, exercise.setup = \"load_media_net\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -1240,9 +1235,9 @@ learnr:::store_exercise_cache("tidyverse_nodes", list(setup = "media_net <- SNA4
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "tidyverse_nodes", exercise = TRUE, exercise.setup = "load_media_net", 
-        out.width.px = 624, out.height.px = 384, code = c("", 
-        "library(tidyverse)", "", "media <- tidygraph::as_tbl_graph(media_net) ", 
-        "", "# don't forget to print the output", ""), params.src = "tidyverse_nodes, exercise = TRUE, exercise.setup = \"load_media_net\"", 
+        code = c("", "library(tidyverse)", "", "media <- tidygraph::as_tbl_graph(media_net) ", 
+        "", "# don't forget to print the output", ""), out.width.px = 624, 
+        out.height.px = 384, params.src = "tidyverse_nodes, exercise = TRUE, exercise.setup = \"load_media_net\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  
@@ -1280,8 +1275,7 @@ learnr:::store_exercise_cache("pretty_plot", list(setup = "media_net <- SNA4DS::
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "pretty_plot", exercise = TRUE, exercise.setup = "load_media_net", 
-        out.width.px = 624, out.height.px = 384, code = c("library(ggraph)", 
-        "library(tidyverse)", "media <- tidygraph::as_tbl_graph(media_net)", 
+        code = c("library(ggraph)", "library(tidyverse)", "media <- tidygraph::as_tbl_graph(media_net)", 
         "", "media_m<-media %>% tidygraph::activate(nodes) %>%  dplyr::mutate(graph=\"Mention\")", 
         "", "media_e <- media %>% tidygraph::activate(edges) %>% tidygraph::filter(type==\"hyperlink\")", 
         "media_e1<-media_e %>% tidygraph::activate(nodes)%>%  dplyr::mutate(graph=\"Hyperlink\")", 
@@ -1290,7 +1284,7 @@ learnr:::store_exercise_cache("pretty_plot", list(setup = "media_net <- SNA4DS::
         "                   end_cap = circle(3, 'mm')) + ", "    ggraph::geom_node_point(size = 3) +  ", 
         "    ggraph::geom_node_text(aes(label = media, color = type.label), size=3, repel = T) +", 
         "    ggraph::facet_nodes(~graph) + ", "    ggraph::theme_graph(foreground = 'steelblue')"
-        ), params.src = "pretty_plot, exercise = TRUE, exercise.setup = \"load_media_net\"", 
+        ), out.width.px = 624, out.height.px = 384, params.src = "pretty_plot, exercise = TRUE, exercise.setup = \"load_media_net\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  <!--html_preserve-->
@@ -1300,7 +1294,7 @@ learnr:::store_exercise_cache("pretty_plot", list(setup = "media_net <- SNA4DS::
 <!--/html_preserve-->
 <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="execution_dependencies">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42]}},"value":[{"type":"character","attributes":{},"value":["backports","base","bibtex","compiler","curl","datasets","digest","evaluate","fastmap","gbRd","gradethis","graphics","grDevices","htmltools","htmlwidgets","httpuv","jsonlite","knitr","later","learnr","magrittr","markdown","methods","mime","promises","R6","Rcpp","Rdpack","rlang","rmarkdown","rprojroot","shiny","SNA4DS","stats","stringi","stringr","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.1.10","4.0.2","0.4.2.3","4.0.2","4.3","4.0.2","0.6.25","0.14","1.0.1","0.4-11","0.1.0.9004","4.0.2","4.0.2","0.5.0.9000","1.5.1","1.5.4","1.7.1","1.29","1.1.0.1","0.10.1.9006","1.5","1.1","4.0.2","0.9","1.1.1","2.4.1","1.0.5","1.0.0","0.4.7","2.3","1.3-2","1.5.0","0.4.05","4.0.2","1.5.3","1.4.0","4.0.2","4.0.2","2.2.0","0.17","1.8-4","2.2.1"]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42]}},"value":[{"type":"character","attributes":{},"value":["backports","base","bibtex","compiler","curl","datasets","digest","evaluate","fastmap","gbRd","gradethis","graphics","grDevices","htmltools","htmlwidgets","httpuv","jsonlite","knitr","later","learnr","magrittr","markdown","methods","mime","promises","R6","Rcpp","Rdpack","rlang","rmarkdown","rprojroot","shiny","SNA4DS","stats","stringi","stringr","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.1.10","4.0.2","0.4.2.3","4.0.2","4.3","4.0.2","0.6.25","0.14","1.0.1","0.4-11","0.1.0.9004","4.0.2","4.0.2","0.5.0","1.5.1","1.5.4","1.7.1","1.30","1.1.0.1","0.10.1.9006","1.5","1.1","4.0.2","0.9","1.1.1","2.4.1","1.0.5","1.0.0","0.4.7","2.3","1.3-2","1.5.0","0.5.0","4.0.2","1.5.3","1.4.0","4.0.2","4.0.2","2.3.0","0.17","1.8-4","2.2.1"]}]}]}
 </script>
 <!--/html_preserve-->
 </div>
