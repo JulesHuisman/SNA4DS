@@ -346,27 +346,18 @@ As you can see we don't have any info on the sex of the alters, since
 they did not answer the survey. Hence, the function returns missing data.
 
 At this point we are ready to load our data into igraph with the function
-`igraph::graph_from_data_frame`. You have seen this function before. 
-Can you load the data and print it? 
+`igraph::graph_from_data_frame`. 
 
 
-```{r gradeFakeNetActors_makegraph, exercise = TRUE, exercise.setup = "load_FakeNetActors"}
-
-ActorsNet <-
-  
-```
-
-```{r gradeFakeNetActors_makegraph-solution}
+```{r grade_FakeNetActors_makegraph, exercise = TRUE, exercise.setup = "load_FakeNetActors"}
 
 ActorsNet <- igraph::graph_from_data_frame(d = edgelist, vertices = nodelist, directed = T)
 plot(ActorsNet)
+  
 ```
 
 
-```{r gradeFakeNetActors_makegraph-check}
 
-gradethis::grade_code(correct = "Yeahh! Wasn't too hard, right? :)")
-```
 
 
 In case you have more than one edge or node attribute to process, 
