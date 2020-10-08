@@ -1,0 +1,82 @@
+---
+title: "Lab06: Statistics I"
+output: 
+  learnr::tutorial:
+    fig_caption: no
+    progressive: true
+    allow_skip: true
+    toc: true
+    toc_depth: 3
+    theme: readable
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+library(magrittr)
+tutorial_options(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Welcome
+
+OK, so, we have focused on descriptive analysis of social networks sofar.
+Our aim has been to get to know some of the important measures that capture 
+the position of vertices (especially centrality measures) and measures that 
+describe the structure of the network as a whole (such as centralization or
+component detection), and we spent some time on visualizing networks.
+Oh, and you have become acquainted with some of the facilities in R do calculate
+these measures and plot those networks.
+
+From here on out, we are going to change the course of this course :-) We will 
+now move from descriptive analysis to inferential analysis: statistics, that is. 
+We'll get into hypothesis testing and parameter estimation.
+
+We start that trajectory in this tutorial by looking at graph level measures 
+(including the ones you already learnt about) and will teach you how to 
+statistically test whether the network measure at hand 
+(e.g., its betweenness centralization) is exceptionally high (or low), 
+or whether it is quite average for the sort of 
+network you are considering.
+
+Next, you will learn how to compare networks and even regress a network on 
+several others.
+
+Awesomeness. So, let's get started.
+
+
+
+
+
+
+## A section
+
+blah blah
+
+## A second section with a custom identifier {#custom}
+
+blah blah
+
+## Links
+
+You can use implicit references to refer to sections
+you have not explicitly named, like this: 
+see [A section]. 
+
+You can use links to refere to sections with explicit
+references, like this: see [the second section](#custom).
+
+
+
+
+## pipe
+In this tutorial we are going to look at the following topics.
+
+* How to use the _pipe_ to improve the readability of a chain of operations in R
+
+* Summary statistics of networks
+
+* We will take a special look at the internet as a network
+
+Excited? Or at least interested? Let's go!
