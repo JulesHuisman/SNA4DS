@@ -15,7 +15,6 @@ runtime: shiny_prerendered
 ```{r setup, include = FALSE}
 library(learnr)
 library(gradethis)
-# library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE)
 ```
@@ -74,7 +73,6 @@ you met them already
 
 Let's check a first example with `igraph`
 ```{r randomEs1}
-library(igraph)
 set.seed(10000)
 igraphNet <- igraph::erdos.renyi.game(10, 2/10)
 plot(igraphNet)
@@ -84,8 +82,6 @@ This is the most basic network plot we can have.
 
 We can do a very similar one using `network` 
 ```{r randomEs2}
-detach("package:igraph", unload = TRUE)
-library(intergraph)
 networkNet <- intergraph::asNetwork(igraphNet)
 plot(networkNet)
 ```
@@ -98,7 +94,6 @@ otherwise it would mean we made some mistakes somewhere)
 For more complex networks to plot, we need to make our visualization
 skills more sophisticated
 ```{r randomEs3}
-library(igraph)
 set.seed(10001)
 igraphNetLarge <- igraph::erdos.renyi.game(1000, 1/1000)
 plot(igraphNetLarge)
@@ -137,7 +132,6 @@ It's a media network
 nodes <- utils::read.csv("Dataset1-Media-Example-NODES.csv", header = T, as.is = T)
 links <- utils::read.csv("Dataset1-Media-Example-EDGES.csv", header = T, as.is = T)
 
-library(igraph)
 net <- igraph::graph_from_data_frame(d=links, vertices=nodes, directed = T) 
 ```
 
@@ -357,7 +351,7 @@ head(mtcars) # let's have a look to the data
 
 First we create a canvas
 ```{r ggplotexample}
-library(ggplot2)
+
 ggplot2::ggplot(mtcars)
 ```
 
@@ -395,7 +389,7 @@ It's (almost) completely customizable
 We are lucky, since `ggraph` reads `igraph` format. We can just keep plotting 
 our media network. Let's create a canvas first.
 ```{r ggpraphexample, message = FALSE, warning = FALSE}
-library(ggraph)
+
 ggraph::ggraph(net) 
 ```
 
@@ -440,7 +434,7 @@ ggraph::ggraph(net, layout = 'linear') +
 Funny look together with this linear layout right?
 But we can be serious too
 ```{r ggpraphexample5}
-library(ggplot2)
+
 ggraph::ggraph(net, layout = "lgl") +
   ggraph::geom_edge_link(aes(color = type)) +           # colors by edge type 
   ggraph::geom_node_point(aes(size = audience.size)) +  # size by audience size  
@@ -553,12 +547,6 @@ I suggest one relatively easy way to do it here.
 * Download the software _ImageMagick_ here 
 https://imagemagick.org/script/download.php
 
-* call the library `animation`
-
-```{r dynamic3}
-library(animation)
-
-```
 
 * check the pathway of _ImageMagick_
 ```{r dynamic4}
@@ -643,9 +631,7 @@ by subtracting 1.
 provided it is a factor variable
 
 
-```{r dynamic7, message = FALSE, warning = FALSE}
-library(networkD3)
-```
+
 
 ```{r dynamic8}
 # make node IDs numeric
@@ -678,12 +664,6 @@ the way the Medici family got to rule Florence about 500 years ago.
 They strategically married with the most powerful other families 
 in order to make alliances and rule the city. 
 
-```{r dynamic9, message = FALSE, warning = FALSE}
-
-library(ndtv)
-library(statnet)
-
-```
 
 Temporal Data
 
