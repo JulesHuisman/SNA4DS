@@ -31,7 +31,7 @@ try to code some of the topics we covered in the class.
 ### Let's get started
 
 
-```{r testquiz}
+```{r testquiz, echo = FALSE}
 question("Why do we measure networks?",
     answer("to learn and apply data science"),
     answer("because it's important to make detailed reports of the object of your study"),
@@ -52,7 +52,7 @@ to generate a fully connected graph with 10 nodes.
 
 ### Full Graph
 ```{r full_graph, echo = TRUE, include = TRUE, exercise = TRUE}
-library(igraph)
+
 full <- igraph::make_full_graph(10, directed = FALSE, loops = FALSE)
 
 plot(full)
@@ -507,7 +507,6 @@ they do so.
 
 
 ```{r media_net_weight, exercise = TRUE, exercise.setup = "load_media_net"}
-library(ggraph)
 ggraph::ggraph(media_net, layout = 'stress') + 
   ggraph::geom_edge_arc(aes(width = weight), color = 'grey', strength = 0) + 
   ggraph::geom_node_point(size = 4) + 
