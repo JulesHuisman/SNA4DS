@@ -21,6 +21,7 @@ Imports:
   animation,
   backports (>= 1.1.7),
   desc,
+  dplyr,
   fs,
   ggplot2 (>= 3.3.2),
 	ggraph (>= 2.0.0),
@@ -42,9 +43,8 @@ Imports:
 	rprojroot,
 	rstudioapi (>= 0.11),
 	sna,
-	statnet,
 	stats,
-	tidyverse,
+	tidygraph,
 	usethis,
 	utils,
 Remotes: 

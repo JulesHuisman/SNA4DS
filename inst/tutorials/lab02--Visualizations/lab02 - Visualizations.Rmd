@@ -1,5 +1,5 @@
 ---
-title: "lab02-visualizations"
+title: "lab02 - Visualizations"
 output: 
   learnr::tutorial:
     fig_caption: no
@@ -681,7 +681,7 @@ in order to make alliances and rule the city.
 ```{r dynamic9, message = FALSE, warning = FALSE}
 
 library(ndtv)
-library(statnet)
+
 
 ```
 

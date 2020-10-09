@@ -1,5 +1,5 @@
 ---
-title: "lab05_DataManipulation"
+title: "lab05 - DataManipulation"
 output: 
   learnr::tutorial:
     fig_caption: no
@@ -604,7 +604,6 @@ First we need to transform the class `igraph` into `tbl_graph`.
 Then we can use `tidyverse` to subset parts of the data set.
 
 ```{r media_net_tidyverse, exercise = TRUE, exercise.setup = "load_media_net"}
-library(tidyverse)
 
 media<-tidygraph::as_tbl_graph(media_net)
 # shows info on edges
@@ -637,7 +636,6 @@ about nodes first and filter by newspaper afterwards?
 
 ```{r tidyverse_nodes, exercise = TRUE, exercise.setup = "load_media_net"}
 
-library(tidyverse)
 
 media <- tidygraph::as_tbl_graph(media_net) 
 
@@ -648,7 +646,6 @@ media <- tidygraph::as_tbl_graph(media_net)
 
 ```{r tidyverse_nodes-solution}
 
-library(tidyverse)
 
 media <- tidygraph::as_tbl_graph(media_net)
 
@@ -670,8 +667,7 @@ gradethis::grade_code(correct = "Super!")
 `tidyverse` is particularly efficient to make pretty plots. Let's try it out!
 
 ```{r pretty_plot, exercise = TRUE, exercise.setup = "load_media_net"}
-library(ggraph)
-library(tidyverse)
+
 media <- tidygraph::as_tbl_graph(media_net)
 
 media_m<-media %>% tidygraph::activate(nodes) %>%  dplyr::mutate(graph="Mention")
@@ -679,13 +675,12 @@ media_m<-media %>% tidygraph::activate(nodes) %>%  dplyr::mutate(graph="Mention"
 media_e <- media %>% tidygraph::activate(edges) %>% tidygraph::filter(type=="hyperlink")
 media_e1<-media_e %>% tidygraph::activate(nodes)%>%  dplyr::mutate(graph="Hyperlink")
 
-ggraph(tidygraph::bind_graphs(media_m,media_e1), layout = 'nicely') + 
-    ggraph::geom_edge_link(arrow = arrow(length = unit(2, 'mm')), 
-                   end_cap = circle(3, 'mm')) + 
-    ggraph::geom_node_point(size = 3) +  
-    ggraph::geom_node_text(aes(label = media, color = type.label), size=3, repel = T) +
-    ggraph::facet_nodes(~graph) + 
-    ggraph::theme_graph(foreground = 'steelblue')
+ggraph::ggraph(tidygraph::bind_graphs(media_m,media_e1), layout = 'nicely') + 
+  ggraph::geom_edge_link(arrow = arrow(length = unit(2, 'mm'))) + 
+  ggraph::geom_node_point(size = 3) +  
+  ggraph::geom_node_text(aes(label = media, color = type.label), size=3, repel = T) +
+  ggraph::facet_nodes(~graph) + 
+  ggraph::theme_graph(foreground = 'steelblue')
 ```
 
 In this chunk of code we are doing LOTS of things at 
