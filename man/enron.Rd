@@ -4,14 +4,11 @@
 \name{enron}
 \alias{enron}
 \title{enron network data}
-\format{
-An object of class \code{igraph} of length 10.
-}
 \source{
 \url{http://konect.cc/networks/enron/} and \url{http://www.cs.cmu.edu/~enron/}
 }
 \usage{
-enron
+data(enron)
 }
 \description{
 enron network

@@ -8,7 +8,7 @@
 143 vertices and 622 edges. Directed, Weighted.
 }
 \usage{
-ia_enron
+data(ia_enron)
 }
 \description{
 ia_enron network
