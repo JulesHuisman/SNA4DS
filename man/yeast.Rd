@@ -11,7 +11,7 @@ A data frame with 1870 vertices and 4480 edges. Undirected, unweighted.
 \url{http://networkrepository.com/bio-yeast-protein-inter.php}
 }
 \usage{
-yeast
+data(yeast)
 }
 \description{
 Yeast network

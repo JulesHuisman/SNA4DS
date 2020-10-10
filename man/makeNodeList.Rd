@@ -7,11 +7,11 @@
 makeNodeList(names = NULL, attribute = NULL)
 }
 \arguments{
-\item{names}{A data frame with N columns where the first one has the survey 
-respondents (edge origin), and the other columns express the destination of 
+\item{names}{A data frame with N columns where the first one has the survey
+respondents (edge origin), and the other columns express the destination of
 the edge}
 
-\item{attribute}{A vector with information about the node attribute provided 
+\item{attribute}{A vector with information about the node attribute provided
 in the same order as column one of the names data frame}
 }
 \value{
@@ -21,10 +21,10 @@ a vector or a data frame
 Makes a node list from row data.
 }
 \details{
-This function processes row network data producing a list of nodes. 
-The function returns a vector if only `nodes` argument is specified and a 
-data frame if the `attribute` argument is specified too. 
-If only the argument `names` is specified, the function returns a vector with 
+This function processes row network data producing a list of nodes.
+The function returns a vector if only `nodes` argument is specified and a
+data frame if the `attribute` argument is specified too.
+If only the argument `names` is specified, the function returns a vector with
 the complete list of nodes named in the row data (respondents and alters).
 If both the arguments `names` and `attribute` are specified, the function returns
 a data frame with the complete list of nodes named in the survey, in column one,
@@ -33,17 +33,17 @@ about the alter is unknown the value is reported as a missing data.
 
 It is not possible to process more than one attribute at the time.
 
-The function takes only data frames as input for the argument `names` and 
-vectors for the argument `attribute`. The user should provide the values of 
+The function takes only data frames as input for the argument `names` and
+vectors for the argument `attribute`. The user should provide the values of
 names and attributes in the same order
 }
 \examples{
 \dontrun{
-namedf <- data.frame(respondent = c('A', 'B', 'C'), 
-                      alter1 = c('D', 'C', 'A'), 
+namedf <- data.frame(respondent = c('A', 'B', 'C'),
+                      alter1 = c('D', 'C', 'A'),
                       alter2 = c('B', 'A', 'A') )
 attributeV <- c(1:3)
 
-nodelist <-  makeNodeList(names =  namedf, attribute = attributeV)  
+nodelist <-  makeNodeList(names =  namedf, attribute = attributeV)
 }
 }

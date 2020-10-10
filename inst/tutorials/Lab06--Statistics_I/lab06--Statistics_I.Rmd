@@ -1,5 +1,5 @@
 ---
-title: "Lab06: Statistics I"
+title: "Lab 06: Stats I"
 output: 
   learnr::tutorial:
     fig_caption: no
@@ -17,66 +17,1067 @@ library(gradethis)
 library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
 knitr::opts_chunk$set(echo = TRUE)
+
+data("florentine", package = "SNA4DS")
+flobusiness <- florentine$flobusiness
+flomarriage <- florentine$flomarriage
+floattrs <- florentine$floattrs
+flomar_network <- SNA4DS:::flomar_network
+flobus_network <- SNA4DS:::flobus_network
+wealth_absdiff <- SNA4DS::make_matrix_from_vertex_attribute(flobus_network, 
+                                name = "Wealth", measure = "absdiff")
+
+num_walktrap_comps <- function(x) {
+  igraph::graph_from_data_frame(x, directed = FALSE) %>% 
+    igraph::cluster_walktrap() %>% 
+    length()
+}
+
+data(Sampson, package = "SNA4DS")
+Sampson_like3 <- as.matrix(igraph::as_adjacency_matrix(Sampson$Sampson_like3, attr = "weight"))
+Sampson_like2 <- as.matrix(igraph::as_adjacency_matrix(Sampson$Sampson_like2, attr = "weight"))
+Sampson_like1 <- as.matrix(igraph::as_adjacency_matrix(Sampson$Sampson_like1, attr = "weight"))
+Sampson_desesteem <- as.matrix(igraph::as_adjacency_matrix(Sampson$Sampson_desesteem, attr = "weight"))
+Sampson_esteem <- as.matrix(igraph::as_adjacency_matrix(Sampson$Sampson_esteem, attr = "weight"))
+Sampson_positive_influence <- as.matrix(igraph::as_adjacency_matrix(Sampson$Sampson_positive_influence, attr = "weight"))
+Sampson_praise <- as.matrix(igraph::as_adjacency_matrix(Sampson$Sampson_praise, attr = "weight"))
 ```
 
 ## Welcome
 
-OK, so, we have focused on descriptive analysis of social networks sofar.
-Our aim has been to get to know some of the important measures that capture 
-the position of vertices (especially centrality measures) and measures that 
-describe the structure of the network as a whole (such as centralization or
-component detection), and we spent some time on visualizing networks.
-Oh, and you have become acquainted with some of the facilities in R do calculate
-these measures and plot those networks.
-
+Until now, we have focused on descriptive analysis of social networks. 
 From here on out, we are going to change the course of this course :-) We will 
-now move from descriptive analysis to inferential analysis: statistics, that is. 
-We'll get into hypothesis testing and parameter estimation.
+move from descriptive analysis to hypothesis testing and parameter estimation 
+using statistical models.
 
-We start that trajectory in this tutorial by looking at graph level measures 
-(including the ones you already learnt about) and will teach you how to 
-statistically test whether the network measure at hand 
-(e.g., its betweenness centralization) is exceptionally high (or low), 
+If you are not comfortable with statistics you may find this part of the course 
+more challenging. If so, make sure to recheck the material from your earlier 
+statistics courses. That said, we'll keep the statistics gentle in this course.
+
+This is what we are going to do in this tutorial
+
+* You will [first](#CUGs) learn teach how to 
+statistically test whether a network measure at hand 
+(such as betweenness centralization) is exceptionally high (or low), 
 or whether it is quite average for the sort of 
 network you are considering.
 
-Next, you will learn how to compare networks and even regress a network on 
-several others.
+* [Next](#QAP), you will learn how to compare two networks 
 
-Awesomeness. So, let's get started.
+* Finally, you will learn how to regress a network on several others, using 
+[linear](#MRQAP) and [loglinear](#netlogit) models.
+
+Awesomeness. So, let's get started. Let's travel back in time to Italy 600 years.
+<br><br><br><br>
 
 
-
-
-
-
-## A section
-
-blah blah
-
-## A second section with a custom identifier {#custom}
-
-blah blah
-
-## Links
-
-You can use implicit references to refer to sections
-you have not explicitly named, like this: 
-see [A section]. 
-
-You can use links to refere to sections with explicit
-references, like this: see [the second section](#custom).
+```{r, echo = FALSE, fig.align = 'center', fig.cap = "Wikipedia: Republic of Florence"}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Italy_1494_AD.png/220px-Italy_1494_AD.png")
+```
 
 
 
 
-## pipe
-In this tutorial we are going to look at the following topics.
+## Renaissance Florence
+The first dataset we will use for this tutorial is a very famous one. 
 
-* How to use the _pipe_ to improve the readability of a chain of operations in R
+It is a dataset of sixteen families in 
+Renaissance [Florence](https://en.wikipedia.org/wiki/Republic_of_Florence), 
+collected over the 
+course of more than two decades by John Padgett 
+(see [here](http://home.uchicago.edu/jpadgett/) 
+and [here](https://scholar.google.com/citations?user=0dn8EFkAAAAJ&hl=en)). 
 
-* Summary statistics of networks
+The data collection took John over twenty years of handwork, painstakingly going 
+through the historical archives in Florence. 
+The dataset we will work with today is data of marriage and business ties 
+among Renaissance Florentine families. Actually, this is a subset of that data 
+that is included in the UCINET software ([see here](http://networkdata.ics.uci.edu/netdata/html/florentine.html)).
 
-* We will take a special look at the internet as a network
+The two relations are __business ties__ (`flobusiness`: recorded financial ties 
+such as loans, credits and joint partnerships) and __marriage alliances__ 
+(`flomarriage`).
 
-Excited? Or at least interested? Let's go!
+Both networks provide vertex information (`floattrs`) on (1) wealth each 
+family's net wealth 
+in 1427 (in thousands of lira); (2) priorates the number of priorates 
+(seats on the civic council) held between 1282- 1344; and (3) totalties the 
+total number of business or marriage ties in the total dataset of 116 families.
+
+Substantively, the data include families who were engaged in a struggle for 
+political control of Florence around 1430. 
+Two factions were dominant in this struggle: one revolved around the infamous 
+Medicis (9), the other around the powerful Strozzis (15).
+
+The data is, how conveniently, included in `SNA4DS`. It is a list, that contains
+the two networks and a data.frame of the attributes. Let's get it into our session.
+
+(we already loaded this data for you, in `igraph` format)
+
+```
+data("florentine", package = "SNA4DS")
+flobusiness <- florentine$flobusiness
+flomarriage <- florentine$flomarriage
+floattrs <- florentine$floattrs
+```
+
+## Florentine networks
+
+Of course, you should always look at the descriptives of any 
+dataset, like you learnt in a previous tutorial. I trust you will do that for 
+this dataset, so I will not take up the space in this tutorial to do that here.
+
+Well, actually, let's at least do a few of these things together now for the 
+*marriage* data, which tells you which families married each other during this 
+time. 
+
+```{r remedy001, exercise = TRUE}
+igraph::print.igraph(flomarriage)
+```
+
+Plot the graph. Below, you find the basic code, without any tweaking. It is a 
+good exercise to make it more beautiful, you can do that in the box below too.
+
+```{r remedy002, exercise = TRUE, exercise.line = 8}
+igraph::plot.igraph(flomarriage)
+```
+
+OK, that graph already shows you a bit in terms of who are the popular families
+to get married to. It's not exactly equally divided, right? Poor Pucci family...
+
+Now, calculate the density of the `flomarriage` network:
+```{r remedy003, exercise = TRUE}
+
+```
+
+```{r remedy003-solution}
+igraph::edge_density(flomarriage)
+```
+
+
+```{r remedy003-check}
+gradethis::grade_result(
+  pass_if(~identical(.result, 1/6), "Yes, that is the density!")
+)
+
+```
+
+Let's now make a histogram that shows the degree distribution of the families.
+
+```{r remedy004, exercise = TRUE}
+flomarriage %>% 
+  igraph::degree() %>% 
+  hist(main = "degree distribution of flomarriage")
+```
+
+Calculate transitivity for `flomarriage`. Do you consider this high or low?
+
+```{r remedy006, exercise = TRUE}
+
+```
+
+```{r remedy006-solution}
+igraph::transitivity(flomarriage)
+```
+
+```{r remedy006-check}
+gradethis::grade_code(correct = "You've got this thing down!")
+```
+
+
+Now, we detemine three centralities for the vertices: betweenness, 
+closeness, and degree. But, __first__, look again at the plot you made aboven 
+and see if you can predict what kind of warning message you will get when you 
+calculate these centrality measures. Can you figure it out? Which vertex 
+causes this?
+
+```{r remedy008, exercise = TRUE}
+SNA4DS::centralityChart(flomarriage, path = TRUE)
+```
+
+It is clear that some families are more central than others and especially the 
+Medici family has a much higher betweenness score than the others. What does 
+this mean for the betweenness centralization of the network? Calculate that 
+value now:
+
+```{r remedy007, exercise = TRUE}
+
+```
+
+```{r remedy007-solution}
+igraph::centralization.betweenness(flomarriage, directed = FALSE)
+```
+
+```{r remedy007-check}
+gradethis::grade_result(
+  pass_if(
+      function(x) {
+        if (is.list(x)) {
+          x$centralization > .38 & x$centralization < .385
+        } else {
+          x > .38 & x < .385
+        }
+      },
+  "That is the correct betweenness centralization result.")
+  )
+```
+
+OK, you can calculate additional measures yourself. Also, you can work on the 
+`flobusiness` dataset and get to know it better. You can do all of that in the 
+box below. It is a good learning exercise.
+
+```{r remedy009, exercise = TRUE, exercise.lines = 20}
+
+```
+
+```{r remedy009-solution}
+
+```
+
+We have vertex attributes, in the `floattrs` object, let's look at them too:
+
+```{r vattr, exercise = TRUE}
+floattrs
+summary(floattrs)
+```
+
+
+It is time to add the vertex attributes to the networks. Do this for the 
+`flomarriage` dataset first.
+
+_(NOTE: there are **many ways** to do this. Try it out you way. The solution checker in this tutorial will check your code against mine, which will almost certainly be somewhat different from yours. That is **not a problem**. The point is that you learn how to do it. You can use my code (found as the solution to this exercise) as a reference to compare yours against. But as long as you get the attributes into the network object correctly, you are fine. No need to use the same code as I do here.)_
+
+```{r flomarVertex, exercise = TRUE, exercise.lines = 10}
+
+```
+
+```{r flomarVertex-solution}
+# first check if the vertex names are in the same order in the network as 
+# in the attributes object
+all(igraph::V(flomarriage)$name == rownames(floattrs)) 
+
+# since the vertices are in the same order, let's add them in a simple loop
+for (att in colnames(floattrs)) {
+  igraph::vertex_attr(flomarriage, name = att) <- floattrs[, att]
+}
+
+# this is the result
+flomarriage
+```
+
+```{r flomarVertex-check}
+gradethis::grade_code(correct = "There are many ways to do this")
+```
+
+Do the same thing for the `flobusiness` network below:
+
+```{r flobusleeg, exercise = TRUE}
+
+```
+
+
+
+```{r floAttrs, include = FALSE}
+for (att in colnames(floattrs)) {
+  igraph::vertex_attr(flomarriage, name = att) <- floattrs[, att]
+}
+for (att in colnames(floattrs)) {
+  igraph::vertex_attr(flobusiness, name = att) <- floattrs[, att]
+}
+```
+
+
+
+From here on out, we'll work with these two enhanced networks.
+
+## Conditional Uniform Graphs {#CUGs}
+
+Now, let's go do some statistics. 
+You calculated the betweenness centralization of the 
+marriages network to be 0.38. 
+Is this high or low?
+And you determined that the transitivity in the network was about 0.19. But is 
+this high? 
+
+You can test this by comparing transitivity against a feasible __null model__. 
+In statistics, a null model is a baseline that reflects a situation that is 
+comparable to your dataset and can be seen as a baseline to test against. If
+the betweenness centralization (or whatever statistic you want to check) is 
+high (or low) compared to the baseline, you can conclude it is exceptional. 
+In statistical terms, we would call the betweenness centralization to be 
+*statistically significantly different* from the baseline. Now we are 
+back into a world we are well familiar with.
+
+So, the only thing we need is a set of networks to test our network against. 
+
+One way would be to collect lots and lots of (marriage) networks 
+and then compare the centralization scores between 
+them. That would take a very very very long time. 
+
+What is worse: network measures 
+are highly affected by things like network size (= the number of vertices in 
+a network) and network density. 
+To see this, let's consider friendship for a moment. For simplicity, let's
+assume that people have, on average, the capacity to entertain ten friends. 
+In a network of 
+11 people, this would yield density = 1 (assuming friendship to 
+be undirected, for simplicity). 
+In a network of 20 people, you would be friends with about half of the people, 
+and density would drop to 0.53, even though everybody still has their 10 friends.
+In a network of 100 people? 
+Density would drop to 0.10. 
+
+Also, it is easy to imagine that you will find a larger number of *subgroups* in 
+larger networks than in smaller networks. As density increases in a network, 
+*betweenness* scores of vertices will become more alike (because the number of 
+advantageous position decreases as the network becomes really dense). Et 
+cetera. Most network measures are somehow a function of network size and 
+network density.
+
+Long story short, even if you collected 1000 networks with marriage relationships 
+between families, they are not well-comparable if they are of different size and 
+have different structure overall.
+
+So, does this mean there is no way to quantify whether the betweenness 
+centralization of the `flomarriage` network is exceptional? 
+Well, good news, __I have a solution for you__! 
+
+The solution is to generate these networks ourselves, rather than going out and 
+collecting them by hand. The advantage is that we now ensure that the networks 
+are comparable to our own networks, and we can define what "comparable"
+means ourselves! 
+So, all we need to do is to generate a bunch of baseline networks and then 
+compare the distribution of betweenness centralization of those networks to the 
+betweenness centralization of our own network. 
+As we say in Dutch: *[a child can do the laundry](http://www.dwotd.nl/2008/12/525-een-kind-ka.html)* ;-)
+
+One important family of baseline models for network data is the family of 
+**conditional uniform graph (CUG) distributions**. The CUG distribution ﬁxes 
+certain properties of the networks that are generated and treats all
+graphs with those criteria as equally probable. Hence the name CUG.
+
+CUG distributions are among the oldest and most widely used
+models for network data, and are used for their simplicity as
+well as for their statistical properties. Let me show you how to do this by 
+hand first, so you will be sure to understand exactly how this works.
+
+## CUG's by hand {#CUGByHand}
+
+*The process for running a CUG is:*
+
+* Calculate a global measure on some network (e.g., betweenness centralization)
+
+* Generate a large number of networks that a comparable to the original network and calculate the global measure for each
+
+* Compare the value of the measure from your original network with those of the simulated networks
+
+That's it. 
+
+Through this procedure we end up with the relevant *empirical distribution* of 
+the measure we are interested in. As soon as we know the distribution of some 
+statistic, we can calculate *p*-values, like you learned in your 
+statistics courses. Nice.
+
+This means that we need to decide what makes a network comparable to ours. Is it 
+the network's size? Is it its density? Is it its MAN-census (see **Dyad census**
+in lab 4)? Something else?
+
+In theory, you can go crazy defining all kinds of conditions that make a network
+comparable, but the three most common are these: 
+
+* network size
+
+* network density
+
+* dyad census
+
+* degree distribution
+
+These are already implemented in the packages we are using in this 
+course, and there is rarely a reason to go beyond this set.
+
+Let's compare the transitivity of the `flomarriage` network with other networks 
+with the same size and density. We first do this by hand, and then show you 
+how this is already automated for you in the `sna` package. 
+Doing it by hand helps you understand how this works exactly.
+
+The `flomarriage` has 16 vertices and 20 undirected edges. The task therefore
+is to generate networks that also have 16 vertices and 20 undirected 
+edges. We then calculate the transitivities of each of these generated networks 
+and compare those transitivity scores to the transitivity of 
+`flomarriage` (which was 0.19, remember?). 
+
+We will do this using the `sna` package, since the functions to perform CUG 
+tests are implemented for us there. Therefore, we first need to transform the 
+networks into `network` objects:
+
+```{r}
+flobus_network <- intergraph::asNetwork(flobusiness)
+flomar_network <- intergraph::asNetwork(flomarriage)
+```
+
+We generate one such network as follows (where *mode = "graph"* tells the 
+function that we want an **un**directed network):
+
+```{r nwgen1, exercise = TRUE}
+sna::rgnm(n = 1, nv = 16, m = 20, mode = "graph")
+```
+
+Hit the button a few times and you'll see that everytime you generate a 
+different (random) network, with 16 vertices and 20 undirected edges.
+
+Note: this is a so-called Erdos graph, explained in a lecture by Claudia.
+
+We don't care about these networks per se, but about their transitivity. This
+is calculated in `sna` as follows:
+
+```{r gtrans1, exercise = TRUE}
+sna::gtrans(flomar_network, mode = "graph")
+```
+
+Indeed, this is the same value we just calculated with `igraph`, so we are on 
+right track. 
+Now let's generate a random network with 16 vertices and 20 undirected 
+edges and calculate its transitivity.
+
+```{r nwgen2, exercise = TRUE}
+sna::rgnm(n = 1, nv = 16, m = 20, mode = "graph") %>% 
+  sna::gtrans(mode = "graph")
+```
+
+Cool. That is one network. But we need a lot of them. We can either do this 
+in a loop, repeating many times, or make use of the fact that `sna` is capable 
+of dealing with a whole stack of networks at the same time. We simply change
+the value of *n* into a larger number. For example, see here:
+
+```{r nwgen3, exercise = TRUE}
+sna::rgnm(n = 3, nv = 16, m = 20, mode = "graph")
+```
+
+There we have three networks, all with the desired properties of having 16 
+vertices and 20 undirected edges.
+
+Let's get the transitivities of three networks in one line of code:
+
+```{r nwgen4, exercise = TRUE}
+sna::rgnm(n = 3, nv = 16, m = 20, mode = "graph") %>% 
+  sna::gtrans(mode = "graph")
+```
+
+That works. We can do this a great many times. Below, I'll do it 2000 times, 
+which is usually enough to get a stable result. 
+If your laptop starts complaining, you can lower the number in the box below.
+
+
+```{r nwgen5, exercise = TRUE}
+trans <- sna::rgnm(n = 2000, nv = 16, m = 20, mode = "graph") %>% 
+  sna::gtrans(mode = "graph")
+trans
+```
+
+Plotting our findings:
+
+```{r remedy016, exercise = TRUE, exercise.setup = "nwgen5"}
+plot(density(trans), main = "Empirical transitivity distribution", 
+xlab = "transitivity")
+abline(v = sna::gtrans(flomar_network, mode = "graph"), lty = "dashed")
+```
+
+Each time you rerun this, you'll get slightly different networks (but all 
+with 16 vertices and 20 edges) and a different set of transitivity scores 
+and, hence, a different plot. But the general picture remains the same. 
+And if you run enough replications, the conclusions will be similar for every 
+run you make.
+
+(NOTE: for technical reasons, this graph in the tutorial is based on 2000 draws, 
+irrespective of the number you specify in the previous code block. If you want 
+to see the results of increasing the number of draws, copy the code for drawing 
+the graph to the previous block, so it draws the graph based on whatever 
+number of transitivities you calculate there).
+
+The dashed vertical line represents the transitivity of the 
+`flomar_network` network. 
+Not exceptionally high or low, would you think?
+
+How exceptional it is is easy to quantify. The proportion of transitivities 
+of networks with 16 vertices and 20 undirected edges that are higher than 0.191 
+is simply:
+
+```{r trans1, exercise = TRUE, exercise.setup = "nwgen5"}
+mean(trans > sna::gtrans(flomar_network, mode = "graph"))
+```
+
+You will find that about 35 percent of all networks with 16 vertices and 20 
+undirected edges have a higher transitivity than the `flomar_network`. 
+This is far from **statistical significance**.
+
+What about the business network of these families? Well, `flobus_network` 
+has a transitivity of:
+
+```{r}
+sna::gtrans(flobus_network, mode = "graph")
+```
+
+Mmm, that seems quite high, wouldn't you say? 
+
+Calculate the *p*-value for transtivity in this network:
+
+```{r trans2, exercise = TRUE, exercise.setup = "nwgen5"}
+
+```
+
+```{r trans2-solution}
+mean(trans > sna::gtrans(flobus_network, mode = "graph"))
+```
+
+```{r trans2-check}
+gradethis::grade_code(correct = "Oohoo, this is how we do it!")
+```
+
+This is zero or close to zero, depending on your draws. That's an exceptional
+transitivity score. Statistically significant, that's for sure.
+
+
+## Automated CUG test {#CUGtest}
+
+We need not do all of this by hand, but you should have a good idea of how 
+CUGs work now that you have done it by hand once.
+
+There are two functions in `sna` that generate CUGs and then calculates the 
+*p*-value of the statistic we want to test. The best implemented function is 
+`sna::cug.test`. This function allows you to pick one of the following 
+conditions: number of vertices, the number of vertices plus the edge count 
+(or exact edge value distribution), or the number of vertices plus the dyad 
+census (or dyad value distribution). You pick which one you want by 
+setting the `cmode` argument to either *size* (for the number of vertices), 
+*edges* (for edge count, hence density), or *dyad.census*: 
+
+```
+cug.test(dat, FUN, mode = c("digraph", "graph"), cmode = c("size", 
+    "edges", "dyad.census"), diag = FALSE, reps = 1000, 
+    ignore.eval = TRUE, FUN.args = list())
+```
+
+Let us now run the test whether the transitivity of the marriage network 
+is high or not. 
+The `sna::gtrans` function requires us to set `mode = "graph"`, because we have 
+an undirected network. Any argument is fed to `sna::cug.test` through `FUN.args`. 
+I'll give you more examples later, so it will be very clear to you how that works.
+
+The code below generates 1000 (`reps = 1000`) networks that have the same
+number of vertices and edges (`cmode = "edges"`) as our original network 
+(`flomar_network`). 
+It calculates the transitivity of each network (`FUN = sna::gtrans`, 
+with `mode = "graph"`) and then compares the transitivity score of 
+`flomar_network` to that of the 1000 networks it generated. Clear?
+
+```{r remedy017, exercise = TRUE}
+sna::cug.test(flomar_network, FUN = sna::gtrans, cmode = "edges", 
+              reps = 1000, FUN.args = list(mode = "graph"))
+```
+
+This is based on 1000 repetitions. As you see, the *p*-value is about .21- .23 
+(depending on your specific sample), so we reject the null hypothesis that the 
+transitivity in the marriage network is 
+larger than that which you would expect in a random network of equal size and 
+density.
+
+Now, calculate this for the business network
+
+```{r remedy018, exercise = TRUE}
+
+```
+
+
+```{r remedy018-solution}
+sna::cug.test(flobus_network, FUN = sna::gtrans, cmode = "edges", reps = 1000, FUN.args = list(mode = "graph"))
+```
+
+```{r remedy018-check}
+gradethis::grade_code(correct = "Yes, that's how you do it.")
+```
+
+As expected, the *p*-value is, rounded, 0. The transitivity of the business 
+network is definitely statistically significantly larger than would you would 
+expect for networks of this size and density.
+
+We can also plot the results. You do this as follows:
+
+```{r remedy019, exercise = TRUE}
+cug_trans <- sna::cug.test(flobus_network, FUN = sna::gtrans, cmode = "edges", reps = 1000, FUN.args = list(mode = "graph"))
+sna::plot.cug.test(cug_trans)
+```
+
+What about the betweenness centralization of the marriage network? We computed 
+that to be 
+
+```{r}
+sna::centralization(flomar_network, sna::betweenness, mode = "graph")
+```
+
+Now that you understand how the procedure works, we will now just use 
+`sna::cug.test` directly. 
+Below, perform the CUG test on the `flomar_network` network, for 
+betweenness centralization.
+
+```{r betwcent, exercise = TRUE}
+...
+```
+
+```{r betwcent-solution}
+sna::cug.test(flomar_network,
+                        sna::centralization,
+                        FUN.arg=list(FUN = sna::betweenness), 
+                        mode="graph", 
+                        cmode="edges")
+```
+
+```{r betwcent-check}
+gradethis::grade_code(correct = "Excellent work!")
+```
+
+Nah, not statistically significant. How about the business network?
+
+```{r betwcentbus, exercise = TRUE}
+...
+```
+
+```{r betwcentbus-solution}
+sna::cug.test(flobus_network,
+                        sna::centralization,
+                        FUN.arg=list(FUN = sna::betweenness), 
+                        mode="graph", 
+                        cmode="edges")
+```
+
+```{r betwcentbus-check}
+gradethis::grade_code(correct = "Beautifully done, Claudia and I are proud of you!")
+```
+
+Not statistically significant here, either.
+
+Note that `sna::cug.test` allows you to plug in essentially any function you 
+want to calculate on the network. Above, you entered `sna::gtrans` and 
+`sna::centralization`, but there is no reason why the functions need to come 
+from `sna`. You can put in a lot here, as long as it works on a network. 
+
+## Comparing two networks {#comparing}
+The CUG above is quite useful when you want to test if a network statistic 
+of a single network 
+is high/low. We now move to the situation where you have two networks you 
+would like to compare. We will limit our treatment in this tutorial to the 
+case where you want to compare networks that you have collected 
+with the same vertices, such as a friendship network and advice network among the
+same set of workers in an organization. For this purpose, the preferred 
+approach is the so-called *Linear subspace method*.
+
+### Linear subspace method/QAP correlation {#QAP}
+
+Since we compare networks with the same vertices, we now really compare 
+the *edges* between the networks, rather than some *overall network measure*. 
+This is a special case of the more general "graph comparison problem." 
+
+The most common linear subspace method for this purpose is the so-called 
+*Quadratic Assignment Procedure* (QAP). QAP is a method that was originally 
+developed for somewhat other purposes, but it has been extended for use with 
+social networks. As a result, you may find references to QAP in literature that
+does not relate to networks. So you know.
+
+QAP is similar to CUG, in that it uses 
+statistical simulation in
+order to generate a distribution of hypothetical networks. 
+However, with QAP we do not generate a series of graphs out-of-the-blue, but we now 
+control for all purely structural properties of the graphs being compared 
+themselves.
+
+How does QAP control for things like size, density, degree, and all further 
+structure that is inherent in the two networks? Well, it does so by permuting 
+the networks. In its most basic form, this works as follows:
+
+1. Take one of the two networks (say, the first)
+
+2. Randomly permute the order of the vertices in the network. If your original 
+network consisted of 5 vertices (ordered as 1, 2, 3, 4, 5), you would now 
+reshuffle, your vertices, for example, as 1, 5, 2, 4, 3. You then create the 
+adjacency matrix by keeping the first row, then place row 5, then rows 2, 4, and 3. You then also reorder the columns that way, so you start with column 1, then 5, then 
+2, 4, and 3. You thus end up with a network that has the same number of vertices,
+and maintains other important characteristics.
+
+3. Calculate the correlation between this shuffled network with the non-shuffled
+network 2.
+
+4. Repeat steps 2 and 3 a great many times (at least 1000 times).
+
+5. You now have a distribution of correlations and can compare the correlation 
+between the original networks to this distribution. This again yields a *p*-value.
+
+The approach is similar to that of bootstrapping, which is a very 
+well-developed generally applicable statistical method. 
+
+
+### Let's run our QAP correlation {#QAPCor}
+
+Did the Florentine families base their business dealings on the marriage ties? 
+(Or maybe their marriages are based on their business ties?)
+
+```{r remedy023, exercise = TRUE}
+sna::gcor(flobus_network, flomar_network)
+```
+
+That is a moderate correlation. Or is it large? Let's run it:
+
+```{r remedy024, exercise = TRUE}
+floCor <- sna::qaptest(list(flobus_network, flomar_network), 
+                       sna::gcor, g1 = 1, g2 = 2, reps = 1000)
+floCor
+```
+
+Oh yeah, this correlation is definitely statistically significant! Families
+that (do not) engage in marriage with each other also tend to (do not) do 
+business with each other. This effect is statistically significantly larger than 
+what you would expect in random networks with comparable characteristics.
+
+
+Let's make a visual representation. Can you figure out how to plot the results?
+
+```{r remedy025, exercise = TRUE, exercise.setup = "remedy024"}
+
+```
+
+```{r remedy025-solution}
+sna::plot.qaptest(floCor)
+```
+
+```{r remedy025-check}
+gradethis::grade_code(correct = "You have clearly figured out how to work with the `sna` package!")
+```
+
+Again, you could write your own function comparing these networks. Your 
+function should work on sociomatrices, and then you can go as wild as you want.
+In most situations, the correlation (`sna::gcor`) between the two networks 
+makes the most sense. But feel free to use other functions, if your research 
+asks for it.
+
+## QAP Linear Regression {#MRQAP}
+The QAP looks at the relation between two networks. Let's exend this to 
+multiple networks and model one network as a linear function of a bunch of 
+others. 
+
+To show you this method, we are going to make use of a different dataset. 
+The dataset is a version of the well-known *Sampson Monastery network*. It is 
+a network of 18 monks who rate each other on how much they like each other (at 
+three time points), 
+how much they praise the others, how much they hold another in (des)esteem, 
+whether they experience positive or negative influence, and how much they 
+blame each other. Anyway, we will look at a few of these networks in this 
+tutorial. The important thing to note is that these are valued networks.
+
+The data are included in the `SNA4DS` package, as `igraph` objects. Just 
+run 
+
+```
+data(Sampson, package = "SNA4DS")
+```
+
+in an R session if you want to check them out for yourself. 
+I have already loaded them for you into this tutorial as weighted 
+matrices.
+In *QAP Linear Regression* (also called *MRQAP*) we model one network as a 
+linear function of one or more others. 
+You are, undoubtedly, familiar with the OLS model:
+
+\[
+y = \alpha + X_1*\beta_1 + X_2*\beta_2 + X_3*\beta_3 + \epsilon
+\]
+
+MRQAP is the same thing, but now we have a network as the dependent 
+variable and networks as explanatory variables.
+
+(side note: please don't ever use the term *independent* variable, because this 
+is rarely a totally accurate term)
+
+Technically, it is not the network that is used as a variable, but the edges 
+are regressed. So, if we wanted to test the hypothesis that how much a monk 
+likes another at timepoint 3 depends positively on how much he liked him at 
+the previous time points and how much he is liked by the other monk, and 
+negatively on how much desesteem the monk feels for the other.
+
+These monks all rated each other, and are rated by one another and it is 
+obvious that our observations of liking and desesteem are not independent 
+of each other. In fact, there was a social crisis in the monastary at the time of 
+the data collection with struggles between the monks. So, there is quite 
+definitely mutual influence going on. 
+Since we are dealing with networks, we can not just plain old OLS regression. 
+Although regular OLS we will give us the correct parameter estimates, it will 
+not give us correct confidence intervals because the underlying inferential 
+assumption of independence of observations is violated. 
+
+In MRQAP we solve this statistical problem in a way that is similar to the 
+QAP test above: we do permutations. This again yields empirical distributions 
+(of the regression coefficients), which allows us to compute the correct 
+empirical *p*-values.
+
+There are many different ways to permute our data. One way is to permute the 
+Y network. Another is to permute the X networks (a single one or jointly). 
+Yet another is to permute the network of disturbances. 
+The `sna` package offers all of these options, but I highly urge you to use the 
+*qapspp* approach (short for: QAP semi partialling plus). This method uses a 
+two-stage approach, where Y is regressed on permuted disturbances networks of 
+the regressions between the X networks. If this sounds abracadabra to you, 
+that is fine, as long as you remember that the *qapspp* makes interpretation 
+of the regression coefficients quiet straightforward. Let's say you get the 
+following results from a *qapspp* analysis:
+
+\[\hat{Y} = 2 + 3*X_1 + 4*X_2\]
+
+In this case, you can conclude that the presence of an edge in $X_1$ increases 
+the value of that edge in $Y$ with 3 compared to when that edge in $X_1$ is 
+absent, controling for the effect of $X_2$ on $Y$. This is identical to the OLS 
+case.
+With some of the other QAP approaches, interpretation of coefficients changes, 
+and I'd rather make life straightforward for us. So, all you need to remember 
+is: use the *qapspp* algorithm and interpret the results as you would in 
+a normal regression model (and be assured that your *p*-values are correct).
+
+
+The function to run QAP regression is `sna::netlm`. We run the model as 
+follows (allow for 20 seconds or so for this to finish running, 
+depending on your machine): 
+
+```{r remedy028, exercise = TRUE}
+mod <- sna::netlm(y = Sampson_like3, x = list(Sampson_like1, Sampson_like2,
+                              t(Sampson_like3), Sampson_desesteem), 
+                              nullhyp = 'qapspp', reps = 1001)
+mod$names <- c("Intcpt", "Liking 1", "Liking 2", "Being liked", "Desesteem")
+summary(mod)
+```
+
+How does this work?
+
+* the first argument `y` is the network you use as the dependent variable. This the 
+liking at time 3.
+
+* in the `×` you include a list with the explanatory networks. 
+
+* the networks measure how one person thinks about the other. 
+So, cell (*i*, *j* ) in the liking network measures how much *i* 
+likes *j*. This means that we can see how much *j* likes *i* by 
+looking at cell (*j*, *i*). Therefore, by taking the transpose of the 
+`Samspon_like3` matrix, cell (*i*, *j*) now measures how much *j* likes *i* (at 
+time 3). That is why the transposed matrix is included here. 
+
+* I happen to know (since I looked at the underlying code) that the output of 
+the `netlm` analysis doesn't store the names of the networks. That is 
+annoying, because I like to have the names of the explanatory variables in 
+my output. Therefore, I included `mod$names <- c("Intcpt", "Liking 1", "Liking 2", "Being liked", "Desesteem")` (in the exact same order as the networks in the function 
+call) in the code above. The analysis will run fine without this, but 
+the output is easier to read if you add this. Feel free to run it again without 
+this line and you will see that you get similar results, but with less clear 
+output.
+
+* the intercept is included in the model by default. Don't change that.
+
+So, what did we find? <br>
+Well, both liking at times 1 and 2 statistically 
+significantly positively affect liking at time 3. 
+The most recent liking 
+(at time 2) explains liking at time 3 more than liking at time 1 does, but both
+are relevant. 
+
+Also, being liked by the other statistically significantly increases liking 
+that person. Even monks seem to like more those others whom they experience 
+being liked by.
+
+Finally, holding desesteem toward the other does not affect liking. This is 
+somewhat surprising; we would of course not expect desesteem to increase liking, 
+but one could certainly expect that the higher the desesteem is that *i* 
+holds for *j*, 
+the lower *i*'s liking of *j* would be. 
+The coefficient is indeed negative, but the effect is not 
+nearly statistically significant.
+
+Let's do this one more time. Now, test the following hypotheses:
+
+$H_1$ : experiencing "positive influence" increases with liking that person.
+
+$H_2$ : experiencing "positive influence" increases with being praised by 
+that person .
+
+$H_3$ : experiencing "positive influence" increases with the esteem you have 
+for that person.
+
+The appropriate networks are *Sampson_positive_influence*, *Sampson_like3* ,
+*Sampson_praise*, and *Sampson_esteem*. Below, run the model (as a single model, 
+with all effects in the same regression) and interpret the findings. 
+
+```{r remedy029, exercise = TRUE, exercise.lines = 5}
+
+```
+
+
+```{r remedy029-solution}
+mod <- sna::netlm(Sampson_positive_influence, list(Sampson_like3,
+                              t(Sampson_praise), Sampson_esteem), 
+                              nullhyp = 'qapspp', reps = 1001)
+mod$names <- c("Intcpt", "Liking 3", "Being praised", "Esteem")
+summary(mod)
+```
+
+
+```{r remedy029-check}
+gradethis::grade_code(correct = "Awesome, you are going to rock in the final exam!")
+```
+
+## QAP logistic model {#netlogit}
+The purely linear MRQAP model is wonderfully simple. It is a great model if 
+you have a dependent network that is valued. That is why we used the Sampson 
+data for that example: it offers valued networks that we can use as  
+appropriate dependent variables. Note that MRQAP only requires the dependent 
+variable to be valued, the explanatory networks can be binary, valued, or 
+combinations. 
+
+Unfortunately, the MRQAP model is not statistically appropriate when 
+you have a binary dependent network. <br>
+Why not? Well, you will recall from your statistics courses that the linear 
+regression model is incorrect when the dependent variable is binary. When you 
+want to model a binary network, this is equally inappropriate for the exact 
+same statistical reasons.<br>
+In a standard regression modeling context, you would use a *logistic* model 
+(or a version of it) to model a binary dependent variable. 
+Again, same thing 
+here. Of course, we also need to take care of the network dependency between the 
+edges, but the model we will use is otherwise similar to the logistic 
+regression model you are already familiar with. 
+
+We return to the Florentine families you have gotten to know so well today. 
+We expect that the Florentine families may be more likely to do business with 
+those families they have a marital tie with. Hence:
+
+$H_1$ : The probability of doing business together increases with 
+having a marriage relation
+
+We also are interested in testing whether business is more likely to be done 
+between families of comparable wealth. 
+The idea behind this is that it might be that rich families don't want to 
+engage in marriage with a family that is considerably less rich, out of 
+fear that the "poorer" family will want to take advantage of their richness. 
+In other words, we would expect similarity in wealth to be a positive 
+predictor of the probability of a marriage relation between two families.
+<br>We calculate this variable by taking 
+the absolute value of the difference in wealth between the two families. The 
+higher this number, the higher the difference in wealth between them.
+
+$H_2$ : The probability of doing business together decreases with the 
+difference in wealth between the families.
+
+We create a network of wealth differences from the vertex attribute *wealth* 
+that measures each family's net wealth in thousands of 
+[lira](https://www.reddit.com/r/AskHistorians/comments/1e6jvj/between_the_13th_and_15th_century_what_would_1/) 
+(this is in Renaissance times, remember?):
+
+```{r wealth, exercise = TRUE}
+network::get.vertex.attribute(flobus_network, "Wealth")
+```
+
+We have programmed a handy function to turn a vertex attribute into a matrix
+for you and added that to `SNA4DS`. 
+
+```{r wealthMat, exercise = TRUE}
+wealth_absdiff <- SNA4DS::make_matrix_from_vertex_attribute(flobus_network, 
+                                name = "Wealth", measure = "absdiff")
+wealth_absdiff
+```
+
+You can learn more about how to use this function by typing 
+
+```
+?SNA4DS:::make_matrix_from_vertex_attribute
+```
+
+into your R session.
+
+
+We now run our analysis, in order to test our hypotheses. 
+Since we have a binary dependent variable, the appropriate function is 
+`sna::netlogit`, but works in the exact same way as the `sna::netlm` function.
+
+```{r netlogit1, exercise = TRUE}
+w_absdiff <- sna::netlogit(flobus_network, 
+                           list(flomar_network, wealth_absdiff), 
+                           nullhyp = "qapspp", reps = 1001)
+w_absdiff$names <- c("Intcpt", "Marriage", "Wealth difference")
+summary(w_absdiff)
+```
+
+The logistic model looks fairly similar to the linear regression model. 
+The estimates, however, are interpreted somewhat differently.
+
+Marriage ties indeed explain business ties (*p* < 0.000). The difference in 
+wealth does not statistically significantly explain the existence of 
+a business relation.
+
+In the output, the estimates are given in two columns. The first column, 
+labeled “Estimate”, gives the log odds. You can interpret this as a tendency 
+towards forming ties (for positive values), or a tendency away from forming 
+ties (for negative values). 
+It is, however, much easier to read the second column, labeled “Exp(b)”. 
+The values in this second column are the log odds that have been converted to 
+odds ratios by taking their exponent (you remember this from your statistics 
+classes, right?). 
+To interpret the odds ratios, think of 
+them as the likelihood of a tie forming, given the presence of some other 
+factor; as compared with the absence of that factor.
+
+Using the second column of estimates, the output indicates that a business tie 
+is about 13.7 times more likely to form in the presence of a marriage tie, 
+than in the absence of a marriage tie.
+
+If you are interested in betting, then think of this as the odds of forming 
+a business tie being 13.7:1 in the presence of a marriage tie. 
+Sounds like a pretty good bet.
+
+Wealth difference is not statistically significant, so we conclude that 
+wealth difference does not explain business ties.
+
+The cool thing about the logistic model is that we get more useful output, 
+including a contingency table. This table shows you that absent 
+business ties are very well explained by the model, but that the present 
+business ties are explained very poorly. 
+This makes sense, as there are many more absent ties than present ties.
+
+In the box below, compute the number of present ties and the number of 
+absent ties in `flobus_network`. Also, determine the ratio of the two. 
+This should be easy for you by now.
+
+
+```{r remedy031, exercise = TRUE}
+
+
+
+```
+
+When you perform an actual analysis, 
+you would then try to find other explanatory factors that explain the 
+dependent network better than wealth difference does. 
+
+OK, now that we considered a model to explain business ties, it is your turn 
+to estimate a model that explains marriage ties as a function of the network 
+of business ties and the network of wealth differences. 
+(if you get any warnings about numerically fitted probabilities while running 
+this, just ignore them)
+
+
+```{r netlogit2, exercise = TRUE, exercise.lines = 6}
+
+```
+
+```{r netlogit2-solution}
+w_absdiff <- sna::netlogit(flomar_network, 
+                           list(flobus_network, wealth_absdiff), 
+                           nullhyp = "qapspp", reps = 1001)
+w_absdiff$names <- c("Intcpt", "Business", "Wealth difference")
+summary(w_absdiff)
+```
+
+
+Interpret your findings. Is this model better than the one above?
