@@ -154,7 +154,6 @@ Now, calculate the density of the `flomarriage` network:
 igraph::edge_density(flomarriage)
 ```
 
-
 ```{r remedy003-check}
 gradethis::grade_result(
   pass_if(~identical(.result, 1/6), "Yes, that is the density!")
@@ -274,7 +273,6 @@ Do the same thing for the `flobusiness` network below:
 ```{r flobusleeg, exercise = TRUE}
 
 ```
-
 
 
 ```{r floAttrs, include = FALSE}
@@ -1000,6 +998,7 @@ into your R session.
 We now run our analysis, in order to test our hypotheses. 
 Since we have a binary dependent variable, the appropriate function is 
 `sna::netlogit`, but works in the exact same way as the `sna::netlm` function.
+
 
 ```{r netlogit1, exercise = TRUE}
 w_absdiff <- sna::netlogit(flobus_network, 
