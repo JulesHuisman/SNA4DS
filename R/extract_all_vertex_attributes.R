@@ -35,9 +35,13 @@
 extract_all_vertex_attributes <- function(g) {
   if (network::is.network(g)) {
     attrs <- network::list.vertex.attributes(g)
-    mat <- data.frame(matrix(ncol = length(attrs), nrow = network::network.size(g)))
-    for (att in 1:length(attrs)) {
-      mat[, att] <- network::get.vertex.attribute(g, attrs[att])
+    if (length(attrs) > 0) {
+      mat <- data.frame(matrix(ncol = length(attrs), nrow = network::network.size(g)))
+      for (att in 1:length(attrs)) {
+        mat[, att] <- network::get.vertex.attribute(g, attrs[att])
+      }
+    } else {
+      return(NULL)
     }
   } else if (igraph::is.igraph(g)) {
     attrs <- igraph::list.vertex.attributes(g)
