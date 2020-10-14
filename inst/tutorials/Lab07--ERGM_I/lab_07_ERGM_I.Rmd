@@ -1,0 +1,240 @@
+---
+title: "Lab 07 - ERGMs - Part one"
+output: 
+  learnr::tutorial:
+    fig_caption: no
+    progressive: true
+    allow_skip: true
+    # toc: true
+    # toc_depth: 2
+    theme: readable
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+tutorial_options(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction
+Welcome to the first of two tutorials about Esponential Random Graph Models (ERGMs)
+ERGMs are a statistical tool to assess causality using hypothesis testing 
+when the dependent variable is a network. 
+
+They are used to test weather the structure of a network is random or
+whether it is originated by some sort of social phenomena.
+
+
+Let's get started with the art of fitting ERGMs!
+
+## Logit
+
+ERG models conceptualize their dependent variable as absence or presence 
+of an edge between each pair of node in a network. This set up makes 
+them very comparable to logistic regression, a class of models that 
+focuses of dummy dependent variables. 
+
+Dummy is as nick name for a binary categorical variable such as 
+
+* yes or no
+* black or white
+* win or lose
+* ...
+
+
+In `r` you fit a logit model using the `glm` function that belongs to 
+base. glm stands for generalized linear model. 
+
+Now we know two crucial things about logit models
+* they have a dummy dependent variable
+* they are estimating linear effects. 
+
+Let's fit the logit model we discussed in the first ERGM lecture!
+
+```{r load_SuccessData, include = FALSE}
+SuccessData <- SNA4DS:::SuccessData
+```
+
+First we take a look at the data
+
+```{r head_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+
+head(SuccessData)
+nrow(SuccessData)
+
+```
+We have three variables:
+
+* success: whether our respondents are successful or not (dummy)
+* numeracy: how much our respondents are good at math (numeric, continuous)
+* anxiety: how much our respondents are anxious (numeric, continuous)
+
+Having these three pieces of information about our 50 respondents, 
+we can ask three 'why' (causal) questions":
+
+* 1. Does the level of success and numeracy predict the presence of anxious thoughts?
+* 2. Does the the level of success and anxiety predict numeracy?
+* 3. Does the level of anxiety and the level of numeracy predict success?
+
+Even if the data allow us to fit these three models, it is not necessarily 
+a good idea to do it. In fact, questions 1 and 2 sound a little detached 
+from reality. Why math knowledge should make someone anxious (1)? Why an 
+anxious person should be good at math (2)? 
+
+If you decide to run a model you need to support your question with 
+evidence to persuade your audience that your question makes sense. 
+You also need to provide an attempted answer to your question, informed
+by the literature you read on the topic. That's an hypothesis. 
+
+Now, we move on with question 3 assuming that we spent some time reading on 
+the topic and that we can formulate the hypothesis:
+
+* H1 The level of anxiety and the level of numeracy are predictors of success.
+
+Then we move on fitting the models to test it. Since our dependent variable 
+is a dummy, we use a logit model. 
+We add the covariates (independent variables) one by one, nesting a series 
+of models. 
+
+
+
+```{r m1_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+SuccessModel1 <- stats::glm(formula = success ~ numeracy, 
+                            family = binomial(link = logit), 
+                            data = SuccessData)
+summary(SuccessModel1)
+```
+
+The first variable in the formula is always the dependent variable. 
+We can check the results using the function `summary` from r base
+
+```{r m2_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+SuccessModel2 <- stats::glm(formula = success ~ numeracy + anxiety, 
+                            family = binomial(link = logit), 
+                            data = SuccessData)
+summary(SuccessModel2)
+```
+
+We can add more covariates with the `+` sign.
+
+Model 2 check weather respondents that are good at math are successful 
+in parallel of checking weather respondents that are anxious are successful. 
+
+If we want to see weather respondents that are good and math and anxious 
+at the same are successful, we need to use an interaction term. We do that
+adding a third term that multiplies the other two. We can also omit the first 
+two terms since the `glm` function individually considers already the terms 
+specified in the interaction. 
+ 
+
+```{r m3_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+SuccessModel3 <- stats::glm(formula = success ~ numeracy + anxiety + numeracy * anxiety , 
+                            family = binomial(link = logit), 
+                            data = SuccessData)
+summary(SuccessModel3)
+```
+
+## Reading results 
+
+We successfully run our models, but coding is the easy part in this game. 
+The real point is: what do these results mean?
+
+In order to understand our results, it is helpful to print them all in once. 
+We can do that using the function `screenreg` from the `texreg` package.
+
+```{r logit_Models, include = FALSE}
+logitModels <- SNA4DS:::logitModels
+```
+
+After saving our three models results into a list we pass the list to 
+`screenreg`. This function also allow us to print confidence intervals
+in place of p-values, by specifying the argument `ci.force = TRUE`.
+Try to print the output with the p-value and compare the two options. 
+
+```{r printRes, exercise = TRUE, exercise.setup = "logit_Models"}
+# logitModels <- list(SuccessModel1, SuccessModel2, SuccessModel3)
+texreg::screenreg(logitModels, ci.force = TRUE)
+```
+Having our results next to each other helps in getting an overview 
+of our nested models. You can also plot the results with the function
+`plotreg`, to get also a visual understanding.
+
+```{r plotRes, exercise = TRUE, exercise.setup = "logit_Models"}
+texreg::plotreg(logitModels)
+```
+
+
+In frequentist statistis we can talk about results significance to underline the fact that 
+there is a large probability that your result is not random but is the product
+of a certain specific phenomena that we obseved.
+
+Using confidence intervals we consider that coefficients which confidence 
+interval does not encompass zero provide a valid measure of model fitting. 
+
+Zero is the null value of the parameter. If a 95% confidence interval 
+includes the null value, then there is no statistically meaningful or 
+statistically significant difference between the observed network and 
+the networks it is compared to (aka it looks like a random one).
+
+The probability of the observed network to be non-random 
+(due to some theory driven reasons) are meaningful if the upper and lower 
+bound have the same sign.
+
+
+We can interpret logit models and ERGMs results with odd ratios and
+probabilities.
+
+we can calculate 
+
+* odd ratios (OR) by exponentiating the coefficient. 
+* probabilities (P) with exp(coef)/(1 + exp(coef)) 
+ 
+
+```{r plotRes, exercise = TRUE, exercise.setup = "logit_Models"}
+
+# we access the coefficients from the summary of each model 
+# from the list, taking the first column of the table 
+# of stored results  
+
+coefM2 <- summary(logitModels[[2]])$coef[ , 1]
+
+# we exponentiate each of them with a for loop to compute the OR
+or <- NULL
+
+for (i in 1:length(coefM2)) {
+ 
+  temp <- exp(coefM2[i])
+  
+  or <- append(or, temp)
+}
+
+or
+
+# Analogously, we compute the probability
+
+P <- NULL
+
+for (i in 1:length(coefM2)) {
+ 
+  temp <- exp(coefM2[i])/ (1 + exp(coefM2[i]))
+  
+  P <- append(P, temp)
+}
+
+P
+
+```
+Compare AIC, BIC and LogLik
+
+
+## Erdos Renyi
+
+## P1
+
+## Dyadic Independent Effects
+erdos renyi and P1 are both models with independent effects. But there 
+are many more options
