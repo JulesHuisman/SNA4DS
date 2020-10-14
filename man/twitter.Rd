@@ -11,7 +11,7 @@ A data frame with 22405 vertices and 77920 edges. Directed, unweighted.
 \url{http://carl.cs.indiana.edu/data/icwsm/icwsm_polarization.zip}
 }
 \usage{
-twitter
+data(twitter)
 }
 \description{
 twitter network
