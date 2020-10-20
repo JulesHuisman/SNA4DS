@@ -1,0 +1,772 @@
+---
+title: "Lab 07 - ERGMs - Part one"
+output: 
+  learnr::tutorial:
+    fig_caption: no
+    progressive: true
+    allow_skip: true
+    # toc: true
+    # toc_depth: 2
+    theme: readable
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(gradethis)
+tutorial_options(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Introduction
+Welcome to the first of two tutorials about Exponential Random Graph Models (ERGMs).
+An ERGM is a statistical tool to assess causality using hypothesis testing 
+when the outcome variable is a network. 
+
+This class of models is employed to assess weather the structure of a network 
+is random or whether it is originated by some sort of identifiable relational phenomena.
+
+
+Let's get started with the art of fitting ERGMs!
+
+## Logit
+
+ERG models conceptualize their outcome variable as 
+
+* absence 
+or 
+* presence 
+
+of an edge between each pair of node in a given network. This set up makes 
+the outcome variable binary and makes them very comparable to logistic 
+regression, a class of models that focuses of dummy outcome variables. 
+
+Dummy is as nick name for a binary categorical variable such as 
+
+* yes or no
+* black or white
+* win or lose
+* ...
+
+* edge or no edge
+
+In `r` you fit a logit model using the `glm` function that belongs to r
+base. `glm` stands for generalized linear model. 
+
+Now we know two crucial things about logit models
+
+* they have a dummy dependent variable
+* they are estimating linear effects. 
+
+When we use statistical models we are referring to the understanding 
+of the reason why we observe something, rather than the observation
+of repeated behaviors (patterns). 
+The study of why something happens is called causal inference, 
+since it deals with inferring (estimating) the cause of some phenomenon
+of interest. 
+
+Logit models as much as ERGMs explain why a network (outcome variable) is the way
+it is, due to some concurrent phenomena that affected it. That's the reason 
+why we say that an explanatory variable predicts an outcome variable. 
+
+Scientists explain phenomena by testing hypotheses. 
+
+* You measure something relevant for you:
+my dog is often barking like crazy 
+
+* You formulate an hypothesis on the reason why he is barking
+He might be hungry
+
+* You test your hypothesis 
+mmm maybe I don't feed him enough... 
+
+* Against a null hypothesis
+My dog is fine and he barks like crazy for fun
+
+He might be barking for many reasons other than being hungry such as that he 
+wants to go for a walk (the phenomenon is more complex), but there is a 
+certain probability associated to your hypothesis being correct. 
+This hypothesis can be numerically tested measuring how many days in a month
+your dog barks like crazy (outcome variable) and how much food he gets every day 
+(explanatory variable). 
+
+This is the hypothesis testing mindset!
+
+
+Let's fit the logit model we discussed in the first ERGM lecture to get 
+a better understanding of causality and ERGMs! oh... and please, if you have 
+a pet, feed her/him!!
+
+```{r load_SuccessData, include = FALSE}
+SuccessData <- SNA4DS:::SuccessData
+```
+
+First we take a look at the data
+
+```{r head_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+
+head(SuccessData)
+nrow(SuccessData)
+
+```
+We have three variables:
+
+* success: whether our respondents are successful or not (dummy)
+* numeracy: how much our respondents are good at math (numeric, continuous)
+* anxiety: how much our respondents are anxious (numeric, continuous)
+
+Having these three pieces of information about 50 respondents, 
+we can ask three 'why' (causal) questions":
+
+* 1. Does the level of success and numeracy predict the presence of anxious thoughts?
+* 2. Does the the level of success and anxiety predict numeracy?
+* 3. Does the level of anxiety and the level of numeracy predict success?
+
+Even if the data allow us to fit three models to address these three research 
+questions, it is not necessarily a good idea to do it. In fact, questions 
+1 and 2 sound a little detached from reality. Why math knowledge should make 
+someone anxious (1)? Why an anxious person should be good at math (2)? 
+Unless we see other evidence, these make no sense.
+
+If you decide to run a model you need to support your question with 
+evidence to persuade your audience that your question makes sense. 
+You also need to provide an attempted answer to your question, informed
+by the literature you read on the topic. That's an hypothesis. 
+
+Now, we move on with question 3 assuming that we spent some time reading on 
+the topic. According to the literature, it is more likely that people good at math
+are successful since knowing math allows you to get good jobs. At the same
+time, if people work really hard to be successful very often they end up being 
+stressed. In accordance, we can formulate the hypothesis:
+
+* H1 The level of anxiety and the level of numeracy are predictors of success.
+
+H1, obviously expects to find effects and it is the opposite of a null hypothesis
+of no effect that we call H0
+
+* H0 The level of anxiety and the level of numeracy are not correlated to success.
+
+H1 is a two tailed hypothesis, since we are not stating whether more anxiety and 
+more numeracy are leading to more success, or the other way around 
+(one tailed options). We are open to both positive and negative correlations.
+
+
+Then we move on fitting a bunch of models to test H1. Since our outcome variable 
+is a dummy, we use a logit model. 
+We add the covariates (explanatory variables) one by one, _nesting_ a series 
+of models. 
+
+First we consider only numeracy as an explanatory variable
+```{r m1_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+SuccessModel1 <- stats::glm(formula = success ~ numeracy, 
+                            family = binomial(link = logit), 
+                            data = SuccessData)
+summary(SuccessModel1)
+```
+
+To fit a model in `r` you always have to specify a formula. 
+The first variable in the formula is always the outcome variable. Then you 
+insert `~` followed by the explanatory variable(s). 
+We can check the results using the function `summary` from r base
+
+```{r m2_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+SuccessModel2 <- stats::glm(formula = success ~ numeracy + anxiety, 
+                            family = binomial(link = logit), 
+                            data = SuccessData)
+summary(SuccessModel2)
+```
+
+We can add more covariates (expanatory variables) with the `+` sign.
+
+Model two checks whether respondents that are good at math are successful 
+in parallel of checking weather respondents that are anxious are successful. 
+
+If we want to see weather respondents that are good and math and anxious 
+at the same time are successful, we need to use an interaction. We do that
+adding a third term that multiplies the other two (we could also omit the first 
+two terms since the `glm` function individually considers already the terms 
+specified in the interaction, but it is better to watch every step for now). 
+ 
+
+```{r m3_success, exercise = TRUE, exercise.setup = "load_SuccessData"}
+SuccessModel3 <- stats::glm(formula = success ~ numeracy + anxiety + numeracy * anxiety , 
+                            family = binomial(link = logit), 
+                            data = SuccessData)
+summary(SuccessModel3)
+```
+
+That's the final model we consider this time.
+
+
+## Reading results 
+
+We successfully run our models, but coding is the easy part in this game. 
+The real point is: what do these results mean?
+
+In order to understand our results, it is helpful to print them all in once. 
+We can do that using the function `screenreg` from the `texreg` package that 
+automatically places your nested models' results next to each other, ready for 
+comparison.
+
+Again, you interpret ERGMs results the same way as logit models. 
+Hence, let's learn it with this easy example, so when things get more complicated,
+later, you will know what to do!
+
+
+```{r logit_Models, include = FALSE}
+logitModels <- SNA4DS:::logitModels
+```
+
+After saving our three models results into a list, we pass the list to 
+`screenreg` from the `texreg`package. This package is there with the only goal 
+of printing results for you in several formats, saving you a lot of time. 
+`screenreg` prints it directly in the `r` console, or in this tutorial. 
+Isn't it handy?
+
+Let's first print the results using p-values.
+
+```{r printResPV, exercise = TRUE, exercise.setup = "logit_Models"}
+
+# logitModels <- list(SuccessModel1, SuccessModel2, SuccessModel3)
+texreg::screenreg(logitModels)
+```
+
+First of all note that having our results next to each other helps 
+in getting an overview of our nested models. Model comparison is really 
+important, since our goal it to understand which combination of explanatory 
+variables predicts our outcome variable more accurately. 
+
+### Goodness of Fit for nested models' comparison 
+
+Let's check goodness of fit first. We have three indicators:
+
+* AIC. Akaike information criterion
+* BIC. Bayesian information criterion
+* Log Likelihood
+
+For AIC and BIC, smaller the value better is the model. 
+For Log Likelihood, higher the value better is the model.
+
+In our success case, Model one is definitely the worse among the three. 
+According to both AIC and BIC model two is the best one. According to the 
+log likelihood, Model two and three are equally better than model one.
+
+
+
+### P-values
+
+In frequentist statistics we can talk about results significance to underline 
+the fact that there is a large probability that your result is not random but 
+it is the product of a certain specific phenomena that we observed.
+
+Let's take a look at the results considering p-values. In null hypothesis 
+significance testing, the p-value is the probability of obtaining test results 
+at least as extreme as the results actually observed, under the assumption 
+that the null hypothesis is correct.
+
+This definition is quite hard to get since rather that thinking on the causal 
+effects you need to focus on the absence of effects and this twists your brain.
+
+In practice it means that you want to check on the probability that repeating 
+your observation for a large number of times, let's say 1000, your results are
+special, not at the center of a normal distribution that defines your null 
+hypothesis. If your results 'are not special', are not significant -it means 
+that your cannot reject the null hypothesis since what you are observing looks 
+exactly like H0.
+
+Stars are a convention to present results. In social science one of the most 
+popular convention works as such:
+
+* coef *** means that the probability that the null hypothesis is true is < 0.001
+That's what you want, since it's very unlikely.
+* coef ** means that the probability that the null hypothesis is true is < 0.01
+* coef * means that the probability that the null hypothesis is true is < 0.05
+
+Higher than that, it's considered more likely that the null hypothesis is true 
+and that you found nothing. Keep in mind that these thresholds are very much 
+arbitrary, and they work as rules of thumb.
+
+In our study, model three does not look any different than H0. That combination 
+of variables is very likely to output a distribution that equates to the null 
+distribution.
+
+In model two numeracy has a 95 % probability of being different from H0 (significant), 
+while anxiety has a probability of 99 % of being different from H0 
+(significant). In model one, numeracy has a probability of 99.9 % of being 
+different from H0 (significant).  
+
+* p-value < 0.05 -- 5% prob of being the same as H0 / 95% prob of being able to reject H0
+* p-value < 0.01 -- 1% prob of being the same as H0 / 99% prob of being able to reject H0
+* p-value < 0.001 -- 0.1% prob of being the same as H0 / 99.9% prob of being able to reject H0
+
+Ágain, these thresholds are totally arbitrary.
+Often p-values are used to comment on the extent to which the explanatory 
+variable influences the outcome one. P-value tells us nothing about the 
+intensity of an effect, or about H1. It only informs on the probability that 
+your effect comes from the same distribution that produced H0. You wish it does not. 
+
+### Confidence Intervals
+
+Let's explore confidence intervals instead of p-values.
+`screenreg` also allows us to print confidence intervals
+in place of p-values, by specifying the argument `ci.force = TRUE`.
+
+```{r printResCI, exercise = TRUE, exercise.setup = "logit_Models"}
+
+texreg::screenreg(logitModels, ci.force = TRUE)
+
+```
+
+
+Using confidence intervals we consider that there is an upper and a lower bound. 
+If these two values are both positive or both negative there is a high probability that 
+H1 results look different than H0 results, hence you are able to reject the null.
+
+In this environment, zero is the null value of the parameter. The upper and the 
+lower bound represent a 95% confidence interval in reference to a normal distribution.
+If the confidence interval includes the null value (0), then there is no 
+statistically meaningful or statistically significant difference between the 
+observed data and the data that produce the null (aka it's like random data. 
+No effects in there since it's random, null).
+
+The probability of the observed data to different from the hypothesis of no effects
+(due to some theory driven reasons) are meaningful if the upper and lower 
+bound have the same sign.
+
+While the p-value suggest that significance can be more or less intense, with 
+these stars and a bunch of arbitrary thresholds, the confidence interval 
+provides more careful suggestions on that, a more prudent way of understanding 
+results, that helps to avoid false positives. 
+
+Confidence intervals are not better than p-values per se, but they are good in 
+helping researchers not to rely on the arbitrary thresholds that mean absolutely
+nothing in real life. 
+
+Confidence intervals can also be plotted with the function`plotreg`. 
+A visual understanding of results is always a great help in explaining a
+research's output.
+
+```{r plotRes, exercise = TRUE, exercise.setup = "logit_Models"}
+texreg::plotreg(logitModels)
+```
+`plotreg` makes the interpretation of results even easier by showing significant 
+results in red with the coefficient represented by a circle, and non-significant 
+results in blue with the coefficient represented by a square. 
+
+
+
+### Interpreting Coefficients
+
+We can interpret logit models and ERGMs' coefficients with odd ratios and
+probabilities.
+
+we can calculate 
+
+* odd ratios (OR) by exponentiation the coefficient. 
+* probabilities (P) with the formula: exp(coef)/(1 + exp(coef)) 
+ 
+Let's calculate odd ratios for the model two's coefficients
+
+```{r or, exercise = TRUE, exercise.setup = "logit_Models"}
+
+# we access the coefficients from the summary of each model 
+# from the list, taking the first column of the table 
+# of stored results  
+
+coefM2 <- summary(logitModels[[2]])$coef[ , 1]
+
+# we exponentiate each of them with a for loop to compute the OR
+or <- NULL
+
+for (i in 1:length(coefM2)) {
+ 
+  temp <- exp(coefM2[i])
+  
+  or <- append(or, temp)
+}
+
+cbind(coefM2, or = round(or, 3))
+
+```
+
+How do we interpret the odd ratios? 
+
+First of all, we do not particularly care about the intercept. For now feel 
+free to ignore it. We consider an OR of 1.78 for numeracy and an OR of 0.25 for 
+anxiety.
+
+Exponentiating the numeracy coefficient tells us the expected increase in the 
+odds of success for each unit of numeracy: For each unit increase in numeracy a 
+study participant is 1.78 times more likely to have success.
+
+Exponentiating the anxiety coefficient tells us the expected increase in the 
+odds of success for each unit of anxiety: For each unit increase in anxiety a 
+study participant is 0.25 times more likely to have success 
+
+As a rule of thumb: When the OR is one point something (or higher) the odds are 
+high (it's likely that that explanatory variable has an effect on the outcome 
+one); when the OR is zero point something the odds are low (it's unlikely that 
+that explanatory variable has an effect on the outcome one) .
+
+How about probability?
+
+Can you modify the code I just provided and calculate probabilities in the box
+below assuming that the probability vector is called 'P'? Remember also to print
+the results.
+
+```{r grade_CoefProb, exercise = TRUE, exercise.setup = "logit_Models"}
+coefM2 <- summary(logitModels[[2]])$coef[ , 1]
+
+```
+
+```{r grade_CoefProb-solution}
+
+coefM2 <- summary(logitModels[[2]])$coef[ , 1]
+
+P <- NULL
+
+for (i in 1:length(coefM2)) {
+ 
+  temp <- exp(coefM2[i])/ (1 + exp(coefM2[i]))
+  
+  P <- append(P, temp)
+}
+
+cbind(coefM2, P = round(P, 3))
+
+
+```
+
+
+```{r grade_CoefProb-check}
+gradethis::grade_code(correct = "Well Done!")
+```
+
+
+How do we interpret probabilities? Easy Peasy. 
+
+There is a 64% probability that numeracy predicts success. 
+There is a 20% probability that anxious people are successful. 
+
+Remember that probabilities go from 0 to 1. 
+Also, never compare odd ratios and probabilities, they are two different things: 
+Pears and Bananas.
+
+
+## Erdos Renyi
+
+After starting soft from logit models and understanding model results, lets 
+finally get started with ERGMs. In this section we are going to run one of the 
+simplest ERG models that you can possibly think of. 
+To do so we are going to use the Florentine marriage network. You are already 
+familiar with this graph, so I won't spend more time on discussing it
+
+
+```{r florentine_load, include = FALSE}
+
+# data(florentine, package='SNA4DS')
+# flo_mar <- florentine$flomarriage
+
+florentine <-SNA4DS:::flomar_network
+
+```
+
+Let's just print and check on its class 
+
+```{r viewflo_mar, exercise = TRUE, exercise.setup = "florentine_load"}
+florentine
+class(florentine)
+
+```
+This graph has class network, hence all the `igraph` code we used so far, it's 
+not going to work. We have to do things a little differently here.
+Take this into account. The output with the network features is different from 
+`igraph`, but it's still very simple to read. 
+
+We know that we have 16 nodes and 20 edges, that it's undirected, that it has 
+three nodes attributes, and no edge ones.
+
+Let's also plot it, just to check
+```{r plotflo_mar, exercise = TRUE, exercise.setup = "florentine_load"}
+plot(florentine)
+```
+
+Not let's check at the network density in an alternative way:
+
+```{r densityflo_mar, exercise = TRUE, exercise.setup = "florentine_load"}
+
+summary(florentine ~ edges)
+
+```
+yes, they are still 20 out of 16*15 possible edges. 
+
+Ok, let's estimate an ERG model! How? with the `ergm` package from the `statnet`
+suite! We are going to use mainly one function. Guess what? `ergm`!
+
+```{r ergmflo_mar, exercise = TRUE, exercise.setup = "florentine_load"}
+
+flomodel.01 <- ergm::ergm(florentine ~ edges)  
+(s1 <- summary(flomodel.01))
+
+exp(s1$coefficients[1])/ (1 + exp(s1$coefficients[1])) # prob of edges
+```
+Here we go. The first part of the output is about the model fit. The second part is
+the model summary. The last row is the probability 
+Congrats! You run your first ERGM. 
+
+Edges, is a structural term. We are just checking on the probability that 
+those 20 edges are not by chance. Could they have been between any family? In 
+other words: Do they marry in a random way?
+Usually people marry for a reason. Love or some other, but it's unlikely that 
+they marry in a random way.
+How about this old Florentine folks? Well, according to the model results, they 
+did not marry by chance too. P-value is < 0.0001, hence there is a high 
+probability that we can reject the null hypothesis of marrying by chance. 
+What about the coefficient? The fact that it is negative means that the network 
+is sparse. The probability of these edges is 16%. These old Florentine dudes, 
+do not marry by chance, and do not marry that easily either. These weddings are 
+well thought, and kind of exclusive. It's not for every family to marry there! 
+
+### Simulation
+
+We said that we are checking on the probability that our observed network is 
+different from some random others that are built using the same parameters 
+but have no effects (null distribution). This means that we are comparing our 
+observed Florentine network with many others simulated ones with the same 
+parameters: Nodes and Edges. 
+
+In Network Science, a random network with fixed number of nodes and edges is an 
+Erdos Renyi one. Let'try
+
+```{r erdos_renyi, exercise = TRUE}
+plot(igraph::erdos.renyi.game(16, 20, type = 'gnm'))
+
+```
+This network we just plotted is really similar to the Florentine one, but still 
+not quite the same. Generating a 1000 of these using this the 
+`igraph::erdos.renyi.game` function, we could manually test our null 
+hypothesis of no effects . 
+
+Many other times, we have to compare our observed network with no standard 
+structures. To do so, in the future, we can simply use the function `simulate`.
+
+```{r simulate_flo, exercise = TRUE, exercise.setup = "florentine_load"}
+flomodel.01 <- ergm::ergm(florentine ~ edges)
+simflo <- simulate(flomodel.01, burnin = 1e+6, verbose = TRUE, seed = 9)
+plot(simflo)
+```
+In this case, we have full control on the parameters, since we are explicitly 
+asking the function to simulate something that has exactly the same terms as
+our `flomodel.01`.
+
+Enough with this easy toy model! we are ready for something juicier!
+
+## P1
+
+The ER ERGM is cute, but it explain reality to a very small extent. In this
+section we will take a look at the P1 that is considered ERGM's grandfather.
+In fact ERGMs are allo called P* as a better version of the P1 model.
+
+```{r sampson_load, include = FALSE}
+sampson <- SNA4DS:::samplike
+```
+
+While the ER model can be applied to undirected networks since it only considers
+whether there are ties or not (not checking on what kind of ties), the P1 checks 
+on the kind of ties and for this reason it requires a directed network. We are
+going to use now the Sampson data that you are also already familiar with. 
+
+I'm just going to remind you that it is an ethnographic study of a New England 
+monastery's community structure by Samuel F. Sampson.
+Social relationships among a group of men (novices) who were preparing to join a 
+monastic order.
+
+Let's quickly explore it. 
+
+```{r plotSampson, exercise = TRUE, exercise.setup = "sampson_load"}
+sampson 
+plot(sampson)
+
+```
+This is a subset of the Sampson data that only considers whether the monks like 
+each other (directional edge) or not (no edge). We know it's 18 nodes and 88 
+edges directed network with no loops and two attributes loaded in the network format.
+
+The P1 model checks on the probability that the observed network is not random, 
+but that it's the outcome of some social dynamic focusing on: 
+
+* edges formation (as the ER), 
+* sender of the tie, 
+* receiver of the ties 
+* and the mutuality between sender and receiver.
+
+We are going to use three new ERGM structural terms:
+
+* `sender` 
+* `receiver`
+* `mutual`
+
+Let's specify our model and print the results! This might take your computer
+a few seconds to process, so be patient.
+
+```{r p1Sampson, exercise = TRUE, exercise.setup = "sampson_load"}
+P1 <- ergm::ergm(sampson ~ edges + sender + receiver + mutual)
+
+texreg::screenreg(P1, ci.force = TRUE)
+```
+
+Waw, what's this output? It's really long! Well, some terms that you specify in 
+the ERG models estimate one statistic summarizing the all situation in your 
+network. `edges` and `mutual` do so in this case. Some other terms such as 
+`sender` and `receiver` compute a statistic for each single node in the network. 
+That's why this output is so insanely long. When you choose the terms for your model
+take this into account because commenting on each single node in a network with 
+200 of them is no fun. 
+
+`sender` and `receiver` look at the probability that each 
+single connection is not random: an expression of likelihood between 2 and 5 is completely 
+different from one between 5 and 2, as much as one between 12 and 18. This kind 
+of approach is perfect for an ethnographic study like this that aims at understanding
+specific social dynamics in a small community. It would be not very helpful for 
+explaining the behavior in an Twitter network. 
+
+Note that not every node is in the output of the model though. Node number one 
+is missing. This is not a mistake. Removing one node is necessary to avoid a 
+linear dependency between all the others. Node one constitutes the reference 
+category and every other result has to be compared to node one.
+
+For instance, node 10 has a significant sender effect with a probability of the 
+89% that is behavior of liking other monks is not by chance. But this value 
+makes sense only if compared to the behavior of node one. Monk ten is 89% more likely 
+than monk one of liking other monks. That's all we can claim. Changing the 
+reference category our results might be slightly different since it changes our
+perspective, our point of observation, on this community of monks. However, if 
+we assume that these monks share some similarities since they are part of the 
+same community, changing the reference category should not drastically modify 
+our claims on the non randomness of these ties.
+
+We can also simulate random networks that share the same parameters as the 
+Sampson p1 model
+
+```{r simp1Sampson, exercise = TRUE, exercise.setup = "sampson_load"}
+
+P1 <- ergm::ergm(sampson ~ edges + sender + receiver + mutual)
+
+simSam <- simulate(P1, burnin = 1e+6, verbose = TRUE, seed = 9)
+plot(simSam)
+```
+Here we go, it looks very similar indeed, but this is random, while the relationships 
+in the original one are socially driven. Isn't it fascinating?
+
+
+ER and P1 consider only structural effects. When we run them we don't take any 
+attribute into consideration. But is not longer going to be the case from the 
+next section and afterwards since explaining social reality requires way more 
+sophistication that this :) 
+
+## Dyadic Independent Terms
+
+An ERG model is all about finding the best 'dress' to fit our data.
+
+Erdos Renyi and P1 are both models with independent effects since the probability
+of observing effects does not depend on the existence of other ties, but only on 
+properties of the individual nodes. But, even still focusing only on the effects 
+that do not involve edge dependencies, there are many more options. We need to 
+Explore more ERGM terms. If you type in your `RStudio` console `search.ergmTerms`,
+it will appear to you the help file. Now we focus on the dyadic independent terms
+only, that you can print out using the following line of code:
+
+
+```{r dyad-indepTerms, exercise = TRUE}
+ergm::search.ergmTerms(categories = 'dyad-independent')
+```
+
+There are 60 terms that correspond to this description! Let's experiment 
+one of the most popular: `nodecov`.
+
+```{r nodecov-search, exercise = TRUE}
+ergm::search.ergmTerms(name = 'nodecov')
+```
+The line of code above prints out all you need to know about `nodecov`. 
+Let's test it with the Florentine marriage network and one of its attributes, 
+wealth. Let's also assume that we are nesting models to explore our network 
+further. Hence, we build on `flomodel.01`.
+
+```{r nodecovModel, exercise = TRUE, exercise.setup = "florentine_load"}
+flomodel.01 <- ergm::ergm(florentine ~ edges)  
+
+flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("wealth"))   
+
+texreg::screenreg(list(flomodel.01, flomodel.02), ci.force = TRUE)
+```
+In this case it is helpful to look at the goodness of fit for model comparison
+According to 
+* AIC Model two is better.  
+* BIC Model one and two are roughly the same, with model two a tiny bit better
+* Log Likelihood claims that Model one is better
+
+We will need the GOF that are specific for ERG models to establish which model 
+is better representing the social dynamics in the Florentine marriage data set.
+For now, we can comment on the `nodecov` term's result and say that there is a high 
+probability that we can reject the null hypothesis and that there is a 50% 
+probability that wealth is a determinant of marriages in this network.
+
+We can also simulate flomodel.02.
+
+```{r simulate_nodecov, exercise = TRUE, exercise.setup = "florentine_load"}
+flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("wealth"))  
+
+simNodecov <- simulate(flomodel.02, burnin = 1e+6, verbose = TRUE, seed = 9)
+plot(simNodecov)
+```
+This simulation represent out base line random model. Our Null hypothesis. 
+
+
+When we use `nodecov` we are computing the correlation of a vector that expresses
+the amount of liras that each family owns, and the edge list of the network. 
+
+There are other ways, still in the dyadic independent universe, to check on the 
+possibility that wealth influences marriages in the old Florence. 
+One term that can help us doing that is `absdiff`
+
+```{r absdiffSearch, exercise = TRUE}
+ergm::search.ergmTerms(name = 'absdiff')
+```
+This term computes the mixingmatrix that calculate the absolute difference
+between the amount of money each family owes. Rather than checking whether being 
+rich influences the probability of a marriage in old Florence, we check in the 
+probability of being equally rich (or equally non-rich). Let's also nest this
+models, shouldn't we? 
+
+```{r absdiffModel, exercise = TRUE, exercise.setup = "florentine_load"}
+flomodel.01 <- ergm::ergm(florentine ~ edges)  
+
+flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("wealth"))   
+
+flomodel.03 <- ergm::ergm(florentine ~ edges + absdiff("wealth")) 
+
+flomodel.04 <- ergm::ergm(florentine ~ edges + nodecov("wealth") + absdiff("wealth"))   
+
+texreg::screenreg(list(flomodel.01, flomodel.02, flomodel.03, flomodel.04), ci.force = TRUE)
+```
+Ok, now we are starting to have something cooler to look at. 
+
+Even if in model two and three our terms are significant, when we put them 
+together they are not anymore. This could be because we are trying to estimate 
+two effects that are too similar and they interfere with each other. Remember, 
+one is estimating a vector and the other a matrix, but the substantive meaning 
+is not that different. In general we know that model 4 is not a good fit to our 
+network. We are going in the wrong direction and when this happens you simply 
+discard that option and test others. 
+
+Anyway, model three shows us that we can reject the null and that the probability 
+that being equally rich influences marriages is also around 50%. 
+
+
+## Conclusion
+
+This is enough for this tutorial! In the next one we are going to cover 
+dyadic dependence and goodness of fit. I very much hope that you are looking 
+forward! See you at ERGM 2!
