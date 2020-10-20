@@ -6,12 +6,19 @@
 #' elegans network, in \code{igraph}-format. This network is used in the course
 #' text book.
 #'
+#' @usage data(elegans)
+#' @docType data
+#' @name elegans
 #' @keywords datasets
 #' @format A data frame with 297 vertices and 2344 edges. Directed, Weighted.
 #' @source \url{http://networkrepository.com/celegansneural.php}
 #' @references
 #' \insertRef{Elegans}{SNA4DS}
-"elegans"
+NULL
+
+
+
+
 
 
 
@@ -34,6 +41,9 @@
 #' Note that there are many versions of the enron dataset available on the
 #' internet, this specific dataset is the dataset as used in the text book.
 #'
+#' @usage data(enron)
+#' @name enron
+#' @docType data
 #' @source \url{http://konect.cc/networks/enron/} and \url{http://www.cs.cmu.edu/~enron/}
 #' @references
 #' \insertRef{KONECT}{SNA4DS}
@@ -41,7 +51,55 @@
 #' \insertRef{ENRONCORPUS}{SNA4DS}
 #'
 #' @keywords datasets
-"enron"
+NULL
+
+
+
+
+
+#' Florentine families
+#'
+#' Network data of Florentine families, in \code{igraph} format.
+#'
+#' A list containing two networks and a data.frame with attributes.
+#'
+#' This is a data set of marriage and business ties among Renaissance Florentine
+#' families. The data is originally from Padgett (1994) via UCINET and stored
+#' as an \code{igraph} object.
+#'
+#' This dataset is a subset of the original data and contains data on sixteen
+#' families.
+#'
+#' The two relations are business ties (\code{flobusiness}, recorded financial
+#' ties such as loans, credits and joint partnerships) and
+#' marriage alliances (\code{flomarriage}).
+#'
+#' In addition, there is a data.frame with attributes:
+#' \itemize{
+#' \item wealth each family's net wealth in 1427 (in thousands of lira)
+#' \item priorates the number of priorates (seats on the civic council) held
+#' between 1282- 1344
+#' \item totalties the total number of business or marriage ties in the total
+#' dataset of 116 families.
+#' }
+#'
+#' The data are symmetrically coded. This makes sense for marital ties,
+#' but is unfortunate for the financial ties (which are almost certainly
+#' directed in real life).
+#'
+#' Substantively, the data include families who were engaged in a struggle
+#' for political control of the city of Florence in around 1430.
+#' Two factions were dominant in this struggle: one revolved around the
+#' infamous Medicis (9), the other around the powerful Strozzis (15).
+#'
+#' @usage data(florentine)
+#' @docType data
+#' @name florentine
+#' @keywords datasets
+#' @format A list containing two \code{igraph} networks and a data.frame with
+#' attributes.
+#' @source \url{http://networkdata.ics.uci.edu/netdata/html/florentine.html}
+NULL
 
 
 #' ia_enron network data
@@ -55,7 +113,10 @@
 #'
 #' @format 143 vertices and 622 edges. Directed, Weighted.
 #' @keywords datasets
-"ia_enron"
+#' @usage data(ia_enron)
+#' @docType data
+#' @name ia_enron
+NULL
 
 
 
@@ -68,7 +129,10 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 15220 vertices with 194103 edges. Directed, Unweighted.
-"enwiki"
+#' @usage data(enwiki)
+#' @docType data
+#' @name enwiki
+NULL
 
 
 
@@ -90,7 +154,10 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 15220 vertices with 194103 edges. Directed, Unweighted.
-"everglades"
+#' @usage data(everglades)
+#' @docType data
+#' @name everglades
+NULL
 
 
 
@@ -109,7 +176,10 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 252999 vertices and 1015187 edges. Undirected, Unweighted.
-"imdb_costars"
+#' @usage data(imdb_costars)
+#' @docType data
+#' @name imdb_costars
+NULL
 
 
 #' Northwestern University Facebook network
@@ -130,7 +200,10 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 10567 vertices and 488336 edges. Undirected, unweighted.
-"northwestern"
+#' @usage data(northwestern)
+#' @docType data
+#' @name northwestern
+NULL
 
 
 
@@ -150,7 +223,61 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 190914 vertices and 607610 edges. Undirected, unweighted.
-"routers"
+#' @usage data(routers)
+#' @docType data
+#' @name routers
+NULL
+
+
+
+
+#' Sampson monastary network data
+#'
+#' Multiplex, multitime network Of Positive Affection Within A Monastery
+#'
+#' This is a version of the well-known Sampson Monastery network.
+#'
+#' Sampson recorded the social interactions among a group of monks while resident
+#' as an experimenter on vision, and collected numerous sociometric rankings.
+#' During his stay, a political "crisis in the cloister" resulted in the expulsion
+#' of four monks (Nos. 2, 3, 17, and 18) and the voluntary departure of several
+#' others - most immediately, Nos. 1, 7, 14, 15, and 16. (In the end, only
+#' 5, 6, 9, and 11 remained).
+#'
+#' Most of the present data are retrospective, collected after the breakup
+#' occurred. They concern a period during which a new cohort entered the
+#' monastery near the end of the study but before the major conflict began.
+#' The exceptions are "liking" data gathered at three times: SAMPLK1 to SAMPLK3 -
+#' that reflect changes in group sentiment over time (SAMPLK3 was collected in
+#' the same wave as the data described below). Information about the senior
+#' monks was not included.
+#'
+#' Four relations are coded, with separate matrices for positive and negative
+#' ties on the relation. Each member ranked only his top three choices on that
+#' tie. The relations are esteem (SAMPES) and disesteem (SAMPDES), liking
+#' (SAMPLK) and disliking (SAMPDLK), positive influence (SAMPIN) and negative
+#' influence (SAMPNIN), praise (SAMPPR) and blame (SAMPNPR). In all rankings
+#' 3 indicates the highest or first choice and 1 the last choice. (Some subjects
+#' offered tied ranks for their top four choices)
+#'
+#' Overall, the data concern ten valued networks of 18 vertices.
+#'
+#' @keywords datasets
+#' @format A list containing a \code{igraph} network dataset with 18 vertices
+#' and 510 edges
+#' across 10 networks. Directed, multiplex. Also, each of the 10 seperate
+#' networks are included. The density of these networks is uninformative, because
+#' of the way the data were collected.
+#' @source \url{http://vlado.fmf.uni-lj.si/pub/networks/data/UciNet/UciData.htm}
+#' @references
+#' \insertRef{SampsonBreiger}{SNA4DS}
+#'
+#' \insertRef{Sampson}{SNA4DS}
+#'
+#' @usage data(Sampson)
+#' @docType data
+#' @name Sampson
+NULL
 
 
 
@@ -224,7 +351,10 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 22405 vertices and 77920 edges. Directed, unweighted.
-"twitter"
+#' @usage data(twitter)
+#' @docType data
+#' @name twitter
+NULL
 
 
 
@@ -243,7 +373,10 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 546 vertices and 2781 edges. Undirected, unweighted.
-"us_air"
+#' @usage data(us_air)
+#' @docType data
+#' @name us_air
+NULL
 
 
 
@@ -260,7 +393,10 @@
 #'
 #' @keywords datasets
 #' @format A data frame with 3179 vertices and 18617 edges. Undirected, unweighted.
-"world_air"
+#' @usage data(world_air)
+#' @docType data
+#' @name world_air
+NULL
 
 
 
@@ -276,4 +412,11 @@
 #' @source \url{http://networkrepository.com/bio-yeast-protein-inter.php}
 #' @references
 #' \insertRef{jeong2001lethality}{SNA4DS}
-"yeast"
+#'
+#' @usage data(yeast)
+#' @docType data
+#' @name yeast
+NULL
+
+
+

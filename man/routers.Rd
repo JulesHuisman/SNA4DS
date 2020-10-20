@@ -11,7 +11,7 @@ A data frame with 190914 vertices and 607610 edges. Undirected, unweighted.
 \url{http://networkrepository.com/tech-RL-caida.php}
 }
 \usage{
-routers
+data(routers)
 }
 \description{
 routers network

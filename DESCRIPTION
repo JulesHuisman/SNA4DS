@@ -1,8 +1,8 @@
 Package: SNA4DS
 Type: Package
 Title: Social Network Analysis for Data Science
-Version: 0.5.0
-Authors@R: 
+Version: 0.7.0
+Authors@R:
 	c(person(given = "Roger",
 					family = "Leenders",
 					role = c("aut", "cre"),
@@ -48,7 +48,7 @@ Imports:
 	tidygraph,
 	usethis,
 	utils,
-Remotes: 
+Remotes:
 	github::rstudio-education/gradethis,
 	github::crsh/papaja,
 	github::statnet/ergm
@@ -56,3 +56,5 @@ RdMacros: Rdpack
 URL: https://github.com/SNAnalyst/SNA4DS
 BugReports: https://github.com/SNAnalyst/SNA4DS/issues
 RoxygenNote: 7.1.1
+Suggests:
+    testthat

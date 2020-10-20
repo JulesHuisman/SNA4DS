@@ -11,7 +11,7 @@ A data frame with 15220 vertices with 194103 edges. Directed, Unweighted.
 \url{http://networkrepository.com/eco-everglades.php}
 }
 \usage{
-everglades
+data(everglades)
 }
 \description{
 everglades network

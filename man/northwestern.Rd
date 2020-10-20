@@ -11,7 +11,7 @@ A data frame with 10567 vertices and 488336 edges. Undirected, unweighted.
 \url{http://networkrepository.com/socfb-Northwestern25.php}
 }
 \usage{
-northwestern
+data(northwestern)
 }
 \description{
 Northwestern University Facebook network
