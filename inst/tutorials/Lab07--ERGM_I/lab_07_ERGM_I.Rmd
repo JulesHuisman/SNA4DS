@@ -716,7 +716,7 @@ probability that wealth is a determinant of marriages in this network.
 We can also simulate flomodel.02.
 
 ```{r simulate_nodecov, exercise = TRUE, exercise.setup = "florentine_load"}
-flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("wealth"))  
+flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("Wealth"))  
 
 simNodecov <- simulate(flomodel.02, burnin = 1e+6, verbose = TRUE, seed = 9)
 plot(simNodecov)
@@ -743,11 +743,11 @@ models, shouldn't we?
 ```{r absdiffModel, exercise = TRUE, exercise.setup = "florentine_load"}
 flomodel.01 <- ergm::ergm(florentine ~ edges)  
 
-flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("wealth"))   
+flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("Wealth"))   
 
-flomodel.03 <- ergm::ergm(florentine ~ edges + absdiff("wealth")) 
+flomodel.03 <- ergm::ergm(florentine ~ edges + absdiff("Wealth")) 
 
-flomodel.04 <- ergm::ergm(florentine ~ edges + nodecov("wealth") + absdiff("wealth"))   
+flomodel.04 <- ergm::ergm(florentine ~ edges + nodecov("Wealth") + absdiff("Wealth"))   
 
 texreg::screenreg(list(flomodel.01, flomodel.02, flomodel.03, flomodel.04), ci.force = TRUE)
 ```
