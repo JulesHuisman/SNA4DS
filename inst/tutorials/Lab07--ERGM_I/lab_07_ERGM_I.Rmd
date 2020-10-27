@@ -697,7 +697,7 @@ further. Hence, we build on `flomodel.01`.
 ```{r nodecovModel, exercise = TRUE, exercise.setup = "florentine_load"}
 flomodel.01 <- ergm::ergm(florentine ~ edges)  
 
-flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("wealth"))   
+flomodel.02 <- ergm::ergm(florentine ~ edges + nodecov("Wealth"))   
 
 texreg::screenreg(list(flomodel.01, flomodel.02), ci.force = TRUE)
 ```
