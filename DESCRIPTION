@@ -1,7 +1,7 @@
 Package: SNA4DS
 Type: Package
 Title: Social Network Analysis for Data Science
-Version: 0.7.3
+Version: 0.7.4
 Authors@R:
 	c(person(given = "Roger",
 					family = "Leenders",
@@ -27,6 +27,7 @@ Imports:
 	ggraph (>= 2.0.0),
 	glue,
 	gradethis,
+	htmltools,
   igraph (>= 1.2.5),
   igraphdata,
 	influenceR,
