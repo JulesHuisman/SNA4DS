@@ -60,6 +60,62 @@ use the help function `?` and `help` and other approaches we teach you
 in this course to learn about the details of a specific function. 
 If you still can't figure it out, contact us and we'll assist you.
 
+
+<br><br><br>
+
+# General `SNA4DS` functions
+
+<br>
+
+## `SNA4DS::check_SNA4DS()`
+
+This function checks if a newer version of the `SNA4DS` package is 
+available on Github. 
+It also offers you to install the new version if one is available.
+
+## `SNA4DS::SNA4DS_tutorials()`
+
+This function lists the currently available tutorials in your installed 
+version of `SNA4DS` and allows you to pick the one you want to run from a list.
+
+## `SNA4DS::make_matrix_from_vertex_attribute`
+
+This function turns a vertex attribute into a matrix with a value for each edge 
+in a graph.
+
+The input is a graph object of class `igraph` or `network`, 
+the name (`name`) of the required attribute, 
+and the name of the function (`measure`) you want to perform on the attribute.
+
+For example, 
+
+```{r}
+SNA4DS::make_matrix_from_vertex_attribute(g, 
+                                  name = "vertexAttributeName",
+                                  measure = "max")
+```
+
+creates a matrix where cell (*i*, *j*) represents the maximum value for 
+dyad (*i*, *j*) of their attribute called "vertexAttributeName". 
+
+The `diag` argument determines what is put on the diagonal of the matrix. 
+The default is to fill the diagonal with 0's, but you can override this.
+
+Beware if missing values occur in the chosen vertex attribute, currently no 
+check is made for missing values and you need to check the corresponding 
+cells of the outcome matrix if it did what you wanted.
+
+You can also just provide the function with a numeric vector and it will 
+calculate the matrix for you based on that alone. 
+Of course, in this case you have to make sure yourself that the values 
+in the vector are in the same order as in the network.
+Here is an example where a vector with values c(1, 2, 3, 4, 5) is turned 
+into a matrix with the absolute difference values in the cells.
+
+```{r}
+SAN4DS::make_matrix_from_vertex_attribute(1:5, measure = "absdiff")
+```
+
 <br><br><br>
 
 # Generating and manipulation graph objects {#generate}
@@ -85,9 +141,40 @@ We show the functions in both packages that do equivalent things.
 
 <br>
 
-```{r table_generate, echo = FALSE, eval = TRUE}
+```{r, echo = FALSE, eval = TRUE}
 htmltools::includeHTML("html_generate.html")
 ```
+
+<br> 
+
+## `SNA4DS` functions
+
+The `SNA4DS` package offers a few functions that assist with the manipulation 
+of graph data in `R`.
+
+* `SNA4DS::makeEdgelist(names = NULL, attribute = NULL)`
+
+The input is a data.frame (`names`) with edge information. 
+The `attribute` is a vector that contains a node attribut for those vertices.
+
+The function returns a vector or data.frame that can be read into 
+`igraph` or `network`.
+
+* `SNA4DS::makeNodelist(names = NULL, attribute = NULL)`
+
+The input is a data.frame (`names`) with edge information. 
+The `attribute` is another data.frame that contains the values of those edges.
+
+The function returns an edgelist that can be read into `igraph` or `network`.
+
+
+
+* `SNA4DS::extract_all_vertex_attributes(g)`
+
+The `SNA4DSextract_all_vertex_attributes(g)` function extracts all vertex 
+attributes from a graph object and puts them together into a data.frame. 
+The function works with both `igraph` and `network` class objects.
+
 
 <br><br><br>
 
@@ -151,8 +238,8 @@ htmltools::includeHTML("html_measures.html")
 
 # Communities and other subgroups
 
-Claudia, this is for you. The part I would like to add is the following.
-
+--> Claudia, this is for you. The part I would like to add is the following 
+(but feel free to make changes to it):
 
 ## Walktrap algorithm
 You can determine community structure via short random walks using the 
@@ -210,6 +297,44 @@ stats::as.hclust(walk) %>% plot()
 
 # Plotting
 
+<br> 
+
+## Basic plotting in `igraph`
+
+--> Feel free to remove this section or otherwise reorganize this part.
+
+## Basic plotting in `network`
+
+--> Feel free to remove this section or otherwise reorganize this part.
+
+## Basic plotting in `ggraph`
+
+--> Feel free to remove this section or otherwise reorganize this part.
+
+## SNA4DS functions
+The `SNA4DS` package contains a function to plot centrality scores of the 
+vertices. 
+The function and its options are specified as follows:
+
+```{r}
+SNA4DS::centralityChart(
+  net,
+  measures = c("betweenness", "closeness", "degree"),
+  directed = igraph::is.directed(net),
+  mode = c("all", "out", "in", "total"),
+  normalized = TRUE,
+  path = FALSE
+)
+```
+
+The function takes an object of class `igraph` and plots three centrality 
+scores, so you can visually compare them. 
+Make sure to pick the required value for `mode` (the default is "all"). 
+You can leave `path` to `FALSE`, which will always work. 
+If you want the dots to be connected (which can yield a more insightful plot), 
+set `path = TRUE`, you then get a *path plot*. 
+In some cases this yields a messy or messed-up plot, 
+so then set `path = FALSE` again.
 
 <br><br><br>
 
@@ -248,7 +373,7 @@ so an intercept is included.
 Make sure to include column names, so you get informative output.
 
 There is a useful `summary` method (that shows you an overview of the results) 
-and a `print` method (that you use to check model assumptions).
+and a `plot` method (that you use to check model assumptions).
 
 <br>
 
@@ -262,7 +387,7 @@ Generation of these graphs can be done using `igraph::sample_gnm` (which
 conditions on size and density), `igraph::sample_gnp` (another way to 
 condition on size and density). 
 The equivalent functions in `sna` are `sna::rgraph` and `sna::rgnm`. 
-See (the data generation table)[table_generate] for these functions.
+See [the data generation table](#generate) for these functions.
 
 The second approach is to use a function that does the graph generation and 
 computes the network measure for you. 
@@ -330,11 +455,8 @@ There is also a useful `plot` method for the result of the CUG test.
 There are two methods to perform a QAP test.
 
 The first is to manually permute the graph.
-
-###########
-
 Generation of these graphs can be done using `igraph::permute` or `sna::rmperm`. 
-See (the data generation table)[table_generate] for these functions.
+See [the data generation table](#generate) for these functions.
 
 The second approach is to use a function that does the graph permutation and 
 computes the required measure (typically a correlation) for you. 
@@ -361,6 +483,9 @@ sna::qaptest(list(firstNetwork, secondNetwork),
              FUN = sna::gcor, reps = 1000,
              g1 = 1, g2 = 2)
 ```
+
+There is a useful `summary` method and a `plot` method for the output of the 
+function.
 
 <br>
 
