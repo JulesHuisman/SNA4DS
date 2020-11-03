@@ -1,5 +1,5 @@
 ---
-title: "Lab 07 - ERGMs - Part one"
+title: "Lab 07 - Stats II - ERGMs - Part one"
 output: 
   learnr::tutorial:
     fig_caption: no
@@ -575,7 +575,7 @@ sampson <- SNA4DS:::samplike
 
 While the ER model can be applied to undirected networks since it only considers
 whether there are ties or not (not checking on what kind of ties), the P1 checks 
-on the kind of ties and for this reason it requires a directed network. We are
+on the kind of ties and for this reason it was designed for a directed network. We are
 going to use now the Sampson data that you are also already familiar with. 
 
 I'm just going to remind you that it is an ethnographic study of a New England 
@@ -638,7 +638,7 @@ linear dependency between all the others. Node one constitutes the reference
 category and every other result has to be compared to node one.
 
 For instance, node 10 has a significant sender effect with a probability of the 
-89% that is behavior of liking other monks is not by chance. But this value 
+89% that his behavior of liking other monks is not by chance. But this value 
 makes sense only if compared to the behavior of node one. Monk ten is 89% more likely 
 than monk one of liking other monks. That's all we can claim. Changing the 
 reference category our results might be slightly different since it changes our
@@ -670,8 +670,8 @@ sophistication that this :)
 
 An ERG model is all about finding the best 'dress' to fit our data.
 
-Erdos Renyi and P1 are both models with independent effects since the probability
-of observing effects does not depend on the existence of other ties, but only on 
+The terms we employed so far only look at independent effects since the probability
+of observing them does not depend on the existence of other ties, but only on 
 properties of the individual nodes. But, even still focusing only on the effects 
 that do not involve edge dependencies, there are many more options. We need to 
 Explore more ERGM terms. If you type in your `RStudio` console `search.ergmTerms`,
