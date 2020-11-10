@@ -94,7 +94,7 @@ see the result of your code by clicking the _Run Code_ button.
 Try it. Write the R code required to add two plus two:
 
 ```{r two-plus-two, exercise=TRUE}
-...
+
 ```
 
 Actually, we often want you to write some code and then check whether your code 

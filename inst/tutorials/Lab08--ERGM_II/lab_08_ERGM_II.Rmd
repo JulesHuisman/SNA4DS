@@ -371,9 +371,10 @@ What do we have here? 1461 nodes and 974 edges together with 4 nodes attributes.
 Why don't you try to plot it by yourself to have a better overview of this network?
 
 Together we can move on and run a model that is not going to converge! How exciting! 
+Remove the comment and run it!
 
 ```{r non_convergence, exercise = TRUE, exercise.setup = "load_magnolia"}
-fit2 <- ergm::ergm(magnolia ~ edges + triangle)
+# fit2 <- ergm::ergm(magnolia ~ edges + triangle)
 ```
 
 Here it is, our lovely error message telling us we are doing something wrong!

@@ -508,9 +508,9 @@ they do so.
 
 ```{r media_net_weight, exercise = TRUE, exercise.setup = "load_media_net"}
 ggraph::ggraph(media_net, layout = 'stress') + 
-  ggraph::geom_edge_arc(aes(width = weight), color = 'grey', strength = 0) + 
+  ggraph::geom_edge_arc(ggplot2::aes(width = weight/3), color = 'grey', strength = 0) + 
   ggraph::geom_node_point(size = 4) + 
-  ggraph::geom_node_text(aes(label = media), size = 4, color = "black", repel = T) +
+  ggraph::geom_node_text(ggplot2::aes(label = media), size = 4, color = "black", repel = T) +
   ggplot2::ggtitle("Media Weighted Plot") +
   ggplot2::theme_void() 
 ```

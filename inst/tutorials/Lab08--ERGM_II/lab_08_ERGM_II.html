@@ -13,7 +13,7 @@
 <meta name="progressive" content="true" />
 <meta name="allow-skip" content="true" />
 
-<title>Lab 07 - Stats III - ERGMs - Part two</title>
+<title>Lab 08 - Stats III - ERGMs - Part two</title>
 
 
 <!-- highlightjs -->
@@ -132,21 +132,21 @@ $(document).ready(function () {
 </div>
 <div id="section-more-complex-dyadic-independent-example" class="section level2">
 <h2>More complex dyadic independent example</h2>
-<p>In the first ERGM tutorial we run very simple models, on very small networks. However, very often networks are larger than the Florentine or the Sampson’s ones and the relationships they map down require more sophisticated efforts to be explained.</p>
-<p>Let’s take a look to the <code>faux.mesa.high</code> data set, which is one of the networks included in the <code>ergm</code> package and employed in the <code>statnet</code> tutorials. Remember, <code>statnet</code> is the project that developed the <code>r</code> package <code>ergm</code>, and their tutorials are the first source of information if you are running ERGMs in <code>r</code>.</p>
+<p>In the first ERGM tutorial, we run very simple models on very small networks. However, very often, networks are larger than the Florentine or Sampson’s ones and the relationships they map down require more sophisticated efforts to be explained.</p>
+<p>Let’s take a look at the <code>faux.mesa.high</code> data set, one of the networks included in the <code>ergm</code> package and employed in the <code>statnet</code> tutorials. Remember, <code>statnet</code> is the project that developed the <code>r</code> package <code>ergm</code>. Their tutorials are the first source of information if you are running ERGMs in <code>r</code>.</p>
 <p>Let’s explore this network</p>
 <div class="tutorial-exercise" data-label="explore_mesa" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>mesa</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>The mesa network contains information about 203 relationships among 205 students enrolled at the Mesa High School in the US. Well, not properly the real information about the students since it is classified. Something close enough, that allow us to explore the network without revealing any sensitive data.</p>
+<p>The mesa network contains information about 203 relationships among 205 students enrolled at the Mesa High School in the US. Well, not properly, the real information about the students since it is classified. Something close enough that allows us to explore the network without revealing any sensitive data.</p>
 <p>We have three nodal attributes:</p>
 <ul>
 <li>Student School Grade</li>
 <li>Student Race</li>
 <li>Student Sex</li>
 </ul>
-<p>Let’s visually examine the network and its attributes</p>
+<p>Let’s visually examine the network and its attributes.</p>
 <div class="tutorial-exercise" data-label="plot_mesa" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>table(network::get.vertex.attribute(mesa, &quot;Grade&quot;))
 plot(mesa, vertex.col = &#39;Grade&#39;)
@@ -169,12 +169,12 @@ plot(mesa, vertex.col = &#39;Sex&#39;)
 legend(&#39;bottomleft&#39;, fill = 1:2,
        legend = c(&#39;F&#39;, &#39;M&#39;), cex = 0.75)</code></pre>
 </div>
-<p>Carefully observe the nature of the relationships in the plots. Do you think that friendship can be driven by Grade, Race or Sex? That’s the research question we are going to address!</p>
+<p>Carefully observe the nature of the relationships in the plots. Do you think that Grade, Race, or Sex can drive friendship? That’s the research question we are going to address!</p>
 <p>Let’s find out using ERGMs.</p>
-<p>We want to look at the probability of edges, hence we immediately add the term <code>edges</code>. What does come next?</p>
-<p>Let’s focus on Grade. This nodal attribute is categorical, hence we need to choose terms that can handle this typology of data.</p>
-<p>Since we want to know whether being in the same grade fosters the formation of friendship we can use the term <code>nodematch</code>. This term handles categorical data and explores the existence of homophilic relationships among people that share the same category (grade in this case).</p>
-<p>Another term that we can use with a categorical nodal attribute is<code>nodefactor</code>. This terms outputs one statistic for each category in the attribute minus one to avoid linear dependency. Each of these statistics gives the number of times a node with that attribute and that category appears in an edge in the network. Let’s run a first exploratory round</p>
+<p>We want to look at the probability of edges. Hence we immediately add the term <code>edges</code>. What does come next?</p>
+<p>Let’s focus on Grade. This nodal attribute is categorical. Hence we need to choose terms that can handle this typology of data.</p>
+<p>Since we want to know whether being in the same grade fosters friendship formation, we can use the term <code>nodematch</code>. This term handles categorical data and explores the existence of homophilic relationships among people who share the same category (grade in this case).</p>
+Another term that we can use with a categorical nodal attribute is<code>nodefactor</code>. This term outputs one statistic for each category in the attribute minus one to avoid linear dependency. Each of these statistics gives the number of times a node with that attribute, and that category appears in an edge in the network. Let’s run a first exploratory round.
 <div class="tutorial-exercise" data-label="mesaErgmGrade" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>mesaM1 &lt;- ergm::ergm(mesa ~ edges +
                      nodematch(&#39;Grade&#39;, diff = TRUE) +
@@ -182,9 +182,9 @@ legend(&#39;bottomleft&#39;, fill = 1:2,
 summary(mesaM1)                     </code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>Every statistic in the result’s table allow us to reject the null hypothesis of no effects. The coefficients produced by the <code>nodematch</code> term inform us on the existence of homophilic effects in each grade. Grade 12 is the one where these effect are less likely to happen.</p>
-<p>The <code>nodefactor</code> term inform us on the probability that nodes that are connected to other nodes are characterized by a certain grade. We can say that students in grade 12 are more likely to have friends than students in the other grades.</p>
-<p>What happens if we try to run the same exploratory model, but focusing on race? Can you do it? Call the model ‘mesaM2’ and give it a go. Don’t forget to print the summary, we are interested on the results!</p>
+<p>Every statistic in the result’s table allows us to reject the null hypothesis of no effects. The coefficients produced by the <code>nodematch</code> term inform us of the existence of homophilic effects in each grade. Grade 12 is the one where these effects are less likely to happen.</p>
+<p>The <code>nodefactor</code> term informs us of the probability that a certain grade characterizes nodes connected to other nodes. We can say that students in grade 12 are more likely to have friends than students in other grades.</p>
+<p>What happens if we try to run the same exploratory model but focusing on race? Can you do it? Call the model ‘mesaM2’ and give it a go. Don’t forget to print the summary; we are interested in the results!</p>
 <div class="tutorial-exercise" data-label="grade_ergmRace" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"R code"}</script>
 </div>
@@ -202,16 +202,16 @@ summary(mesaM2)</code></pre>
           nodefactor(&#39;Race&#39;))</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>We can see that the two categories that produced the <code>-Inf</code> coefficients correspond to a 0 in the descriptive statistics’s table. Does it mean that we don’t have any student of Race black and other in the school? Let’s check the frequency of the nodal attribute to dig deeper</p>
+<p>We can see that the two categories that produced the <code>-Inf</code> coefficients correspond to a 0 in the descriptive statistics table. Does it mean that don’t we have any student of Race black and other in the school? Let’s check the frequency of the nodal attribute to dig deeper.</p>
 <div class="tutorial-exercise" data-label="mesaErgmRaceFreq" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>table(network::get.vertex.attribute(mesa, &quot;Race&quot;))</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>Nope! There are no empty categories in the variable, the zero corresponds to the homophilic cases measured by the term’s formula.</p>
+<p>Nope! There are no empty categories in the variable; the zero corresponds to the homophilic cases measured by the term’s formula.</p>
 <p><em>In case one or more frequencies were empty</em> we should have considered treating this case as <em>missing data</em> and discussed our option accordingly. However, this is NOT a missing data case.</p>
-<p>The zeros in the descriptive statistics with the model specifications tell us that there are no homophily effects for those two categories, but these effects are still in place for the other categories.</p>
-<p>It’s always crucial to check both the nodal attribute’s frequency and the descriptive statistics of model specification. Only checking both we can have the full picture and avoid mistakes such as treating this case as a missing data one.</p>
-<p>Let’s move on and check what happens with the nodal attribute Sex still considering the same specification</p>
+<p>The zeros in the descriptive statistics with the model specifications tell us that there are no homophily effects for those two categories. However, these effects are still in place for the other categories.</p>
+<p>It’s always crucial to check both the nodal attribute’s frequency and the model specification’s descriptive statistics. Only checking both we can have the full picture and avoid mistakes, such as treating this case as a missing data one.</p>
+<p>Let’s move on and check what happens with the nodal attribute Sex, still considering the same specification.</p>
 <div class="tutorial-exercise" data-label="mesaErgmSex" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>mesaM3 &lt;- ergm::ergm(mesa ~ edges +
                        nodematch(&#39;Sex&#39;, diff = TRUE) +
@@ -220,13 +220,13 @@ summary(mesaM2)</code></pre>
 summary(mesaM3)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>If you read the text outputed by the model, it says that it might be the case that ‘the model is nonidentifiable.’ This is a new error message introduced with <code>ergm 3.11</code>. It indicates that there is linear dependence between the results of these two terms. <code>nodematch</code> tell us whether there are homophilic effects due to sex, while <code>nodefactor</code> tell us what’s the probability for female and male students to make friends. In this context homophily is more interesting, hence since we need to get rid of one term to avoid linear dependence, let’s discard <code>nodefactor</code>.</p>
-<p>Please not that in this exploratory model I used the levels argument to tell the software to compute and print the statistic for the female category rather than the male one. That’s how you can customize your output with this term. The options to do so might be different from term to term, hence you need to rid the manual.</p>
-<p>After running a few exploratory models let’s try to fit a comprehensive one. We can keep both terms for what concerns Grade.</p>
-<p>When it comes to Race the term looking for homophily shows two empy categories. What do we do?</p>
+<p>If you read the text outputed by the model, it says that it might be the case that ‘the model is nonidentifiable.’ This is a new error message introduced with <code>ergm 3.11</code>. It indicates linear dependence between the results of these two terms. <code>nodematch</code> tells us whether there are homophilic effects due to sex, while <code>nodefactor</code> tells us what’s the probability for female and male students to make friends. In this context, homophily is more interesting; hence since we need to get rid of one term to avoid linear dependence, let’s discard <code>nodefactor</code>.</p>
+<p>’Please note that I used the levels argument in this exploratory model to tell the software to compute and print the statistic for the female category rather than the male one. That’s how you change your model baseline. If you do change the baseline, obviously, your output will be different. The options for changing the baseline might be different from term to term, so you need to read the manual</p>
+<p>After running a few exploratory models, let’s try to fit a comprehensive one. We can keep both terms for what concerns Grade.</p>
+<p>When it comes to Race the term looking for homophily shows two empty categories. What do we do?</p>
 <p>The way we specified <code>nodematch</code> so far checks for <em>differential homophily</em>, that looks for homophily within each category. But it can also be specified to check overall homophily in the whole network.</p>
-<p>For what concerns Race in the mesa school, since some categories are empty, but others are not, removing the term might seem a loss of information. We can then specify the more generic option that assesses whether there is homophily overall, not informing us about each category, but providing one single statistic for the all network.</p>
-<p>For what concern the Sex attribute, let’s keep differential homophily and remove the <code>nodefactor</code> term.</p>
+<p>For what concerns Race in the mesa school, since some categories are empty, but others are not, removing the term might seem a loss of information. We can then specify the more generic option that assesses whether there is homophily overall, not informing us about each category but providing one single statistic for the all network.</p>
+<p>What concerns the Sex attribute, let’s keep differential homophily and remove the <code>nodefactor</code> term.</p>
 <p>Let’s fit the model!</p>
 <div class="tutorial-exercise" data-label="mesaErgmOverall" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>mesaM4 &lt;- ergm::ergm(mesa ~ edges +
@@ -239,45 +239,45 @@ summary(mesaM3)</code></pre>
 summary(mesaM4)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>This looks like a pretty nice mode! You know already how to understand significance and coefficients, so there is no need to comment on that, but let’s comment on the overall meaning on this model.</p>
+<p>This looks like a pretty nice mode! You already know how to understand significance and coefficients, so there is no need to comment on that, but let’s comment on this model’s overall meaning.</p>
 <ul>
-<li><p>nodematch-grade (differential homophiliy): There is an homophily effect due to grade. The strongest homophily is in grade 7 and the weakest in grade 12.</p></li>
-<li><p>nodefactor-grade: this terms tell us the probability of students in each grade to make friends. Grade 12 students have the highest number of friends.</p></li>
+<li><p>nodematch-grade (differential homophiliy): There is a homophily effect due to grade. The strongest homophily is in grade 7 and the weakest in grade 12.</p></li>
+<li><p>nodefactor-grade: this term tell us the probability of students in each grade to make friends. Grade 12 students have the highest number of friends.</p></li>
 <li><p>nodematch-Race: there are homophily effects due to race</p></li>
 <li><p>nodefactor-race: White students are more likely to have friends than the other categories</p></li>
-<li><p>nodematch-sex (differential homophiliy): There are homophilic effects among female students, but not among male.</p></li>
+<li><p>nodematch-sex (differential homophiliy): There are homophilic effects among female students, but not among males.</p></li>
 </ul>
-<p>Quite informative for a simple model right? What if I tell you that we can look at even more informative model configurations?</p>
-<p>So far we explored only dyadic independent terms that look at the probability of relationship has a consequence of properties of the nodes. We looked at nodal attributes, or the simple node propensity to connect to others (<code>edges</code>, <code>sender</code>, <code>receiver</code>).</p>
+<p>Quite informative for a simple model, right? What if I tell you that we can look at even more informative model configurations?</p>
+<p>So far, we explored only dyadic independent terms that look at the probability of relationship as a consequence of the nodes’ properties. We looked at nodal attributes, or the simple node propensity to connect to others (<code>edges</code>, <code>sender</code>, <code>receiver</code>).</p>
 <p>We already know that there is more than this.</p>
-<p>With these dyadic independent model configurations we cannot explore situations where you meet a new friend that was in school with your roommate, or we cannot explore situations where you start to follow someone on Instagram just because all your other friends do, among other examples.</p>
-<p>This are all important things to explore and that’s why we need to start to use dyadic dependent terms too.</p>
+<p>With these dyadic independent model configurations, we cannot explore situations where you meet a new friend who was in school with your roommate. We cannot explore situations where you start to follow someone on Instagram just because all your other friends do, among other examples.</p>
+<p>This are all important things to explore, and that’s why we need to start to use dyadic dependent terms too.</p>
 </div>
 <div id="section-dyadic-dependent-terms" class="section level2">
 <h2>Dyadic Dependent Terms</h2>
-<p>We just covered the conceptual difference between dyadic independence and dependence. To wrap this up: The first one happens when the probability of edge formation is related to nodes properties or attributes, the second is related to the probability of other existing edges.</p>
+<p>We just covered the conceptual difference between dyadic independence and dependence. To wrap this up: The first one happens when the probability of edge formation is related to nodes properties or attributes; the second is related to the probability of other existing edges.</p>
 <p>In practice, you know when you are running a dyadic independent or dependent model by reading the information that the model prints for you while running.</p>
 <p>Let’s try with a dyadic independent</p>
 <div class="tutorial-exercise" data-label="flob_dyad_indep" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>fit &lt;- ergm::ergm(flobusiness ~ edges)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>This text inform us on the fact that the results are estimated computing maximum pseudolikelihood estimation (MPLE).</p>
-<p>Let’s check a dyadic dependent example to compare. We can simply add the dyadic dependent term <code>degree</code> to the previous model. With this specification it checks on the probability that the number of nodes with degree one in the florentine business network is non-random. We care only about the output text now though. Let’s read on</p>
+<p>This text informs us of the fact that the results are estimated computing maximum pseudolikelihood estimation (MPLE).</p>
+<p>Let’s check a dyadic dependent example to compare. We can simply add the dyadic dependent term <code>degree</code> to the previous model. This specification checks on the probability that the number of nodes with degree one in the florentine business network is non-random. We care only about the output text now, though. Let’s read on.</p>
 <div class="tutorial-exercise" data-label="flob_dyad_dep" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>fit &lt;- ergm::ergm(flobusiness ~ edges + degree(1))</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>This text tell us that results are computed using Monte Carlo Markov Chains (MCMC). What does it mean? Dyadic dependent models cannot be estimated as the dyadic independent ones. They are solved using Monte Carlo Markov Chains, that stochastically approximate the Maximum Likelihood.</p>
-<p>This means that when you have dyadic dependent terms your model is computationally more complex. It might take longer to run and you also need to check whether the simulation is actually doing its job correctly or if your specification is driving the model in some other directions. To check on all these things you need to run MCMC diagnostics.</p>
-<p>Nitty gritty: If you get great statistics next to poor results in the diagnostics you can trash your model. It’s important.</p>
+<p>This text tells us that results are computed using Monte Carlo Markov Chains (MCMC). What does it mean? Dyadic dependent models cannot be estimated as the dyadic independent ones. They are solved using Monte Carlo Markov Chains that stochastically approximate the Maximum Likelihood.</p>
+<p>This means that when you have dyadic dependent terms, your model is computationally more complex. It might take longer to run, and you also need to check whether the simulation is actually doing its job correctly or if your specification is driving the model in some other directions. To check on all these things, you need to run MCMC diagnostics.</p>
+<p>The nitty-gritty: If you get great statistics next to poor diagnostics results, you can trash your model. It’s important.</p>
 </div>
 <div id="section-mcmc-dyagnostics" class="section level2">
 <h2>MCMC Dyagnostics</h2>
-<p>While solving an ERGM with MPLE is almost the same as running Logit Models, computing your results using MCMC simulations is something quite far from that. Conceptually you are simulating (Monte Carlo) a large number of networks (Markov chains) that are described and evolve according to the terms that you specified. The values assumed by each parameter in the simulation are ‘managed’ by an algorithm (such as the Metropolis Hastings) that helps them to get closer to the observed network’s values. If the estimates do not progressively get closer to the observed network’s ones, it means that your model is not working as it should and you get a poor fit, or in the worse case scenario a degeneracy of the model. The latter indicates that the estimates do not ‘converge’ toward the values in the observed network.</p>
-<p>If the terms chosen for your model were important for your dyadic independent model, they are absolutely crucial for your dyadic dependent one since they are literally the rules that govern the world you are simulating. Your goal is to create a synthetic reality that reproduce the social processes that generated your observed network. If you specify the model in a different direction, your synthetic reality will look very different from the observed one. Same as in a dystopian movie, where some ‘wrong specification’ generates unwanted consequences.</p>
-<p>Let’s use a metaphor. You go to a fancy shop and you buy the best cookie of your life. But it is too expensive! you can’t possibly buy that cookie every week. Hence you decide to try to recreate the recipe at home making several attempts. 100 g of flour, 120 of sugar, 2 eggs? or 120 of flour, 100 of sugar and 1 egg? the You try all the combination that are more likely to taste like the original, until you approximate the original cookie. Let’s also say that you have a little elf that helps you a little with the job. That’s what the simulations and your specifications are doing.</p>
-<p>Let’s take a look to what a good fit looks like!</p>
+<p>While solving an ERGM with MPLE is almost the same as running Logit Models, computing your results using MCMC simulations is something quite far from that. Conceptually, you are simulating (Monte Carlo) many networks (Markov chains) that are described and evolve according to the terms you specified. The values assumed by each parameter in the simulation are ‘managed’ by an algorithm (such as the Metropolis Hastings) that helps them get closer to the observed network’s values. If the estimates do not progressively get closer to the observed network’s ones, it means that your model is not working as it should, and you get a poor fit, or in the worst-case scenario, the degeneracy of the model. The latter indicates that the estimates do not ‘converge’ toward the values in the observed network.</p>
+<p>If the terms chosen for your model were important for your dyadic independent model, they are absolutely crucial for your dyadic dependent one since they are literally the rules that govern the world you are simulating. Your goal is to create a synthetic reality that reproduces the social processes that generated your observed network. If you specify the model in a different direction, your synthetic reality will look very different from the observed one. Same as in a dystopian movie, where some ‘wrong specification’ generates unwanted consequences.</p>
+<p>Let’s use a metaphor. You go to a fancy shop, and you buy the best cookie of your life. But it is too expensive! You can’t possibly buy that cookie every week. Hence you decide to try to recreate the recipe at home, making several attempts. 100 g of flour, 120 of sugar, 2 eggs? Or 120 of flour, 100 of sugar, and 1 egg? You try all the combinations that are more likely to taste like the original until you approximate the original cookie. Let’s also say that you have a little elf that helps you a little with the job. That’s what the simulations and your specifications are doing.</p>
+<p>Let’s take a look at what a good fit looks like!</p>
 <div id="section-good-fit" class="section level3">
 <h3>Good Fit</h3>
 <p>We rerun the model with the Florentine Business network using the terms <code>edges</code> and <code>degree</code> set to 1. Let’s observe it’s MCMC diagnostics.</p>
@@ -288,31 +288,31 @@ ergm::mcmc.diagnostics(fit)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
 <p>The <code>mcmc.diagnostics</code> function prints diagnostic information and creates simple diagnostic plots for MCMC sampled statistics produced from a fit.</p>
-<p>In the default function the <code>center</code> parameter is set to TRUE, meaning that the 0 represents the statistics from the observed network.</p>
-<p>The trace plots on the left hand side represents all the values that each parameter assumes during the simulation.</p>
-<p>The density plot on the right hand side represents the distribution of that parameter during that simulation.</p>
-<p>They both need to ‘develop’ around the zero. The trace plot should look as regular as possible resembling a <a href="https://www.google.com/search?q=fuzzy+caterpillar&amp;rlz=1C1GCEU_enNL916NL916&amp;sxsrf=ALeKk02yI8htk3IAE7DL9w21ezfosrjDnQ:1604060591472&amp;source=lnms&amp;tbm=isch&amp;sa=X&amp;ved=2ahUKEwiUo4Kup9zsAhUwMewKHU_sArwQ_AUoAXoECBsQAw&amp;biw=1536&amp;bih=698&amp;dpr=1.25">fuzzy caterpillar</a>.</p>
+<p>In the default function, the <code>center</code> parameter is set to TRUE, meaning that the 0 represents the observed network statistics.</p>
+<p>The trace plots on the left-hand side represent all the values that each parameter assumes during the simulation.</p>
+<p>The density plot on the right-hand side represents the distribution of that parameter during that simulation.</p>
+<p>They both need to ‘develop’ around zero. The trace plot should look as regular as possible, resembling a <a href="https://www.google.com/search?q=fuzzy+caterpillar&amp;rlz=1C1GCEU_enNL916NL916&amp;sxsrf=ALeKk02yI8htk3IAE7DL9w21ezfosrjDnQ:1604060591472&amp;source=lnms&amp;tbm=isch&amp;sa=X&amp;ved=2ahUKEwiUo4Kup9zsAhUwMewKHU_sArwQ_AUoAXoECBsQAw&amp;biw=1536&amp;bih=698&amp;dpr=1.25">fuzzy caterpillar</a>.</p>
 <p>The density plot should look like a bell curve.</p>
-<p>In this example we are examining the results are good and we comment on the trace plots saying that ‘the chains mixed well’. The density plot of the <code>degree</code> term is not exactly a bell curve, but considering that this is a small sample, it is still close enough to a normal distribution.</p>
+<p>In this example, we are examining the results and comment on the trace plots saying that ‘the chains mixed well.’ The density plot of the <code>degree</code> term is not precisely a bell curve. However, considering that this is a small sample, it is still close enough to a normal distribution.</p>
 <p><code>mcmc.diagnostics</code>tests for two main issues</p>
 <p>1 - A large portion of the sample is drawn from distributions that are significantly different from the target</p>
 <p>2 - The size of the simulated sample is too small</p>
-<p>If it either of these two issues it’s true you will observe a trace plot where the chains are not mixing well, and a density plot that does not look like a bell curve and or is not centered around zero.</p>
-<p>In if you do observe this, your model is not working as it should and you are not simulating reality correctly.</p>
-<p>Take into account that the second issue can be addressed increasing the number of simulated network, and increasing the burn-in. The burn-in tells the simulation to ignore the first chains (the left hand side of the trace plot) since it might take a while to the simulation to reach a stable state.</p>
+<p>If it either of these two issues, it’s true you will observe a trace plot where the chains are not mixing well and a density plot that does not look like a bell curve and or is not centered around zero.</p>
+<p>If you observe this, your model is not working as it should, and you are not simulating reality correctly.</p>
+<p>Take into account that the second issue can be addressed, increasing the number of simulated networks and increasing the burn-in. The burn-in tells the simulation to ignore the first chains (the left-hand side of the trace plot) since it might take a while for the simulation to reach a stable state.</p>
 </div>
 <div id="section-model-degeneracy" class="section level3">
 <h3>Model Degeneracy</h3>
 <p>Sometimes a dyadic dependent model does <em>not converge</em>. What does it mean?</p>
 <p>Convergence is the process through which the MCMC chains progressively get to resemble each other until they achieve the goal of approximating the coefficient that you read in your result’s table.</p>
-<p>Hence, the absence of convergence describes a situation where the simulation produces coefficients that are progressively further away from the observed network. In that case the software stops running.</p>
-<p>If your model does not converge it can mean two things</p>
+<p>Hence, the absence of convergence describes a situation where the simulation produces coefficients that are progressively further away from the observed network. In that case, the software stops running.</p>
+<p>If your model does not converge, it can mean two things</p>
 <ol style="list-style-type: decimal">
-<li><p>You made an incorrect choice of model terms and you need to get back to formulate new hypotheses for your data.</p></li>
-<li><p>You are using some terms that are well known for creating some convergence issues, such as <code>triangle</code>. If this is the case you should use their geometrically weighted equivalent, that are term that represent the same effects, which formula has been mathematically improved to address convergence issues.</p></li>
+<li><p>You made an incorrect choice of model terms, and you need to get back to formulate new hypotheses for your data.</p></li>
+<li><p>You are using some terms that are well known for creating some convergence issues, such as <code>triangle</code>. If this is the case, you should use their geometrically weighted equivalent, which represents the same effects, which formula has been mathematically improved to address convergence issues.</p></li>
 </ol>
-<p>Let’s see an example of non-convergence due to the second case, the employment of the <code>triangle</code> term. In both cases you observe the same signs of model degeneracy. Hence, if you are not using any of the incriminated terms, you have poor theory.</p>
-<p>The Magnolia high school is another well known data set that is included in the <code>ergm</code> package.</p>
+<p>In both cases, you observe the same signs of model degeneracy. Hence, if you are not using any of the incriminated terms, you have a poor theory.</p>
+<p>Let’s see an example of non-convergence due to the second case, the employment of the <code>triangle</code> term. The Magnolia high school is another well-known data set that is included in the <code>ergm</code> package.</p>
 <p>Let’s explore this network</p>
 <div class="tutorial-exercise" data-label="explore_magnolia" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>magnolia</code></pre>
@@ -320,14 +320,14 @@ ergm::mcmc.diagnostics(fit)</code></pre>
 </div>
 <p>What do we have here? 1461 nodes and 974 edges together with 4 nodes attributes.</p>
 <p>Why don’t you try to plot it by yourself to have a better overview of this network?</p>
-<p>Together we can move on and run a model that is not going to converge! How exciting!</p>
+<p>Together we can move on and run a model that is not going to converge! How exciting! Remove the comment and run it!</p>
 <div class="tutorial-exercise" data-label="non_convergence" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
-<pre class="text"><code>fit2 &lt;- ergm::ergm(magnolia ~ edges + triangle)</code></pre>
+<pre class="text"><code># fit2 &lt;- ergm::ergm(magnolia ~ edges + triangle)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>Here it is our lovely error message telling us we are doing something wrong! Instead of converging, the algorithm heads off into networks that are much much more dense than the observed network. This is such a clear indicator of a degenerate model specification that the algorithm stops after 3 iterations, to avoid heading off into areas that would cause memory issues.</p>
+<p>Here it is, our lovely error message telling us we are doing something wrong! Instead of converging, the algorithm heads off into networks that are much much denser than the observed network. This is such a clear indicator of a degenerate model specification that the algorithm stops after 3 iterations, to avoid heading off into areas that would cause memory issues.</p>
 <p>Since the previous model output is an error, we cannot observe the MCMC diagnostics. In order to be able to plot the diagnostics for a degenerate model, we need to stop the iterations of the simulations before it gets to the degeneration point.</p>
-<p>We do it adding one more specification to the model:</p>
+<p>We do it by adding one more specification to the model:</p>
 <div class="tutorial-exercise" data-label="non_convergence_diagn" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>fit2 &lt;- ergm::ergm(magnolia ~ edges + triangle, 
                    control = ergm::control.ergm(MCMLE.maxit = 2))
@@ -335,12 +335,12 @@ ergm::mcmc.diagnostics(fit)</code></pre>
 ergm::mcmc.diagnostics(fit2)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>The plot you are going to see is different from the one I’m observing now while writing the tutorial since this is a simulation. However, can you see the difference from the good fit we observed before? The trace plots show that the simulation does not evolve around zero and that the MCMC chains are not mixing well at all. The density plot does not look like a bell curve and it is not centered at zero. That’s how a bad model looks like!</p>
-<p>In this case the degeneration is due to the <code>triangle</code> term. If this happens to you specifying other kinds of terms you need to rethink your theory. Needless to say, don’t choose your terms by chance. There are way too many possible terms combinations to make a model fit by chance. When you specify a model it needs to come from a solid theory.</p>
+<p>The plot you are going to see is different from the one I’m observing now while writing the tutorial since this is a simulation. However, can you see the difference between the good fit we observed before? The trace plots show that the simulation does not evolve around zero and that the MCMC chains are not mixing well at all. The density plot does not look like a bell curve, and it is not centered at zero. That’s how a bad model looks like!</p>
+<p>In this case, the degeneration is due to the <code>triangle</code> term. If this happens to you specifying other kinds of terms, you need to rethink your theory. Needless to say, don’t choose your terms by chance. There are way too many possible terms combinations to make a model fit by chance. When you specify a model, it needs to come from a solid theory.</p>
 </div>
 <div id="section-a-bad-fit" class="section level3">
 <h3>A bad fit</h3>
-<p>Sometimes it also happens that your model does not degenerate and converges providing you with results, but if you check the mcmc.diagnostics you see that your model is not fitting very well your data.</p>
+<p>Sometimes it also happens that your model does not degenerate and converges, providing you with results, but if you check the <code>mcmc.diagnostics</code>, you see that your model does not fit your data very well.</p>
 <p>Let’s take the model we just run with the magnolia data and substitute the incriminated term <code>triangle</code> with his geometrically weighted equivalent (terms with some math tricks to improve convergence).</p>
 <p>This model might take a few seconds. Be patient</p>
 <div class="tutorial-exercise" data-label="magnolia_gwesp" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
@@ -350,14 +350,14 @@ ergm::mcmc.diagnostics(fit3)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
 <p>As you can see, this model converges, but the diagnostics are really bad!</p>
-<p>In fact, there was no theory behind this model. It was just introduced to show how models should not be done and it fully achieved its goal. We should go back to theory to understand this data! :)</p>
+<p>In fact, there was no theory behind this model. It was just introduced to show how models should not be done, and it fully achieved its goal. We should go back to theory to understand this data! :)</p>
 </div>
 </div>
 <div id="section-goodness-of-fit" class="section level2">
 <h2>Goodness of Fit</h2>
 <p>Whether you are running a dyadic independent or a dyadic dependent model, you should always check whether the model you specified explains the observed network or not. You do that with the goodness of fit <code>gof</code> function.</p>
-<p><code>gof</code> calculates p-values for geodesic distance, degree, and reachability summaries to diagnose the goodness-of-fit of exponential family random graph models. This time you want your p-value to be as high as possible (1). In fact, this time the p-value compares your observed data to simulated data and if you did a good job specifying your model the statistics that these two samples produce should be almost the same.</p>
-<p>Let’s fit again our model with a nice MCMC diagnostic and check whether it also has a nice goodness of fit.</p>
+<p><code>gof</code> calculates p-values for geodesic distance, degree, and reachability summaries to diagnose the goodness-of-fit of exponential family random graph models. This time you want your p-value to be as high as possible (1). This time the p-value compares your observed data to simulated data, and if you did a good job specifying your model, the statistics that these two samples produce should be almost the same.</p>
+<p>Let’s fit our model again with a nice MCMC diagnostic and check whether it also has a nice goodness of fit.</p>
 <div class="tutorial-exercise" data-label="flob_gof" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>fit &lt;- ergm::ergm(flobusiness ~ edges + degree(1))
 fit.gof &lt;- ergm::gof(fit)
@@ -379,27 +379,27 @@ gofdegree
 plot(gofdegree)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>The goodness of fit table for degrees has one row for each degree value in the distribution of the observed network. The column obs reports how many nodes with that degree are in the observed network, while the column min mean and max report the simulated values for each degree value. The last column reports the p-value and, as we said, we want it as close as possible to one.</p>
-<p>The plot simply visualizes these results using box plots. The blue square is the mean value and the black tick line shows the observed values. What we want is the black tick line to be as close as possible to the blue square and possibly never outside of the min and max interval.</p>
-<p>Running <code>gof</code> for degree only, also prints out the gof for the model statistics. It works exactly the same way and it shows how the statistics of the observed network performs in comparison to the simulated one.</p>
-<p>You interpret the other two remaining point analogously.</p>
-<p>How did this model do? While the model statistics are doing really good, it’s not the case for degree. For what concerns low degrees the simulation is different from the observed data. However, it gets much better for higher degrees. The same happens with edgewise shared partners, while the geodesic distance does quite well for every value.</p>
+<p>The goodness of fit table for degrees has one row for each degree value in the distribution of the observed network. The column obs reports how many nodes with that degree are in the observed network, while the column min, mean and max report the simulated values for each degree value. The last column reports the p-value, and, as we said, we want it as close as possible to one.</p>
+<p>The plot simply visualizes these results using box plots. The blue square is the mean value, and the black tick line shows the observed values. We want the black tick line to be as close as possible to the blue square and possibly never outside of the min and max interval.</p>
+<p>Running <code>gof</code> for degree only also prints out the gof for the model statistics. It works exactly the same way, and it shows how the statistics of the observed network perform in comparison to the simulated one.</p>
+<p>You interpret the other two remaining points analogously.</p>
+<p>How did this model do? While the model statistics are doing really well, it’s not the case for degree. For what concerns low degrees, the simulation is different from the observed data. However, it gets much better for higher degrees. The same happens with edgewise shared partners, while the geodesic distance does quite well for every value.</p>
 <p>Overall the fit of this model is quite good!</p>
-<p>If you carefully observe, also one of the geodesic distance’s values is <code>-Inf</code>, but this simply indicates that there are isolates in the network, hence we don’t have to worry about it.</p>
-<p>However <code>Inf</code> is like an alarm to remind you to be careful and constantly check on what you are doing.</p>
+<p>If you carefully observe, also one of the geodesic distance’s values is <code>-Inf</code>, but this simply indicates that there are isolates in the network. Hence we don’t have to worry about it.</p>
+<p>However, <code>Inf</code> is like an alarm to remind you to be careful and constantly check on what you are doing.</p>
 </div>
 <div id="section-more-dyadic-dependent-terms" class="section level2">
 <h2>More dyadic dependent terms</h2>
-<p>So far we used only two dyadic dependent terms, <code>mutual</code> and <code>degree</code>. There are many of them, and we cannot possibly cover every single one in this tutorial. However, it is certainly worth to spent some times talking about triads, cycles and triangles since they are at the core of the idea of dyadic dependence since it checks on the formation of ties due to existing ties.</p>
+<p>So far, we used only two dyadic dependent terms, <code>mutual</code> and <code>degree</code>. There are many of them, and we cannot possibly cover every single one in this tutorial. However, it is certainly worth spending some time talking about triads, cycles, and triangles since they are at the core of dyadic dependence since it checks on the formation of ties due to existing ties.</p>
 <div id="section-the-triad-census" class="section level3">
 <h3>The Triad Census</h3>
-<p>Do you remember the <a href="https://www.sciencedirect.com/science/article/pii/S0378873310000158?casa_token=FqY1CGVPJaAAAAAA:zVltTjQfyFhczdDIcwUQJmZ3zJZFGDuyrvQ0TMog7LNOOK_wADA-r46-q9bD7x7HJ2KBXFD7">triad census</a> categorization introduced by Davis and Leinhardt (1972) that we talked about in class a few weeks ago? You should have understood that checking on triads is very important in network analysis and there are several <code>ergm</code> terms to help you on this job.</p>
-<p>Let’s take a look to the term <code>triadcensus</code></p>
+<p>Do you remember the <a href="https://www.sciencedirect.com/science/article/pii/S0378873310000158?casa_token=FqY1CGVPJaAAAAAA:zVltTjQfyFhczdDIcwUQJmZ3zJZFGDuyrvQ0TMog7LNOOK_wADA-r46-q9bD7x7HJ2KBXFD7">triad census</a> categorization introduced by Davis and Leinhardt (1972) that we talked about in class a few weeks ago? You should have understood that checking on triads is very important in network analysis, and there are several <code>ergm</code> terms to help you with this job.</p>
+<p>Let’s take a look at the term <code>triadcensus</code></p>
 <div class="tutorial-exercise" data-label="triadcensus" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>ergm::search.ergmTerms(name = &#39;triadcensus&#39;)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>If you use this term in an ERGM with a direct network, it is going to check on the existence of each of the 16 options and provide you with the probability of observing each of them. If you use the undirected one, it is going to check only on the configurations that make sense on undirected data. Can you tell how many are those?</p>
+<p>If you use this term in an ERGM with a direct network, it will check on the existence of each of the 16 options and provide you with the probability of observing each of them. If you use the undirected one, it is going to check only on the configurations that make sense with undirected data. Can you tell me how many are those?</p>
 <p>Let’s try out with the Sampson data we already used many times before.</p>
 <p>Since the Sampson data about monks’ frindships is directed we are checking whether these 16 configurations do exist in the network.</p>
 <div class="tutorial-exercise" data-label="Sam_summ_triadcensus" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
@@ -414,18 +414,18 @@ plot(gofdegree)</code></pre>
 summary(mediaM1)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>Oh no! the model does not converge! We should check the <code>mcmc.diagnostics</code> and the <code>gof</code> to be able to tell why. However, it’s probably due to the fact that there is no theoretical reason in this case that would make us think that all these effects are happening at the same time in this small network.</p>
-<p>We might want to try to be more specific.</p>
-<p>Checking on the model summary above we see that the configurations that are highly represented in this sample are 012, 102, 021C, 021U, 201, 111D. The term <code>intransitive</code> checks on three of them: 021C, 201, 111D. Let’s try to run it and to see whether this time our model might make more sense. But before that, why don’t you check what the term <code>intransitive</code>exactly does and whether this might make sense knowing the features of the Sampson network?</p>
+<p>Oh no! the model does not converge! We should check the <code>mcmc.diagnostics</code> and the <code>gof</code> to be able to tell why. However, it’s probably due to the fact that there is no theoretical reason in this case that would make us think that all these effects are happening at the same time for a specific -non random- reason in this small network.</p>
+<p>We might want to try to be more specific and to decrease the level of complexity of our educated guess.</p>
+<p>Checking on the model summary above, we see that the configurations that are highly represented in this sample are 012, 102, 021C, 021U, 201, 111D. The term <code>intransitive</code> checks on three of them: 021C, 201, 111D. Let’s try to run it and to see whether this time our model might make more sense. But before that, why don’t you check what the term <code>intransitive</code> exactly does and whether this might make sense knowing the Sampson network’s features?</p>
 <div class="tutorial-exercise" data-label="Sam_intransitive" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>samM2 &lt;- ergm::ergm(sampson ~ edges + intransitive)
 
 summary(samM2)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>This time our results seems to be more interesting. Obviously we cannot be sure since we did not check the MCMC diagnostics and the goodness of fit. If they are fit is good, what do these results mean for the Sampson network?</p>
+<p>This time our results seem to be more interesting. Obviously, we cannot be sure since we did not check the MCMC diagnostics and the goodness of fit. If the model fit is good, what do these results mean for the Sampson network?</p>
 <p>Can you think of other possible terms that help in the explanation of the social effects underneath the formation of these edges?</p>
-<p>When you want to analyze three nodes patterns, other terms that my be often useful are</p>
+<p>When you want to analyze three nodes patterns, other terms that might be often useful are</p>
 <ul>
 <li><code>ctriple</code></li>
 <li><code>ttriple</code></li>
@@ -440,7 +440,7 @@ summary(samM2)</code></pre>
 <div id="section-cycles" class="section level3">
 <h3>Cycles</h3>
 <p>You do not only care about patterns with three nodes, but you might want to check on other numbers of nodes patterns too, on other motifs, and whether their edges form cycles. You do that with the <code>cycle</code> term.</p>
-<p>For instance in the code below we are checking on four nodes cycles in the Sampson data. Why don’t you try to think which number might make more sense for the Sampson data and re-run the model? Just try to analyze what you know about this network already and plot it below if it helps you remembering it.</p>
+<p>For instance, in the code below, we are checking on four nodes cycles in the Sampson data. Why don’t you try to think which number might make more sense for the Sampson data and re-run the model? Just try to analyze what you know about this network and plot it below if it helps you remember it.</p>
 <div class="tutorial-exercise" data-label="grade_cycle" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>samM3 &lt;- ergm::ergm(sampson ~ edges + cycle(4))
 summary(samM3)</code></pre>
@@ -465,7 +465,7 @@ plot(SamSim[[1]])</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
 <p>But we can actually do more than this! We can also create a network from scratch and simulate a certain specific structure by setting terms to output specific coefficients.</p>
-<p>Let’s create an undirected network with 16 nodes and density 0.1. Then let’s say that we want to simulate two networks that when inserted into an ERGM model with the term <code>edges</code> will output a coefficient of -1.8 and with the term <code>kstar</code> set to two, will output a coefficient of 0.03. That’s how you do it!</p>
+<p>Let’s create an undirected network with 16 nodes and a density of 0.1. Then let’s say that we want to simulate two networks that, when inserted into an ERGM model with the term <code>edges</code> will output a coefficient of -1.8. With the term <code>kstar</code> set to two, will output a coefficient of 0.03. That’s how you do it!</p>
 <div class="tutorial-exercise" data-label="simCoef" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>g.use &lt;- network::network(16,density=0.1,directed=FALSE)
 
@@ -486,9 +486,9 @@ summary(g.simModel)</code></pre>
 </div>
 <div id="section-get-your-hands-dirty" class="section level2">
 <h2>Get your hands dirty!</h2>
-<p>At this point we covered together all the crucial topics that you need to know in order to be able to run exponential random graph models. Do you still feel a bit shaky at the idea of running these models? Of course you do! What you do need now is practice, and no class can make up for that!</p>
-<p>Hence, this tutorial ends with a guided practical task to get some familiarity with ERGMs.</p>
-<p>For this task we are going to use the UK faculty data from the <code>igraphdata</code> package. But still, let’s pretend that you spent one year of your time collecting this data about these British academics and that now you are looking forward to understand a bit better what is going on with your sample.</p>
+<p>At this point, we covered together every crucial topic that you need to know in order to be able to run exponential random graph models. Do you still feel a bit shaky at the idea of running these models? Of course you do! What you do need now is practice, and no class can make up for that!</p>
+<p>Hence, this tutorial ends with a guided, practical task to get some familiarity with ERGMs.</p>
+<p>For this task, we are going to use the UK faculty data from the <code>igraphdata</code> package. But still, let’s pretend that you spent one year of your time collecting this data about these British academics and that now you are looking forward to understanding a bit better what is going on with your sample.</p>
 <p>You always start by understanding your data. Let’s take a look.</p>
 <div class="tutorial-exercise" data-label="exploreUKF" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>UKF
@@ -505,7 +505,7 @@ legend(&#39;bottomleft&#39;, fill = 1:4,
        legend=paste(&#39;Group&#39;, 1:4), cex = 0.75)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>Ok, from the plot we can see that these British academics are coming from four different groups, let’s say University departments, and some of them are friends with each other across groups since they usually dine at the University canteen.</p>
+<p>Ok, from the plot we can see that these British academics are coming from four different groups, let’s say University departments, and some of them are friends with each other across groups since they usually dine at the university canteen.</p>
 <p>We want to know more, don’t we? Let’s take a look at the centrality chart!</p>
 <div class="tutorial-exercise" data-label="UKFcentrality" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>SNA4DS::centralityChart(UKF)</code></pre>
@@ -513,7 +513,7 @@ legend(&#39;bottomleft&#39;, fill = 1:4,
 </div>
 <p>How do you interpret this result?</p>
 <p>Which other exploratory analysis do you think you should run considering what you already know about this network?</p>
-<p>After we have a clear idea of what we are dealing with it (reading relevant literature on friendship networks) is time to ask ourselves a research question and to formulate some hypotheses.</p>
+<p>After we have a clear idea of what we are dealing with (also reading relevant literature on friendship networks), it is time to ask ourselves a research question and to formulate some hypotheses.</p>
 <p>Q: What does characterize this friendship network?</p>
 <p>H1: Friendship relationships are reciprocal</p>
 <p>H2: There are groups of friends in this network</p>
@@ -528,8 +528,8 @@ UKFit.1 &lt;- ergm::ergm(UKFN ~ edges + cycle(2))
 summary(UKFit.1)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>And we were right! It seems that there is something interesting here. Do you want to try to run it again using <code>mutual</code> instead?</p>
-<p>Let’s move on adding one or more term to test whether there are groups of friends in the network. How many friends do we expect to find? let’s try with <code>triangles</code> and take into account that this model might take a while.</p>
+<p>And we were right! It seems that something is interesting here. Do you want to try to run it again using <code>mutual</code> instead?</p>
+<p>Let’s add one or more terms to test whether there are groups of friends in the network. How many friends do we expect to find? Let’s try with <code>triangles</code> and take into account that this model might take a while.</p>
 <div class="tutorial-exercise" data-label="Model2" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>UKFN &lt;- intergraph::asNetwork(UKF)
 
@@ -538,8 +538,8 @@ UKFit.2 &lt;- ergm::ergm(UKFN ~ edges + cycle(2) + triangle )
 summary(UKFit.2)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>Ouch, we used <code>tringles</code>, but do you remember that this model has convergence issues? In fact, it did not converge</p>
-<p>Let’s focus on our third hypothesis. We can do that checking for homophily considering the group a nodal attribute. We want to check on the probability of having homophilic effects in each group, hence we should check for differential homophily.</p>
+<p>Ouch, we used <code>tringles</code>, but do you remember that this model has convergence issues? In fact, it did not converge.</p>
+<p>Let’s focus on our third hypothesis. We can do that by checking for homophily, considering the group a nodal attribute. We want to check on the probability of having homophilic effects in each group. Hence we should check for differential homophily.</p>
 <div class="tutorial-exercise" data-label="Model3" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>UKFN &lt;- intergraph::asNetwork(UKF)
 
@@ -548,8 +548,8 @@ UKFit.3 &lt;- ergm::ergm(UKFN ~ edges + cycle(2) + nodematch(&#39;Group&#39;, di
 summary(UKFit.3)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>It seems we were right in a certain way, but group four has a odd result! We should have checked the model descriptive statics before! Shame on us! ;) Why don’t you do it now?</p>
-<p>Ok Let’s wrap up what we found out and what we know so far. Can we complete the model below? Hint: what do you use in place of <code>triangles</code> to improve convergence?</p>
+<p>It seems we were right in a certain way, but group four has an odd result! We should have checked the model descriptive statics before! Shame on us! ;) Why don’t you do it now?</p>
+<p>Ok, Let’s wrap up what we found out and what we know so far. Can we complete the model below? Hint: what do you use in place of <code>triangles</code> to improve convergence?</p>
 <div class="tutorial-exercise" data-label="grade_model4" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>UKFN &lt;- intergraph::asNetwork(UKF)
 UKFit.4 &lt;- ergm::ergm(UKFN ~ edges + 
@@ -581,7 +581,7 @@ plot(ergm::gof(UKFit))</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
 <p>What is the MCMC diagnostics telling you? Is your model good? Shall you spend some more time changing terms to improve the fit?</p>
-<p>If and only if your MCMC diagnostic is good enough you can move on to the goodness of fit</p>
+<p>If, and only if, your MCMC diagnostic is good enough, you can move on to the goodness of fit.</p>
 <div class="tutorial-exercise" data-label="UKFBestModelgof" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>UKFN &lt;- intergraph::asNetwork(UKF)
 UKFit &lt;- ergm::ergm(UKFN ~ edges + mutual)
@@ -590,7 +590,7 @@ plot(ergm::gof(UKFit))</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
 <p>What is the <code>gof</code> telling you? Is the model good?</p>
-<p>If it’s not you have to go back and try to specify different terms. If, and only if, it’s good enough you can plot results again and comment on them!</p>
+<p>If it’s not, you have to go back and try to specify different terms. If, and only if, it’s good enough you can plot results again and comment on them!</p>
 Again, copy and paste your best model here below and comment on the coefficients, in the way we did it in the first ERGM tutorial
 <div class="tutorial-exercise" data-label="UKFBestModelres" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>UKFN &lt;- intergraph::asNetwork(UKF)
@@ -603,7 +603,7 @@ summary(UKFit)</code></pre>
 </div>
 <div id="section-conclusion" class="section level2">
 <h2>Conclusion</h2>
-It’s great that you got to the end of this tutorial. It wasn’t an easy journey and you should pat yourself in the back! Now you should have got enough training to allow you to go out and run your first ‘real’ exponential random graph model! Good luck and keep up the good work! 
+It’s great that you got to the end of this tutorial. It wasn’t an easy journey and you should pat yourself on the back! Now you should have got enough training to be able to go out and run your first ‘real’ exponential random graph model! Good luck and keep up the good work! 
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)
 library(gradethis)
@@ -1150,7 +1150,7 @@ output$`tutorial-exercise-non_convergence-output` <- renderUI({
 learnr:::store_exercise_cache("non_convergence", list(setup = "magnolia <- SNA4DS:::magnolia", chunks = list(list(
     label = "load_magnolia", code = "magnolia <- SNA4DS:::magnolia", 
     opts = list(label = "\"load_magnolia\"", include = "FALSE"), 
-    engine = "r"), list(label = "non_convergence", code = "fit2 <- ergm::ergm(magnolia ~ edges + triangle)", 
+    engine = "r"), list(label = "non_convergence", code = "# fit2 <- ergm::ergm(magnolia ~ edges + triangle)", 
     opts = list(label = "\"non_convergence\"", exercise = "TRUE", 
         exercise.setup = "\"load_magnolia\""), engine = "r")), 
     code_check = NULL, error_check = NULL, check = NULL, solution = NULL, 
@@ -1172,7 +1172,7 @@ learnr:::store_exercise_cache("non_convergence", list(setup = "magnolia <- SNA4D
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "non_convergence", exercise = TRUE, exercise.setup = "load_magnolia", 
-        code = "fit2 <- ergm::ergm(magnolia ~ edges + triangle)", 
+        code = "# fit2 <- ergm::ergm(magnolia ~ edges + triangle)", 
         out.width.px = 624, out.height.px = 384, params.src = "non_convergence, exercise = TRUE, exercise.setup = \"load_magnolia\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
@@ -2072,7 +2072,7 @@ learnr:::store_exercise_cache("UKFBestModelres", list(setup = "UKF <- SNA4DS:::U
 <!--/html_preserve-->
 <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="execution_dependencies">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]}},"value":[{"type":"character","attributes":{},"value":["backports","base","compiler","curl","datasets","digest","evaluate","fastmap","gradethis","graphics","grDevices","htmltools","htmlwidgets","httpuv","jsonlite","knitr","later","learnr","magrittr","markdown","methods","mime","promises","R6","Rcpp","rlang","rmarkdown","rprojroot","shiny","stats","stringi","stringr","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.1.10","4.0.2","4.0.2","4.3","4.0.2","0.6.27","0.14","1.0.1","0.1.0.9004","4.0.2","4.0.2","0.5.0","1.5.2","1.5.4","1.7.1","1.30","1.1.0.1","0.10.1.9006","1.5","1.1","4.0.2","0.9","1.1.1","2.5.0","1.0.5","0.4.8","2.5","1.3-2","1.5.0","4.0.2","1.5.3","1.4.0","4.0.2","4.0.2","2.3.0","0.19","1.8-4","2.2.1"]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]}},"value":[{"type":"character","attributes":{},"value":["backports","base","compiler","curl","datasets","digest","evaluate","fastmap","gradethis","graphics","grDevices","htmltools","htmlwidgets","httpuv","jsonlite","knitr","later","learnr","magrittr","markdown","methods","mime","promises","R6","Rcpp","rlang","rmarkdown","rprojroot","shiny","stats","stringi","stringr","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.2.0","4.0.2","4.0.2","4.3","4.0.2","0.6.27","0.14","1.0.1","0.1.0.9004","4.0.2","4.0.2","0.5.0","1.5.2","1.5.4","1.7.1","1.30","1.1.0.1","0.10.1.9006","1.5","1.1","4.0.2","0.9","1.1.1","2.5.0","1.0.5","0.4.8","2.5","1.3-2","1.5.0","4.0.2","1.5.3","1.4.0","4.0.2","4.0.2","2.3.0","0.19","1.8-4","2.2.1"]}]}]}
 </script>
 <!--/html_preserve-->
 </div>
@@ -2086,7 +2086,7 @@ learnr:::store_exercise_cache("UKFBestModelres", list(setup = "UKF <- SNA4DS:::U
 
 <!-- begin doc-metadata -->
 <div id="doc-metadata">
-<h2 class="title toc-ignore" style="display:none;">Lab 07 - Stats III - ERGMs - Part two</h2>
+<h2 class="title toc-ignore" style="display:none;">Lab 08 - Stats III - ERGMs - Part two</h2>
 </div>
 <!-- end doc-metadata -->
 
