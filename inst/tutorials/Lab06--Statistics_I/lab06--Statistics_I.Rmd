@@ -222,15 +222,19 @@ igraph::centralization.betweenness(flomarriage, directed = FALSE)
 ```{r remedy007-check}
 gradethis::grade_result(
   pass_if(
-      function(x) {
+    function(x) {
+      if (length(x) > 0) {
         if (is.list(x)) {
           x$centralization > .38 & x$centralization < .385
         } else {
           x > .38 & x < .385
         }
-      },
-  "That is the correct betweenness centralization result.")
-  )
+      } else {
+        # do nothing
+      }
+    },
+    "That is the correct betweenness centralization result.")
+)
 ```
 
 OK, you can calculate additional measures yourself. Also, you can work on the 
@@ -657,7 +661,7 @@ Below, perform the CUG test on the `flomar_network` network, for
 betweenness centralization.
 
 ```{r betwcent, exercise = TRUE}
-...
+
 ```
 
 ```{r betwcent-solution}
@@ -675,7 +679,7 @@ gradethis::grade_code(correct = "Excellent work!")
 Nah, not statistically significant. How about the business network?
 
 ```{r betwcentbus, exercise = TRUE}
-...
+
 ```
 
 ```{r betwcentbus-solution}
