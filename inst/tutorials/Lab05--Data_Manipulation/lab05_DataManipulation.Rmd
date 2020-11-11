@@ -352,7 +352,7 @@ Can you load the data and print it assuming that you name your output 'ActorsNet
 
 ```{r gradeFakeNetActors_makegraph, exercise = TRUE, exercise.setup = "load_FakeNetActors"}
 
-ActorsNet 
+
   
 ```
 
@@ -419,15 +419,12 @@ extracting the edgelist and loading the graph as an edge list,
 and if I also tell you that you can use these two functions
 `igraph::get.edgelist`
 `igraph::graph_from_edgelist`
-Would you be able to do it?
+Would you be able to do it? Call the variable 'ActorEdL' and 'EdgeListGraph'
 
 
 ```{r extractEdgeList, exercise = TRUE, exercise.setup = "load_FakeNetActors"}
 ActorsNet <- igraph::graph_from_data_frame(d = edgelist, vertices = nodelist, directed = T)
 
-ActorEdL <- 
-
-EdgeListGraph <- 
 
 
 ```
@@ -543,12 +540,12 @@ Try something simple such as 'the'.
 
 You can also decide to subset the Apollo13 data frame according to 
 smaller time windows. Why don't you try to subset only the time stamps 
-that start with `2.32`?
+that start with `2.32`? Assign the result to 'TimeWindow'
 
 
 ```{r apollo13_time, exercise = TRUE, exercise.setup = "load_apollo13"}
 
-TimeWindow <- 
+
 
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Lab 06: Stats I"
+title: "Lab 06 - Stats I"
 output: 
   learnr::tutorial:
     fig_caption: no
