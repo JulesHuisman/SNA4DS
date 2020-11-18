@@ -323,7 +323,7 @@ Even if this algorithm handles directed networks, the modularity is computed wit
 igraph::modularity(ng)
 ```
 
-This algorithm can be plotted as a dendrogram
+The clusters can be plotted as a dendrogram
 ```{r}
 igraph::plot_dendrogram(ng)
 ```
@@ -332,7 +332,7 @@ igraph::plot_dendrogram(ng)
 
 ### Louvain Algorithm 
 
-The function `cluster_louvain` implements the multi-level modularity optimization algorithm for finding community structure, see references below. It is based on the modularity measure and a hierarchial approach. 
+The function `cluster_louvain` implements the multi-level modularity optimization algorithm for finding community structure. It is based on the modularity measure and a hierarchial approach. 
 
 It can be used only on undirected graphs. 
 
@@ -400,7 +400,7 @@ gplot(net,
 
 ## Basic plotting in `ggraph`
 
-The `ggraph` function alone does not plot any data. Nodes, edges and their attributes need to be specified layer after layer. It works both with networks of class `network` and `igraph`. It can be fully customized using the `ggplot2` toolkit. 
+The `ggraph` function alone does not plot any data. Nodes, edges, and their attributes need to be specified layer after layer. It works both with networks of class `network` and `igraph`. It can be fully customized using the `ggplot2` toolkit. 
 
 ```{r}
 ggraph::ggraph(net) +
@@ -659,17 +659,14 @@ The basic function call is as follows:
 fit <- ergm::ergm(formula)
 ```
 
-The formula require the specification of a network dependent variable, 
+The formula requires the specification of a network dependent variable, 
 and a list of terms. 
 
-Terms can be classified in three main ways
+Terms can be classified in three main ways.
 
-* Dyadic independent and dyadic dependent terms: We encounter the first one when
-the probability of edge formation is related to nodes properties or attributes; 
-we encounter the second when the probability of edges formation depends on other existing edges. 
+* Dyadic independent and dyadic dependent terms: We encounter the first one when the probability of edge formation is related to nodes properties or attributes;  we encounter the second when the probability of edge formation depends on other existing edges. 
 
-* Structural and nodal attributes terms: The first kind provide tools to understand
-the structure of the network per se; the second kind provide tools to explain how nodal attributes might have influenced the formation of edges. 
+* Structural and nodal attributes terms: The first kind provides tools to understand the structure of the network per se; the second kind provides tools to explain how nodal attributes might have influenced the formation of edges. 
 
 * Terms for directed networks and term for undirected networks
 
@@ -677,55 +674,55 @@ the structure of the network per se; the second kind provide tools to explain ho
 
 ### Most popular structural - dyadic independent terms
 
-* `edges` Probability that the observed edges are non-random. Introduces one statistics to the model. Directed and Undirected networks
+* `edges` Probability that the observed edges are non-random. Introduces one statistic to the model. Directed and Undirected networks
 
-* `density` Probability that the observed density is non random. Introduces one statistics to the model. Directed and Undirected networks
+* `density` Probability that the observed density is non-random. Introduces one statistic to the model. Directed and Undirected networks
 
-* `sender` Probability that a specific node, compared to a baseline one is sending out non random edges (different from the behavior of the same node in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
+* `sender` Probability that a specific node, compared to a baseline one, is sending out non-random edges (different from the same node's behavior in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
 
-* `receiver` Probability that a specific node, compared to a baseline one is receiving non random edges (different from the behavior of the same node in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
+* `receiver` Probability that a specific node, compared to a baseline one, is receiving non-random edges (different from the same node's behavior in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
 
 ### Most popular structural - dyadic dependent terms
 
-* `mutual` Probability that the observed reciprocated ties are non random. Introduces one statistics to the model. Directed networks only.
+* `mutual` Probability that the observed reciprocated ties are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `asymmetric` Probability that the observed non reciprocated ties are non random. Introduces one statistics to the model. Directed networks only.
+* `asymmetric` Probability that the observed non reciprocated ties are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `triangles` Probability that the observed triangles are non random. Introduces one statistics to the model. Directed and Undirected networks. In the case of directed network measures “transitive triple” and “cyclic triple”, so triangle equals to `ttriple` plus `ctriple`. 
+* `triangles` Probability that the observed triangles are non-random. Introduces one statistic to the model. Directed and Undirected networks. In the case of directed network measures “transitive triple” and “cyclic triple”, so triangle equals to `ttriple` plus `ctriple`. 
 
-* `gwesp(decay=0.25, fixed=FALSE)` Geometrically weighted edgewise shared partner distribution. It can be used in place of triangles to improve convergence. decay parameter, which should be non-negative. The value supplied for this parameter may be fixed (if `fixed=TRUE`), or it may be used instead as the starting value for the estimation of decay in a curved exponential family model (when `fixed=FALSE`, the default) (see Hunter and Handcock, 2006). This term can be used with directed and undirected networks. For directed networks, only outgoing two-path (`“OTP”`) shared partners are counted.  
+* `gwesp(decay=0.25, fixed=FALSE)` Geometrically weighted edgewise shared partner distribution. It can be used in place of triangles to improve convergence. The decay parameter should be non-negative. The value supplied for this parameter may be fixed (if `fixed=TRUE`), or it may be used instead as the starting value for the estimation of decay in a curved exponential family model (when `fixed=FALSE`, the default) (see Hunter and Handcock, 2006). This term can be used with directed and undirected networks. For directed networks, only outgoing two-path (`“OTP”`) shared partners are counted.  
 
 * `dgwesp(decay=0.25, fixed=FALSE, type= 'RTP')` Geometrically weighted edgewise shared partner distribution. It also counts other types of shared partners not covered by `gwesp`: Outgoing Two-path (`“OTP”`), Incoming Two-path (`“ITP”`), Reciprocated Two-path (`“RTP”`), Outgoing Shared Partner (`“OSP”`), Incoming Shared Partner (`“ISP”`).
 
-* `triadcensus` Probability that the sixteen categories in the categorization of Davis and Leinhardt (1972) observed in the network and are non random. Introduces 16 statistics to the model. Directed networks only.
+* `triadcensus` Probability that the sixteen categories in the categorization of Davis and Leinhardt (1972) observed in the network and are not generated at random. Introduces 16 statistics to the model. Directed networks only.
 
-* `balance` Probability that type 102 or 300 in the categorization of Davis and Leinhardt (1972) -balanced triads- observed in the network are  non random. Introduces one statistics to the model. Directed networks only.
+* `balance` Probability that type 102 or 300 in the categorization of Davis and Leinhardt (1972) -balanced triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `transitive` Probability that type 120D, 030T, 120U, or 300 in the categorization of Davis and Leinhardt (1972) -transitive triads- observed in the network are  non random. Introduces one statistics to the model. Directed networks only.
+* `transitive` Probability that type 120D, 030T, 120U, or 300 in the categorization of Davis and Leinhardt (1972) -transitive triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `intransitive` Probability that type 111D, 201, 111U, 021C, or 030C in the categorization of Davis and Leinhardt (1972) -intransitive triads- observed in the network are  non random. Introduces one statistics to the model. Directed networks only.
+* `intransitive` Probability that type 111D, 201, 111U, 021C, or 030C in the categorization of Davis and Leinhardt (1972) -intransitive triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `degree(n)`, `idegree(n)`, `odegree(n)` Probability that nodes with a specified degree are non random. Introduces one statistics to the model. Directed and Undirected networks, with possibility of `in` and `out` specifications for Directed networks.
+* `degree(n)`, `idegree(n)`, `odegree(n)` Probability that nodes with a specified degree are non random. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks.
 
-* `kstar(n)`, `istar(n)`, `ostar(n)` Probability that stars connecting the specified number of nodes are non random. Introduces one statistics to the model. Directed and Undirected networks, with possibility of `in` and `out` specifications for Directed networks.
+* `kstar(n)`, `istar(n)`, `ostar(n)` Probability that stars connecting the specified number of nodes are non random. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks.
 
-* `cycle(n)` Probability that cycles with a specified number of nodes are non random. Introduces one statistics to the model. Directed and Undirected networks.
-
+* `cycle(n)` Probability that cycles with a specified number of nodes are non-random. Introduces one statistic to the model. Directed and Undirected networks.
 
 ### Most popular nodal covariate terms
 
-* `nodecov`, `nodeicov`, `nodeocov` Numeric or Integer attributes. Probability that the attribute values influence edges formation (same as in a logit model) so that it is non-random under that condition. Introduces one statistics to the model. Directed and Undirected networks, with possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
+* `nodecov`, `nodeicov`, `nodeocov` Numeric or Integer attributes. Probability that the attribute values influence edge formation (same as in a logit model) so that it is non-random under that condition. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
 
-* `nodefactor`, `nodeifactor`, `nodeofactor` Categorical attributes. Probability that nodes characterized by a specific category form more ties so that tie formation is non random under that condition. Introduces to the model a number of statistics equal to the number of categories minus one. Directed and Undirected networks, with possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
+* `nodefactor`, `nodeifactor`, `nodeofactor` Categorical attributes. Probability that nodes characterized by a specific category form more ties, so that tie formation is non-random under that condition. Introduces to the model a number of statistics equal to the number of categories minus one. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
 
-* `absdiff` Numeric or Integer attributes. Probability that common features measured in terms of distance similarity influence edge formation so that edge formation is non random under that condition. Introduces one statistics to the model. Directed and Undirected networks. Dyadic independent.
+* `absdiff` Numeric or Integer attributes. Probability that common features measured in terms of distance similarity influence edge formation, so that edge formation is non-random under that condition. Introduces one statistic to the model. Directed and Undirected networks. Dyadic independent.
 
-* `nodematch` Categorical attributes. Probability that nodes characterized by a specific category belonging to a certain attribute form ties with other node characterized by the same category, so that tie formation under that condition is non random. Introduces to the model as many statistics as the number of categories. Directed and Undirected networks. Dyadic independent.
+* `nodematch` Categorical attributes. Probability that nodes characterized by a specific category belonging to a certain attribute form ties with other node characterized by the same category, so that tie formation under that condition is non-random. Introduces to the model as many statistics as the number of categories. Directed and Undirected networks. Dyadic independent.
 
-* `edgecov` Matrix attribute. Probability that the ties formed in another context influence tie formation in the context of the current model so that tie formation under that circustances is non random. Introduces one statistics to the model. Directed and Undirected networks. Dyadic dependent.
+* `edgecov` Matrix attribute. Probability that the ties formed in another context influence tie formation in the context of the current model, so that tie formation under that circumstances is non-random. Introduces one statistic to the model. Directed and Undirected networks. Dyadic dependent.
 
-* `nodemix` Categorical attributes. Probability that nodes denoted by different categories of an attribute form ties so that tie formation under these circumstances in non random. Introduces as many statistics as the number of combinations between each two categories. Directed and Undirected networks. Dyadic independent.
+* `nodemix` Categorical attributes. Probability that nodes denoted by different categories of an attribute form ties, so that tie formation under these circumstances is non-random. Introduces as many statistics as the number of combinations between every two categories. Directed and Undirected networks. Dyadic independent.
                           
+
 
 ### Terms specifications
 
@@ -758,16 +755,15 @@ You have four arguments to help you finding terms:
 
 ### Checking your data before the analysis
 
-Before you run any Exponential random graph model you must know your data by heart.
+Before you run any exponential random graph model you must know your data by heart.
 Not only using descriptive network statistics, but also checking model specifications, 
 before hitting the run button. 
 
-* Check attribute (numeric, integer, categorical, ordinal)
+* Manually check the attribute(s) (numeric, integer, categorical, ordinal)
 
 ```{r}
 table(network::get.vertex.attribute(Net, 'sex'))
 ```
-
 
 
 * check mixing of categorical attributes
@@ -780,7 +776,7 @@ network::mixingmatrix(Net, "sex")
 summary(Net ~ edges + nodefactor('sex'))
 ```
 
-This last one provides the number of cases under the assumptions of each term.
+This last one provides the number of observed cases under the assumptions of each term.
 
 
 ### Reading results
