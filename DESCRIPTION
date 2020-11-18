@@ -1,7 +1,7 @@
 Package: SNA4DS
 Type: Package
 Title: Social Network Analysis for Data Science
-Version: 0.8.2
+Version: 0.9.0
 Authors@R:
 	c(person(given = "Roger",
 					family = "Leenders",
@@ -36,6 +36,7 @@ Imports:
 	magrittr,
 	ndtv,
 	network,
+	networkDynamic,
 	networkD3,
 	papaja,
 	Rdpack,
@@ -47,6 +48,7 @@ Imports:
 	stats,
 	texreg,
 	tidygraph,
+	tsna,
 	usethis,
 	utils,
 Remotes:
