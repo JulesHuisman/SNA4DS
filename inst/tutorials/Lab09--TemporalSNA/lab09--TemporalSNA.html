@@ -137,7 +137,7 @@ $(document).ready(function () {
 <p>The example we will use throughout this tutorial is based on data gathered by <a href="https://ed.stanford.edu/faculty/mcfarland">Daniel McFarland</a>, a really nice and really smart colleague with whom we have an active research collaboration.</p>
 <p>The dataset we use here is of the interactions between teachers and students in a classroom for a single 45-minute lesson. McFarland actually coded many classes and many lessons, and we are going to focus on one such network.</p>
 <p>In this dataset, a classroom had 18 pupils and two instructors (ie. the regular instructor and a guest instructor). Hence, there are 20 vertices in the network. Several attributes were coded of the vertices: gender and role, these are constant. Further, for the edges the type of interaction (“task” and “sociable”) is coded and the weight of the interaction (somewhat arbitrarily assessed by the coder).</p>
-<p>THe researchers wanted to understand the interaction dynamics in this classroom and coded the network of conversation throughout the lesson. Each conversation has a “sender” (ie. the person talking) and a “receiver” (ie. the person(s) talked to).</p>
+<p>The researchers wanted to understand the interaction dynamics in this classroom and coded the network of conversation throughout the lesson. Each conversation has a “sender” (ie. the person talking) and a “receiver” (ie. the person(s) talked to).</p>
 <p>The class is an economics class composed of 11th and 12th graders. On this day, economics has two teachers. The first is the usual teacher and the second is a businessman who donates his time a couple days a month to assist the class with their lesson on stock investments. After a minute of undefined class time, the two teachers prescribe collaborative group work and assist students in conducting it. The students are assigned groups within which they are to study the stock market and make mock investments they can follow over time. The groups compete with each other over the course of the semester to see who can make the greatest profit.</p>
 <p>Anyway, let’s look at the data. It is available for you under the name <em>classroom</em>.</p>
 <p>If we would think this was a regular <code>network</code> object, we would look at it like this:</p>
@@ -265,15 +265,13 @@ sna::components(net_3)</code></pre>
 <p>This collapses the network into intervals. At each step of 15 (<code>time.interval</code>) it extracts data of length 15 (<code>aggregate.dur</code>). So, the function creates the subnetworks from time [0, 15), [15, 30), [30, 45), [45, 49) and then applies the <code>sna</code> function <code>components</code> to each subnetwork.</p>
 <p>You get the same results as above (but now you have four intervals instead of three before).</p>
 <p>This creates interesting ways to analyze the evolution of the network. For example, you can compute how the density of the network develops. Below, compute the density of the network for blocks of 5 minutes and plot how it develops.</p>
-<p>The <code>tsna</code> package implements several measures</p>
-<p>plot(tsna::tSnaStats(classroom, snafun = “gden”, time.interval = 5, aggregate.dur = 5))</p>
 <div class="tutorial-exercise" data-label="remedy003" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":true,"caption":"R code"}</script>
 </div>
 <div class="tutorial-exercise-support" data-label="remedy003-solution" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>tsna::tSnaStats(classroom, snafun = &quot;gden&quot;, time.interval = 5, aggregate.dur = 5)</code></pre>
 </div>
-<p>Let’s calculate betweenness centralization at times 0, 5, 10, et cetera, each time over a period of length 5 minutes. Then plot the result (adapt the code below to do it).</p>
+<p>The <code>tsna</code> package implements several measures. Let’s calculate betweenness centralization at times 0, 5, 10, et cetera, each time over a period of length 5 minutes. Then plot the result (adapt the code below to do it).</p>
 <div class="tutorial-exercise" data-label="betw" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>betws &lt;- tsna::tSnaStats(classroom, snafun = ..., 
         time.interval = 5, aggregate.dur = 5,
@@ -318,9 +316,9 @@ plot(edgeDuration, type = &quot;l&quot;)</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
 <p>Ah, that explains it!<br> (also: see how you can combine functions from different packages together)</p>
-<div id="section-number-of-active-edges-ovr-time" class="section level3">
-<h3>Number of active edges ovr time</h3>
-<p>Recall that this is a network of how a classroom session unfolds in a economics lesson. There will be times when there is a lot of talking (when students work in subgroups on assignments and all discuss the assigmnent) and times when talking activity is more focused (such as when an instructor is talking to the group or a student is presenting a solution).</p>
+<div id="section-number-of-active-edges-over-time" class="section level3">
+<h3>Number of active edges over time</h3>
+<p>Recall that this is a network of how a classroom session unfolds in a economics lesson. There will be times when there is a lot of talking (when students work in subgroups on assignments and all discuss the assignment) and times when talking activity is more focused (such as when an instructor is talking to the group or a student is presenting a solution).</p>
 <p>One way of looking into some of the dynamics is to consider how many edges are active at any given time. Actually, since the durations are all 0 here and the lesson is likely to progress in blocks of time, let’s break up the lesson into a series of brief segments and count the number of edges per time segment.</p>
 <p>The <code>tsna</code> has a function to do this, but I really don’t like its implementation for the data we have here. So, let us use a function we programmed ourselves and included in the <code>SNA4DS</code> package for you.</p>
 <div class="tutorial-exercise" data-label="count_edges_in_interval" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
@@ -389,8 +387,8 @@ tsna::plotPaths(
 <pre class="r"><code>SNA4DS::plot_network_slices(classroom, number = 4, 
                     start = 0, end = 45,
                     digits = 3)</code></pre>
-<p><img src="lab09--TemporalSNA_files/figure-html/sliced_plots.png" width="400" style="display: block; margin: auto;" /></p>
-<p>Nice, right?<br> Well, the technology underneath these tutorials makes the plots way too small, so that is why this R chunk was not interactive for you. But if you were to run this from the console, this is the plot you would get.</p>
+<p><img src="lab09--TemporalSNA_files/figure-html/sliced_plots.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Nice, right?<br> Well, the technology underneath these tutorials makes the plots way too small, so that is why this R chunk was not interactive for you. But if you were to run this from the console, the plot should be nicely sized.</p>
 <div id="section-ndtv" class="section level3">
 <h3>ndtv</h3>
 <p>You can also make dynamic visualizations, using the <code>ndtv</code> package. This package offers a range of visualizations for this type of of network data. Unfortunately, the way it has been designed requires you to load the package into your session, using <code>library(ndtv)</code>. As you will recall from the beginning of the course, we always strongly advise you against this practice. However, you will get all kinds of awkward errors if you do not. It <em>is</em> possible to “hack” the package so you do not have to load it, but that is beyond this course (and should not be necessary in the first place).</p>
@@ -417,14 +415,14 @@ ndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,
                      d3.options = list(animationDuration = 1000,
                                        playControls = TRUE,
                                        durationControl = TRUE),
-                     launchBrowser = TRUE
+                     output.mode = &#39;htmlWidget&#39;
                      )</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-<p>There are many arguments you can use to tweak the animation, and we can’t possibly discuss all of them here. If the animation moves too fast for you, set <code>animationDuration</code> to a higher value. Or click on the three horizontal lines in the upper-right of the browser window, next to your animation, and change the duration there. Note that these lines are black and so is your background, so you may not actually be able to see them. In that case, there are two ways to find them:</p>
+<p>There are many arguments you can use to tweak the animation, and we can’t possibly discuss all of them here. If the animation moves too fast for you, set <code>animationDuration</code> to a higher value. Or click on the three horizontal lines in the upper-right of the animation window, next to your animation, and change the duration there. Note that these lines are black and so is your background, so you may not actually be able to see them. In that case, there are two ways to find them:</p>
 <ul>
 <li>change the background to white, by removing the line <code>bg = "#111111"</code></li>
-<li>search with your mouse in the upper right corner of your browser window, until you see the shape of the cursor change.</li>
+<li>search with your mouse in the upper right corner of the animation window, until you see the shape of your cursor change.</li>
 </ul>
 <p>You can also output to an html widget or even a movie file. Here, we will not focus on these, check the help file (or shoot us an email) if you need help customizing the visualization. <br> And, of course, you can play with the settings here as well, to get some practice.</p>
 <p>We will show you two more versions of this plot, so you get some idea of what you can do. First, let’s color the vertices according to whether the vertex is a pupil (“blue”) or an instructor (“red”). And we will also size the vertices according to their degree. Here is one way of doing this:</p>
@@ -449,7 +447,7 @@ ndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,
                      d3.options = list(animationDuration = 1000,
                                        playControls = TRUE,
                                        durationControl = TRUE),
-                     launchBrowser = TRUE
+                     output.mode = &#39;htmlWidget&#39;
                      )</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
@@ -484,18 +482,17 @@ ndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,
                      d3.options = list(animationDuration = 1000,
                                        playControls = TRUE,
                                        durationControl = TRUE),
-                     output.mode = &#39;htmlWidget&#39;,
-                     launchBrowser = FALSE
+                     output.mode = &#39;htmlWidget&#39;
 )</code></pre>
 <script type="application/json" data-ui-opts="1">{"engine":"r","has_checker":false,"caption":"R code"}</script>
 </div>
-Feel free to play around with the settings and adjust the plot further to your liking. 
+<br><br> Feel free to play around with the settings and adjust the plot further to your liking. If you want to open the animation in a separate browser window, then remove the line <code>output.mode = 'htmlWidget'</code>. 
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)
 library(gradethis)
 library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = NA)
 
 library(networkDynamic, quietly = TRUE)
 library(ndtv, quietly = TRUE)
@@ -523,8 +520,9 @@ session$onSessionEnded(function() {
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_setup_chunk("__setup__", c("library(learnr)", "library(gradethis)", "library(magrittr)", 
 "tutorial_options(exercise.checker = gradethis::grade_learnr)", 
-"knitr::opts_chunk$set(echo = TRUE)", "", "library(networkDynamic, quietly = TRUE)", 
-"library(ndtv, quietly = TRUE)", "data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
+"knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = NA)", 
+"", "library(networkDynamic, quietly = TRUE)", "library(ndtv, quietly = TRUE)", 
+"data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
 "classroom <- cls33_10_16_96", "rm(cls33_10_16_96)", "", "par(\"mar\" = c(0, 0, 0, 0))"
 ), overwrite = FALSE)
 </script>
@@ -532,8 +530,9 @@ learnr:::store_exercise_setup_chunk("__setup__", c("library(learnr)", "library(g
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_setup_chunk("__setup__", c("library(learnr)", "library(gradethis)", "library(magrittr)", 
 "tutorial_options(exercise.checker = gradethis::grade_learnr)", 
-"knitr::opts_chunk$set(echo = TRUE)", "", "library(networkDynamic, quietly = TRUE)", 
-"library(ndtv, quietly = TRUE)", "data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
+"knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = NA)", 
+"", "library(networkDynamic, quietly = TRUE)", "library(ndtv, quietly = TRUE)", 
+"data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
 "classroom <- cls33_10_16_96", "rm(cls33_10_16_96)", "", "par(\"mar\" = c(0, 0, 0, 0))"
 ), overwrite = FALSE)
 </script>
@@ -541,8 +540,9 @@ learnr:::store_exercise_setup_chunk("__setup__", c("library(learnr)", "library(g
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_setup_chunk("__setup__", c("library(learnr)", "library(gradethis)", "library(magrittr)", 
 "tutorial_options(exercise.checker = gradethis::grade_learnr)", 
-"knitr::opts_chunk$set(echo = TRUE)", "", "library(networkDynamic, quietly = TRUE)", 
-"library(ndtv, quietly = TRUE)", "data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
+"knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = NA)", 
+"", "library(networkDynamic, quietly = TRUE)", "library(ndtv, quietly = TRUE)", 
+"data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
 "classroom <- cls33_10_16_96", "rm(cls33_10_16_96)", "", "par(\"mar\" = c(0, 0, 0, 0))"
 ), overwrite = FALSE)
 </script>
@@ -550,8 +550,9 @@ learnr:::store_exercise_setup_chunk("__setup__", c("library(learnr)", "library(g
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::store_exercise_setup_chunk("__setup__", c("library(learnr)", "library(gradethis)", "library(magrittr)", 
 "tutorial_options(exercise.checker = gradethis::grade_learnr)", 
-"knitr::opts_chunk$set(echo = TRUE)", "", "library(networkDynamic, quietly = TRUE)", 
-"library(ndtv, quietly = TRUE)", "data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
+"knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = NA)", 
+"", "library(networkDynamic, quietly = TRUE)", "library(ndtv, quietly = TRUE)", 
+"data(\"McFarland_cls33_10_16_96\", package = \"networkDynamic\")", 
 "classroom <- cls33_10_16_96", "rm(cls33_10_16_96)", "", "par(\"mar\" = c(0, 0, 0, 0))"
 ), overwrite = FALSE)
 </script>
@@ -580,8 +581,8 @@ learnr:::store_exercise_cache("look", list(setup = NULL, chunks = list(list(labe
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "look", exercise = TRUE, code = "network::print.network(classroom)", 
@@ -614,7 +615,7 @@ learnr:::store_exercise_cache("plot_static", list(setup = NULL, chunks = list(li
     fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, fig.pos = "", 
     out.width = 624, out.height = NULL, out.extra = NULL, fig.retina = 2, 
     external = TRUE, sanitize = FALSE, interval = 1, aniopts = "controls,loop", 
-    warning = TRUE, error = FALSE, message = TRUE, render = NULL, 
+    warning = FALSE, error = FALSE, message = FALSE, render = NULL, 
     ref.label = NULL, child = NULL, engine = "r", split = FALSE, 
     include = TRUE, purl = TRUE, max.print = 1000, tutorial = TRUE, 
     exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
@@ -647,8 +648,8 @@ learnr:::store_exercise_cache("basics", list(setup = NULL, chunks = list(list(la
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "basics", exercise = TRUE, code = c("sna::gden(classroom)", 
@@ -681,8 +682,8 @@ learnr:::store_exercise_cache("basics2", list(setup = NULL, chunks = list(list(l
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "basics2", exercise = TRUE, code = c("network::list.edge.attributes(classroom)", 
@@ -715,8 +716,8 @@ learnr:::store_exercise_cache("nd1", list(setup = NULL, chunks = list(list(label
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "nd1", exercise = TRUE, code = "classroom", out.width.px = 624, 
@@ -748,8 +749,8 @@ learnr:::store_exercise_cache("asdf", list(setup = NULL, chunks = list(list(labe
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "asdf", exercise = TRUE, code = "as.data.frame(classroom)", 
@@ -781,8 +782,8 @@ learnr:::store_exercise_cache("attrs1", list(setup = NULL, chunks = list(list(la
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "attrs1", exercise = TRUE, exercise.lines = 10, 
@@ -820,8 +821,8 @@ learnr:::store_exercise_cache("extract", list(setup = NULL, chunks = list(list(l
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "extract", exercise = TRUE, code = c("net_extract <- networkDynamic::network.extract(classroom, onset = 0, terminus = 1)", 
@@ -854,8 +855,8 @@ learnr:::store_exercise_cache("collapse", list(setup = NULL, chunks = list(list(
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "collapse", exercise = TRUE, code = c("net_collapse <- networkDynamic::network.collapse(classroom, onset = 0, terminus = 1)", 
@@ -888,8 +889,8 @@ learnr:::store_exercise_cache("collapse2", list(setup = NULL, chunks = list(list
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "collapse2", exercise = TRUE, code = c("net_1 <- networkDynamic::network.collapse(classroom, onset = 0, terminus = 14.99)", 
@@ -924,8 +925,8 @@ learnr:::store_exercise_cache("sna1", list(setup = NULL, chunks = list(list(labe
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "sna1", exercise = TRUE, code = "tsna::tSnaStats(classroom, snafun = \"components\", time.interval = 15, aggregate.dur = 15)", 
@@ -959,7 +960,7 @@ learnr:::store_exercise_cache("remedy003", list(setup = NULL, chunks = list(list
     fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, fig.pos = "", 
     out.width = 624, out.height = NULL, out.extra = NULL, fig.retina = 2, 
     external = TRUE, sanitize = FALSE, interval = 1, aniopts = "controls,loop", 
-    warning = TRUE, error = FALSE, message = TRUE, render = NULL, 
+    warning = FALSE, error = FALSE, message = FALSE, render = NULL, 
     ref.label = NULL, child = NULL, engine = "r", split = FALSE, 
     include = TRUE, purl = TRUE, max.print = 1000, tutorial = TRUE, 
     exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
@@ -994,8 +995,8 @@ learnr:::store_exercise_cache("betw", list(setup = NULL, chunks = list(list(labe
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "betw", exercise = TRUE, code = c("betws <- tsna::tSnaStats(classroom, snafun = ..., ", 
@@ -1030,8 +1031,8 @@ learnr:::store_exercise_cache("edgeduration", list(setup = NULL, chunks = list(l
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "edgeduration", exercise = TRUE, code = c("edgeDuration <- tsna::edgeDuration(classroom, mode = \"counts\")", 
@@ -1065,8 +1066,8 @@ learnr:::store_exercise_cache("vertexduration", list(setup = NULL, chunks = list
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "vertexduration", exercise = TRUE, exercise.lines = 3, 
@@ -1100,8 +1101,8 @@ learnr:::store_exercise_cache("durationvertextypes", list(setup = NULL, chunks =
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "durationvertextypes", exercise = TRUE, code = c("data.frame(type = network::get.vertex.attribute(classroom, \"type\"), ", 
@@ -1135,8 +1136,8 @@ learnr:::store_exercise_cache("count_edges_in_interval", list(setup = NULL, chun
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "count_edges_in_interval", exercise = TRUE, code = c("plot(SNA4DS::count_edges_in_interval(classroom, number = 50), ", 
@@ -1170,8 +1171,8 @@ learnr:::store_exercise_cache("count_unique_edges_in_interval", list(setup = NUL
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "count_unique_edges_in_interval", exercise = TRUE, 
@@ -1207,8 +1208,8 @@ learnr:::store_exercise_cache("tpath1", list(setup = NULL, chunks = list(list(la
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "tpath1", exercise = TRUE, exercise.lines = 5, 
@@ -1240,8 +1241,8 @@ learnr:::store_exercise_cache("tpath2", list(setup = NULL, chunks = list(list(la
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "tpath2", exercise = TRUE, code = c("tsna::tPath(classroom, v = 12, direction = \"fwd\", start = 0, end = .9)$tdist", 
@@ -1274,8 +1275,8 @@ learnr:::store_exercise_cache("tpathplot", list(setup = NULL, chunks = list(list
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "tpathplot", exercise = TRUE, code = c("FwdPath <- tsna::tPath(classroom, v = 12, direction = \"fwd\", start = 0, end = .9)", 
@@ -1294,7 +1295,7 @@ output$`tutorial-exercise-compute-output` <- renderUI({
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache("compute", list(setup = NULL, chunks = list(list(label = "compute", code = "# step 0: painfully, we have to load the package into our session\nlibrary(ndtv)\n\n# step 1: compute the settings\nndtv::compute.animation(classroom, animation.mode = \"kamadakawai\",\n                        slice.par = list(start = 0, end = 45,\n                                         aggregate.dur = 1,\n                                         interval = 1, rule = \"any\"))\n\n# step 2, render the animation\nndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,\n                     bg = \"#111111\",\n                     edge.col = \"#55555599\",\n                     render.par = list(tween.frames = 15, \n                                       show.time = TRUE),\n                     d3.options = list(animationDuration = 1000,\n                                       playControls = TRUE,\n                                       durationControl = TRUE),\n                     launchBrowser = TRUE\n                     )", 
+learnr:::store_exercise_cache("compute", list(setup = NULL, chunks = list(list(label = "compute", code = "# step 0: painfully, we have to load the package into our session\nlibrary(ndtv)\n\n# step 1: compute the settings\nndtv::compute.animation(classroom, animation.mode = \"kamadakawai\",\n                        slice.par = list(start = 0, end = 45,\n                                         aggregate.dur = 1,\n                                         interval = 1, rule = \"any\"))\n\n# step 2, render the animation\nndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,\n                     bg = \"#111111\",\n                     edge.col = \"#55555599\",\n                     render.par = list(tween.frames = 15, \n                                       show.time = TRUE),\n                     d3.options = list(animationDuration = 1000,\n                                       playControls = TRUE,\n                                       durationControl = TRUE),\n                     output.mode = 'htmlWidget'\n                     )", 
     opts = list(label = "\"compute\"", exercise = "TRUE", exercise.lines = "21"), 
     engine = "r")), code_check = NULL, error_check = NULL, check = NULL, 
     solution = NULL, options = list(eval = FALSE, echo = TRUE, 
@@ -1310,8 +1311,8 @@ learnr:::store_exercise_cache("compute", list(setup = NULL, chunks = list(list(l
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "compute", exercise = TRUE, exercise.lines = 21, 
@@ -1328,7 +1329,7 @@ learnr:::store_exercise_cache("compute", list(setup = NULL, chunks = list(list(l
         "                     d3.options = list(animationDuration = 1000,", 
         "                                       playControls = TRUE,", 
         "                                       durationControl = TRUE),", 
-        "                     launchBrowser = TRUE", "                     )"
+        "                     output.mode = 'htmlWidget'", "                     )"
         ), out.width.px = 624, out.height.px = 384, params.src = "compute, exercise = TRUE, exercise.lines = 21", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
@@ -1341,7 +1342,7 @@ output$`tutorial-exercise-compute2-output` <- renderUI({
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
-learnr:::store_exercise_cache("compute2", list(setup = NULL, chunks = list(list(label = "compute2", code = "# create a vector with colors\nnode_color <- rep(\"blue\", network::network.size(classroom))\nnode_color[network::get.vertex.attribute(classroom, \"type\") == \"instructor\"] <- \"red\"\n\n# create a vector with degrees\nnode_degree <- sna::degree(classroom)\n\n# animation settings do not change, no need to do those again\n\n# render the animation\nndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,\n                     bg = \"#111111\",\n                     edge.col = \"#55555599\",\n                     vertex.cex = node_degree/12,   # new line\n                     vertex.col = node_color,       # new line\n                     render.par = list(tween.frames = 15, \n                                       show.time = TRUE),\n                     d3.options = list(animationDuration = 1000,\n                                       playControls = TRUE,\n                                       durationControl = TRUE),\n                     launchBrowser = TRUE\n                     )", 
+learnr:::store_exercise_cache("compute2", list(setup = NULL, chunks = list(list(label = "compute2", code = "# create a vector with colors\nnode_color <- rep(\"blue\", network::network.size(classroom))\nnode_color[network::get.vertex.attribute(classroom, \"type\") == \"instructor\"] <- \"red\"\n\n# create a vector with degrees\nnode_degree <- sna::degree(classroom)\n\n# animation settings do not change, no need to do those again\n\n# render the animation\nndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,\n                     bg = \"#111111\",\n                     edge.col = \"#55555599\",\n                     vertex.cex = node_degree/12,   # new line\n                     vertex.col = node_color,       # new line\n                     render.par = list(tween.frames = 15, \n                                       show.time = TRUE),\n                     d3.options = list(animationDuration = 1000,\n                                       playControls = TRUE,\n                                       durationControl = TRUE),\n                     output.mode = 'htmlWidget'\n                     )", 
     opts = list(label = "\"compute2\"", exercise = "TRUE", exercise.lines = "23"), 
     engine = "r")), code_check = NULL, error_check = NULL, check = NULL, 
     solution = NULL, options = list(eval = FALSE, echo = TRUE, 
@@ -1357,8 +1358,8 @@ learnr:::store_exercise_cache("compute2", list(setup = NULL, chunks = list(list(
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "compute2", exercise = TRUE, exercise.lines = 23, 
@@ -1375,7 +1376,7 @@ learnr:::store_exercise_cache("compute2", list(setup = NULL, chunks = list(list(
         "                     d3.options = list(animationDuration = 1000,", 
         "                                       playControls = TRUE,", 
         "                                       durationControl = TRUE),", 
-        "                     launchBrowser = TRUE", "                     )"
+        "                     output.mode = 'htmlWidget'", "                     )"
         ), out.width.px = 624, out.height.px = 384, params.src = "compute2, exercise = TRUE, exercise.lines = 23", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
@@ -1391,7 +1392,7 @@ output$`tutorial-exercise-compute3-output` <- renderUI({
 learnr:::store_exercise_cache("compute3", list(setup = "node_color <- rep(\"blue\", network::network.size(classroom))\nnode_color[network::get.vertex.attribute(classroom, \"type\") == \"instructor\"] <- \"red\"\n\n# create a vector with degrees\nnode_degree <- sna::degree(classroom)", 
     chunks = list(list(label = "prework", code = "node_color <- rep(\"blue\", network::network.size(classroom))\nnode_color[network::get.vertex.attribute(classroom, \"type\") == \"instructor\"] <- \"red\"\n\n# create a vector with degrees\nnode_degree <- sna::degree(classroom)", 
         opts = list(label = "\"prework\"", echo = "FALSE"), engine = "r"), 
-        list(label = "compute3", code = "# compute coordinates and add them to the network, constant throughout\ncoords <- ndtv::network.layout.animate.kamadakawai(classroom)\nnetworkDynamic::activate.vertex.attribute(classroom, \"x\", coords[, 1], \n                                          onset = -Inf, terminus = Inf)\nnetworkDynamic::activate.vertex.attribute(classroom, \"y\", coords[, 2], \n                                          onset = -Inf, terminus = Inf)\n\n# new animation settings\nndtv::compute.animation(classroom, animation.mode = \"useAttribute\",\n                        slice.par = list(start = 0, end = 45,\n                                         aggregate.dur = 1,\n                                         interval = 1, rule = \"any\"))\n\n# render the animation\nndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,\n                     bg = \"#111111\",\n                     edge.col = \"#55555599\",\n                     vertex.cex = node_degree/12,   \n                     vertex.col = node_color,   \n                     vertex.tooltip = \n                       paste(\"Vertex\", network::get.vertex.attribute(classroom, \"vertex.names\")),\n                     render.par = list(tween.frames = 15, \n                                       show.time = TRUE),\n                     d3.options = list(animationDuration = 1000,\n                                       playControls = TRUE,\n                                       durationControl = TRUE),\n                     output.mode = 'htmlWidget',\n                     launchBrowser = FALSE\n)", 
+        list(label = "compute3", code = "# compute coordinates and add them to the network, constant throughout\ncoords <- ndtv::network.layout.animate.kamadakawai(classroom)\nnetworkDynamic::activate.vertex.attribute(classroom, \"x\", coords[, 1], \n                                          onset = -Inf, terminus = Inf)\nnetworkDynamic::activate.vertex.attribute(classroom, \"y\", coords[, 2], \n                                          onset = -Inf, terminus = Inf)\n\n# new animation settings\nndtv::compute.animation(classroom, animation.mode = \"useAttribute\",\n                        slice.par = list(start = 0, end = 45,\n                                         aggregate.dur = 1,\n                                         interval = 1, rule = \"any\"))\n\n# render the animation\nndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,\n                     bg = \"#111111\",\n                     edge.col = \"#55555599\",\n                     vertex.cex = node_degree/12,   \n                     vertex.col = node_color,   \n                     vertex.tooltip = \n                       paste(\"Vertex\", network::get.vertex.attribute(classroom, \"vertex.names\")),\n                     render.par = list(tween.frames = 15, \n                                       show.time = TRUE),\n                     d3.options = list(animationDuration = 1000,\n                                       playControls = TRUE,\n                                       durationControl = TRUE),\n                     output.mode = 'htmlWidget'\n)", 
             opts = list(label = "\"compute3\"", exercise = "TRUE", 
                 exercise.lines = "29", exercise.setup = "\"prework\""), 
             engine = "r")), code_check = NULL, error_check = NULL, 
@@ -1408,8 +1409,8 @@ learnr:::store_exercise_cache("compute3", list(setup = "node_color <- rep(\"blue
         fig.cap = NULL, fig.scap = NULL, fig.lp = "fig:", fig.subcap = NULL, 
         fig.pos = "", out.width = 624, out.height = NULL, out.extra = NULL, 
         fig.retina = 2, external = TRUE, sanitize = FALSE, interval = 1, 
-        aniopts = "controls,loop", warning = TRUE, error = FALSE, 
-        message = TRUE, render = NULL, ref.label = NULL, child = NULL, 
+        aniopts = "controls,loop", warning = FALSE, error = FALSE, 
+        message = FALSE, render = NULL, ref.label = NULL, child = NULL, 
         engine = "r", split = FALSE, include = TRUE, purl = TRUE, 
         max.print = 1000, tutorial = TRUE, exercise.checker = "function (label = NULL, solution_code = NULL, user_code = NULL, \n    check_code = NULL, envir_result = NULL, evaluate_result = NULL, \n    envir_prep = NULL, last_value = NULL, ...) \n{\n    (utils::getFromNamespace(\"grade_learnr_\", \"gradethis\"))(label = label, \n        solution_code = solution_code, user_code = user_code, \n        check_code = check_code, envir_result = envir_result, \n        evaluate_result = evaluate_result, envir_prep = envir_prep, \n        last_value = last_value, ...)\n}", 
         label = "compute3", exercise = TRUE, exercise.lines = 29, 
@@ -1433,8 +1434,8 @@ learnr:::store_exercise_cache("compute3", list(setup = "node_color <- rep(\"blue
         "                     d3.options = list(animationDuration = 1000,", 
         "                                       playControls = TRUE,", 
         "                                       durationControl = TRUE),", 
-        "                     output.mode = 'htmlWidget',", "                     launchBrowser = FALSE", 
-        ")"), out.width.px = 624, out.height.px = 384, params.src = "compute3, exercise = TRUE, exercise.lines = 29, exercise.setup = \"prework\"", 
+        "                     output.mode = 'htmlWidget'", ")"
+        ), out.width.px = 624, out.height.px = 384, params.src = "compute3, exercise = TRUE, exercise.lines = 29, exercise.setup = \"prework\"", 
         fig.num = 0, exercise.df_print = "paged"), engine = "r"))
 </script>
  <!--html_preserve-->
@@ -1444,7 +1445,7 @@ learnr:::store_exercise_cache("compute3", list(setup = "node_color <- rep(\"blue
 <!--/html_preserve-->
 <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="execution_dependencies">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58]}},"value":[{"type":"character","attributes":{},"value":["animation","askpass","base","base64","coda","compiler","crayon","curl","datasets","digest","ellipsis","evaluate","fastmap","gradethis","graphics","grDevices","grid","htmltools","htmlwidgets","httpuv","jsonlite","knitr","later","lattice","learnr","lifecycle","magrittr","markdown","methods","mime","ndtv","network","networkDynamic","openssl","pillar","pkgconfig","png","promises","R6","Rcpp","rlang","rle","rmarkdown","rprojroot","shiny","sna","statnet.common","stats","stringi","stringr","tibble","tools","utils","vctrs","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["2.6","1.1","4.0.2","2.0","0.19-4","4.0.2","1.3.4","4.3","4.0.2","0.6.27","0.3.1","0.14.1","1.0.1","0.2.0.9000","4.0.2","4.0.2","4.0.2","0.5.0","1.5.2","1.5.4","1.7.1","1.30","1.1.0.1","0.20-41","0.10.1.9006","0.2.0","1.5","1.1.1","4.0.2","0.9.1","0.13.0","1.17.0-585","0.10.1","1.4.3","1.4.6","2.0.3","0.1-8","1.1.1","2.5.0","1.0.5","0.4.8","0.9.2-223","2.5","2.0.2","1.5.0","2.6","4.5.0-307","4.0.2","1.5.3","1.4.0","3.0.4","4.0.2","4.0.2","0.3.4","2.3.0","0.19","1.8-4","2.2.1"]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57]}},"value":[{"type":"character","attributes":{},"value":["animation","askpass","base","base64","coda","compiler","crayon","curl","datasets","digest","ellipsis","evaluate","fastmap","gradethis","graphics","grDevices","grid","htmltools","htmlwidgets","httpuv","jsonlite","knitr","later","lattice","learnr","lifecycle","magrittr","markdown","methods","mime","ndtv","network","networkDynamic","openssl","pillar","pkgconfig","promises","R6","Rcpp","rlang","rle","rmarkdown","rprojroot","shiny","sna","statnet.common","stats","stringi","stringr","tibble","tools","utils","vctrs","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["2.6","1.1","4.0.2","2.0","0.19-4","4.0.2","1.3.4","4.3","4.0.2","0.6.27","0.3.1","0.14.1","1.0.1","0.2.0.9000","4.0.2","4.0.2","4.0.2","0.5.0","1.5.2","1.5.4","1.7.1","1.30","1.1.0.1","0.20-41","0.10.1.9006","0.2.0","1.5","1.1.1","4.0.2","0.9.1","0.13.0","1.17.0-585","0.10.1","1.4.3","1.4.6","2.0.3","1.1.1","2.5.0","1.0.5","0.4.8","0.9.2-223","2.5","2.0.2","1.5.0","2.6","4.5.0-307","4.0.2","1.5.3","1.4.0","3.0.4","4.0.2","4.0.2","0.3.4","2.3.0","0.19","1.8-4","2.2.1"]}]}]}
 </script>
 <!--/html_preserve-->
 </div>

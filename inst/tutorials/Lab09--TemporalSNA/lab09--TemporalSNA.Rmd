@@ -17,7 +17,7 @@ library(learnr)
 library(gradethis)
 library(magrittr)
 tutorial_options(exercise.checker = gradethis::grade_learnr)
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = NA)
 
 library(networkDynamic, quietly = TRUE)
 library(ndtv, quietly = TRUE)
@@ -98,7 +98,7 @@ Further, for the edges the type of interaction ("task" and "sociable")
 is coded and the weight
 of the interaction (somewhat arbitrarily assessed by the coder). 
 
-THe researchers wanted to understand the interaction dynamics in this 
+The researchers wanted to understand the interaction dynamics in this 
 classroom and coded the network of conversation throughout the lesson. 
 Each conversation has a "sender" (ie. the person talking) and a 
 "receiver" (ie. the person(s) talked to).
@@ -335,12 +335,6 @@ For example, you can compute how the density of the network develops.
 Below, compute the density of the network for blocks of 5 minutes 
 and plot how it develops. 
 
-
-The `tsna` package implements several measures 
-
-plot(tsna::tSnaStats(classroom, snafun = "gden", time.interval = 5, aggregate.dur = 5))
-
-
 ```{r remedy003, exercise = TRUE}
 
 ```
@@ -355,6 +349,7 @@ gradethis::grade_result(
 )
 ```
 
+The `tsna` package implements several measures. 
 Let's calculate betweenness centralization at times 0, 5, 10, et cetera, 
 each time over a period of length 5 minutes. 
 Then plot the result (adapt the code below to do it).
@@ -444,11 +439,11 @@ data.frame(type = network::get.vertex.attribute(classroom, "type"),
 Ah, that explains it!<br>
 (also: see how you can combine functions from different packages together)
 
-### Number of active edges ovr time
+### Number of active edges over time
 Recall that this is a network of how a classroom session unfolds in a 
 economics lesson. 
 There will be times when there is a lot of talking (when students work 
-in subgroups on assignments and all discuss the assigmnent) and times when 
+in subgroups on assignments and all discuss the assignment) and times when 
 talking activity is more focused (such as when an instructor is talking to the 
 group or a student is presenting a solution). 
 
@@ -615,7 +610,7 @@ SNA4DS::plot_network_slices(classroom, number = 4,
 ```
 
 
-```{r, echo = FALSE, eval = TRUE, fig.align = 'center'}
+```{r, echo = FALSE, eval = TRUE, fig.align = 'center', out.width = "100%"}
 knitr::include_graphics('./lab09--TemporalSNA_files/figure-html/sliced_plots.png')
 ```
 
@@ -623,7 +618,7 @@ knitr::include_graphics('./lab09--TemporalSNA_files/figure-html/sliced_plots.png
 Nice, right?<br>
 Well, the technology underneath these tutorials makes the plots way too small, 
 so that is why this R chunk was not interactive for you. 
-But if you were to run this from the console, this is the plot you would get.
+But if you were to run this from the console, the plot should be nicely sized.
 
 
 ### ndtv
@@ -793,6 +788,7 @@ ndtv::render.d3movie(classroom, usearrows = TRUE, displaylabels = FALSE ,
 )
 ```
 
+<br><br>
 Feel free to play around with the settings and adjust the plot further to your 
 liking.
 If you want to open the animation in a separate browser window, then remove the 
