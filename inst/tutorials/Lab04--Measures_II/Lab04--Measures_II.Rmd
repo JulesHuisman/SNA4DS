@@ -599,7 +599,11 @@ and click "Continue" once you are done to check your result.**
 If you calculated it correctly, you should have arrived at this results after 1
 iteration of re-allocation of PageRank scores.
 
-```{r, echo = FALSE, eval = TRUE}
+```{r load_stap, include = FALSE}
+stap <- SNA4DS:::stap
+```
+
+```{r stap1_loaded, exercise = FALSE, echo = FALSE, exercise.setup = "load_stap"}
 knitr::kable(stap)
 ```
 
