@@ -5,6 +5,8 @@ output:
     theme: flatly
     toc: yes
     number_sections: yes
+    anchor_sections: false
+
 vignette: |
   %\VignetteIndexEntry{SNA4DS cheatsheet} 
   %\VignetteEngine{knitr::rmarkdown} 
@@ -26,7 +28,7 @@ knitr::opts_chunk$set(
 
 <style type="text/css">
 .main-container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -220,6 +222,70 @@ intergraph::netcompare(network1, network2, test = TRUE)
 intergraph::netcompare(network1, network2, test = FALSE)
 ```
 <br><br><br>
+
+# Transforming data into `igraph` and `network` classes
+
+Very often the network data you want to manipulate with `igraph` and `network` does not come in the right format and you need to create the object. Below you can find the most popular functions that help you to do so. 
+
+## `igraph`
+
+* Load a graph with attributes 
+```{r}
+nodes <- utils::read.csv("file-NODES.csv", header = T, as.is = T)
+links <- utils::read.csv("file-EDGES.csv", header = T, as.is = T)
+
+net <- igraph::graph_from_data_frame(d=links, vertices=nodes, directed = T) 
+```
+
+* Make a graph from an adjacency matrix
+
+```{r}
+net <- igraph::graph_from_adjacency_matrix(adj_mat)
+```
+
+* Make a graph from an edge list
+
+```{r}
+net <- igraph::graph_from_edgelist(edgelist)
+```
+
+* Add node attributes
+```{r}
+net <- igraph::set_vertex_attr(net, 'attr_name', value = c(...))
+
+```
+
+* Add edge attribute
+
+```{r}
+net <- igraph::set_edge_attr(net, 'attr_name', value = c(...))
+```
+
+
+## `network`
+
+* Make network from adjacency matrix
+```{r}
+net <- as.matrix.network(adj_mat)
+```
+
+
+* Make network from edge list
+
+```{r}
+net <- network::as.network(edgelist, matrix.type="edgelist")
+```
+
+* Add node attributes
+
+```{r}
+net <- network::set.vertex.attribute(net, 'attr_name', value = c(...))
+```
+
+* Add edge attribute
+```{r}
+net <- network::set.edge.attribute(net, 'attr_name', value = c(...))
+```
 
 # Computing measures
 
@@ -674,53 +740,57 @@ Terms can be classified in three main ways.
 
 ### Most popular structural - dyadic independent terms
 
-* `edges` Probability that the observed edges are non-random. Introduces one statistic to the model. Directed and Undirected networks
+* `edges` Extent to which the number of edges in the network characterizes the overall structure (Is it a random number of edges, or it is the meaningful outcome of a certain phenomenon?). Introduces one statistic to the model. Directed and Undirected networks.
 
-* `density` Probability that the observed density is non-random. Introduces one statistic to the model. Directed and Undirected networks
+* `density` Extent to which the network density characterizes the overall structure (Is it a random density, or it is the meaningful outcome of a certain phenomenon?). Introduces one statistic to the model. Directed and Undirected networks.
 
-* `sender` Probability that a specific node, compared to a baseline one, is sending out non-random edges (different from the same node's behavior in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
+* `sender` Extent to which a specific node, compared to a baseline one, is sending out non-random edges (different from the same node's behavior in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
 
-* `receiver` Probability that a specific node, compared to a baseline one, is receiving non-random edges (different from the same node's behavior in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
+* `receiver` Extent to which a specific node, compared to a baseline one, is receiving non-random edges (different from the same node's behavior in a random distribution). Introduces to the model as many statistics as the number of nodes minus one. Directed Networks only. 
 
 ### Most popular structural - dyadic dependent terms
 
-* `mutual` Probability that the observed reciprocated ties are non-random. Introduces one statistic to the model. Directed networks only.
+* `mutual` Extent to which ties are more likely to be reciprocated than they would be in a random network (controlling for the other effects). Introduces one statistic to the model. Directed networks only. 
 
-* `asymmetric` Probability that the observed non reciprocated ties are non-random. Introduces one statistic to the model. Directed networks only.
+* `asymmetric` Extent to which the observed non reciprocated ties are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `triangles` Probability that the observed triangles are non-random. Introduces one statistic to the model. Directed and Undirected networks. In the case of directed network measures “transitive triple” and “cyclic triple”, so triangle equals to `ttriple` plus `ctriple`. 
+* `triangles` Extent to which the observed triangles are non-random. Introduces one statistic to the model. Directed and Undirected networks. In the case of directed network measures “transitive triple” and “cyclic triple”, so triangle equals to `ttriple` plus `ctriple`. 
 
 * `gwesp(decay=0.25, fixed=FALSE)` Geometrically weighted edgewise shared partner distribution. It can be used in place of triangles to improve convergence. The decay parameter should be non-negative. The value supplied for this parameter may be fixed (if `fixed=TRUE`), or it may be used instead as the starting value for the estimation of decay in a curved exponential family model (when `fixed=FALSE`, the default) (see Hunter and Handcock, 2006). This term can be used with directed and undirected networks. For directed networks, only outgoing two-path (`“OTP”`) shared partners are counted.  
 
 * `dgwesp(decay=0.25, fixed=FALSE, type= 'RTP')` Geometrically weighted edgewise shared partner distribution. It also counts other types of shared partners not covered by `gwesp`: Outgoing Two-path (`“OTP”`), Incoming Two-path (`“ITP”`), Reciprocated Two-path (`“RTP”`), Outgoing Shared Partner (`“OSP”`), Incoming Shared Partner (`“ISP”`).
 
-* `triadcensus` Probability that the sixteen categories in the categorization of Davis and Leinhardt (1972) observed in the network and are not generated at random. Introduces 16 statistics to the model. Directed networks only.
+* `triadcensus` Extent to which the sixteen categories in the categorization of Davis and Leinhardt (1972) are observed in the network and are not generated at random. Introduces 16 statistics to the model. Directed networks only.
 
-* `balance` Probability that type 102 or 300 in the categorization of Davis and Leinhardt (1972) -balanced triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
+![Triad Census](C:\Users\20203861\Documents\SNA4DS\vignettes\triad_census.png)
 
-* `transitive` Probability that type 120D, 030T, 120U, or 300 in the categorization of Davis and Leinhardt (1972) -transitive triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
+* `balance` Extent to which type 102 or 300 in the categorization of Davis and Leinhardt (1972) -balanced triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `intransitive` Probability that type 111D, 201, 111U, 021C, or 030C in the categorization of Davis and Leinhardt (1972) -intransitive triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
+* `transitive` Extent to which type 120D, 030T, 120U, or 300 in the categorization of Davis and Leinhardt (1972) -transitive triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `degree(n)`, `idegree(n)`, `odegree(n)` Probability that nodes with a specified degree are non random. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks.
+* `intransitive` Extent to which type 111D, 201, 111U, 021C, or 030C in the categorization of Davis and Leinhardt (1972) -intransitive triads- observed in the network are non-random. Introduces one statistic to the model. Directed networks only.
 
-* `kstar(n)`, `istar(n)`, `ostar(n)` Probability that stars connecting the specified number of nodes are non random. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks.
+* `degree(n)`, `idegree(n)`, `odegree(n)` Extent to which nodes with a specified degree are non random. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks.
 
-* `cycle(n)` Probability that cycles with a specified number of nodes are non-random. Introduces one statistic to the model. Directed and Undirected networks.
+* `gwdegree(decay, fixed=FALSE, attr=NULL, cutoff=30, levels=NULL)`, `gwidegree(.5,fixed=T)`, `gwodegree(.5,fixed=T)` Geometrically weighted degree distribution. It can be used in place of `degree(n)` to improve convergence. Introduces one statistic to the model equal to the weighted degree distribution with decay controlled by the decay parameter. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks.
+
+* `kstar(n)`, `istar(n)`, `ostar(n)` Extent to which stars connecting the specified number of nodes are non random. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks.
+
+* `cycle(n)` Extent to which cycles with a specified number of nodes are non-random. Introduces one statistic to the model. Directed and Undirected networks.
 
 ### Most popular nodal covariate terms
 
-* `nodecov`, `nodeicov`, `nodeocov` Numeric or Integer attributes. Probability that the attribute values influence edge formation (same as in a logit model) so that it is non-random under that condition. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
+* `nodecov`, `nodeicov`, `nodeocov` Numeric or Integer attributes. Extent to which the attribute values influence edge formation (same as in a logit model) so that it is non-random under that condition. Introduces one statistic to the model. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
 
-* `nodefactor`, `nodeifactor`, `nodeofactor` Categorical attributes. Probability that nodes characterized by a specific category form more ties, so that tie formation is non-random under that condition. Introduces to the model a number of statistics equal to the number of categories minus one. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
+* `nodefactor`, `nodeifactor`, `nodeofactor` Categorical attributes. Extent to which nodes characterized by a specific category form more ties, so that tie formation is non-random under that condition. Introduces to the model a number of statistics equal to the number of categories minus one. Directed and Undirected networks, with the possibility of `in` and `out` specifications for Directed networks. Dyadic independent.
 
-* `absdiff` Numeric or Integer attributes. Probability that common features measured in terms of distance similarity influence edge formation, so that edge formation is non-random under that condition. Introduces one statistic to the model. Directed and Undirected networks. Dyadic independent.
+* `absdiff` Numeric or Integer attributes. Extent to which common features measured in terms of distance similarity influence edge formation, so that edge formation is non-random under that condition. Introduces one statistic to the model. Directed and Undirected networks. Dyadic independent.
 
-* `nodematch` Categorical attributes. Probability that nodes characterized by a specific category belonging to a certain attribute form ties with other node characterized by the same category, so that tie formation under that condition is non-random. Introduces to the model as many statistics as the number of categories. Directed and Undirected networks. Dyadic independent.
+* `nodematch` Categorical attributes. Extent to which nodes characterized by a specific category belonging to a certain attribute form ties with other node characterized by the same category, so that tie formation under that condition is non-random. Introduces to the model as many statistics as the number of categories. Directed and Undirected networks. Dyadic independent. ---Differential homophily
 
-* `edgecov` Matrix attribute. Probability that the ties formed in another context influence tie formation in the context of the current model, so that tie formation under that circumstances is non-random. Introduces one statistic to the model. Directed and Undirected networks. Dyadic dependent.
+* `edgecov` Matrix attribute. Extent to which the ties formed in another context influence tie formation in the context of the current model, so that tie formation under that circumstances is non-random. Introduces one statistic to the model. Directed and Undirected networks. Dyadic dependent.
 
-* `nodemix` Categorical attributes. Probability that nodes denoted by different categories of an attribute form ties, so that tie formation under these circumstances is non-random. Introduces as many statistics as the number of combinations between every two categories. Directed and Undirected networks. Dyadic independent.
+* `nodemix` Categorical attributes. Extent to which nodes denoted by different categories of an attribute form ties, so that tie formation under these circumstances is non-random. Introduces as many statistics as the number of combinations between every two categories. Directed and Undirected networks. Dyadic independent.
                           
 
 
