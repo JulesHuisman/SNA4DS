@@ -7,12 +7,13 @@
 make_matrix_from_vertex_attribute(
   x,
   name,
-  measure = c("absdiff", "diff", "sum", "max", "min", "mean"),
+  measure = c("absdiff", "diff", "sum", "max", "min", "mean", "sender", "receiver",
+    "equal"),
   diag = FALSE
 )
 }
 \arguments{
-\item{x}{input, a numeric vector or an object of class \code{igraph} or
+\item{x}{input, a vector or an object of class \code{igraph} or
 \code{network}}
 
 \item{name}{the name of the attribute to be extracted. This will only be used
@@ -51,7 +52,21 @@ index. This value can be negative.
 \item max the highest value between the two vertices
 \item min the highest value between the two vertices
 \item mean the mean between the two vertices
+\item sender the value of the sender's attribute in the entire row
+\item receiver the value of the receiver's attribute in the entire column
+\item equal 1 if both vertices have the same on the attribute, 0 otherwise
 }
+
+Most of the options speak for themselves.
+The \code{sender} option is used to model a sender effect. For example,
+if it is to be tested whether the sender's age drives edges,
+the sender's age is the edge attribute for every edge this sender is
+involved in. Mathematically, this means that the sender's age
+should be in all of the cells of that sender's row.
+
+Similarly, the \code{receiver} option places the receiver's attribute in
+each column. For the attribute 'age', this makes the edge attribute equal
+to the receiver's age, for every edge the vertex is the receiver.
 
 If \code{diag == FALSE} (the default), the diagonal of the returned matrix
 will contain zeroes. If \code{diag} is any other value, then that will be
@@ -66,6 +81,8 @@ make_matrix_from_vertex_attribute(1:5, measure = "sum", diag = 99)
 make_matrix_from_vertex_attribute(1:5, measure = "max", diag = NA)
 make_matrix_from_vertex_attribute(1:5, measure = "sum", diag = TRUE)
 make_matrix_from_vertex_attribute(1:5, measure = "min", diag = 11:15)
+make_matrix_from_vertex_attribute(1:5, measure = "sender")
+make_matrix_from_vertex_attribute(1:5, measure = "receiver")
 \dontrun{
 data(florentine, package = "SNA4DS")
 # absdiff, with zeroes on the diagonal
