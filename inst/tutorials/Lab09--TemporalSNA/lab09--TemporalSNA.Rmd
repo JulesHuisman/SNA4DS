@@ -604,7 +604,7 @@ is just not useful).
 Let us plot the network across time using 9 time segments.
 
 ```{r, eval = FALSE}
-SNA4DS::plot_network_slices(classroom, number = 4, 
+SNA4DS::plot_network_slices(classroom, number = 9, 
                     start = 0, end = 45,
                     digits = 3)
 ```
