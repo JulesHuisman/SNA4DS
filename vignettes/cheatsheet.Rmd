@@ -340,7 +340,7 @@ sub <- igraph::induced_subgraph(media_net, 1:7)
 
 There are several algorithms implemented in `r` that allow the identification of communities inside networks.
 
-### Walktrap algorithm
+### Walktrap Algorithm
 You can determine community structure via short random walks using the 
 *walktrap* algorithm, as implemented in `igraph::walktrap.community`. 
 
@@ -944,7 +944,7 @@ measures), and `ndtv` (for visualization).
 
 Edges will typically have a starting time (`onset`), and end time (`terminus`), 
 a duration, a sender (`tail`), and a receiver (`head`). 
-of course, edges can start and end multiple times during the observation 
+Of course, edges can start and end multiple times during the observation 
 period and can have durations of length 0 up until any positive number.
 
 The temporal networks are of class `networkDynamic`.
