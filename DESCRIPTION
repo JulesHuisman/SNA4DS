@@ -27,7 +27,6 @@ Imports:
 	ggraph (>= 2.0.0),
 	glue,
 	gradethis,
-	htmltools,
   igraph (>= 1.2.5),
   igraphdata,
 	influenceR,
